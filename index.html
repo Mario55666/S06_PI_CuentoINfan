@@ -1,0 +1,2672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CreaTuCuento - Creador de Cuentos Infantiles Terapéuticos</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root {
+  --primary: #6C5CE7;
+  --primary-light: #A29BFE;
+  --primary-dark: #5649C0;
+  --secondary: #FD79A8;
+  --accent: #00B894;
+  --accent2: #FDCB6E;
+  --accent3: #E17055;
+  --bg: #F8F9FA;
+  --card: #FFFFFF;
+  --text: #2D3436;
+  --text-light: #636E72;
+  --border: #DFE6E9;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+  --radius: 16px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  z-index: 1000;
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.nav-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links { display: flex; gap: 0.5rem; }
+
+.nav-links button {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  transition: var(--transition);
+}
+
+.nav-links button:hover, .nav-links button.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6rem 2rem 3rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: float 20s linear infinite;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+.hero-content { position: relative; z-index: 1; color: white; }
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero p {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  opacity: 0.95;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.hero-cta {
+  display: inline-flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: white;
+  color: var(--primary);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+}
+
+/* ===== FORM SECTIONS ===== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 1px solid var(--border);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.card-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+/* ===== FORM ELEMENTS ===== */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: var(--transition);
+  background: var(--card);
+  color: var(--text);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(108,92,231,0.15);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.75rem;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.checkbox-item:hover {
+  border-color: var(--primary-light);
+  background: rgba(108,92,231,0.03);
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.checkbox-content { flex: 1; }
+
+.checkbox-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.checkbox-desc {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  line-height: 1.4;
+}
+
+/* ===== ACCORDION ===== */
+.accordion {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--card);
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.accordion-item:last-child { border-bottom: none; }
+
+.accordion-header {
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+  background: var(--card);
+}
+
+.accordion-header:hover {
+  background: rgba(108,92,231,0.03);
+}
+
+.accordion-header.active {
+  background: linear-gradient(135deg, rgba(108,92,231,0.08), rgba(253,121,168,0.08));
+}
+
+.accordion-title {
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.accordion-icon {
+  transition: transform 0.3s;
+  font-size: 1.2rem;
+}
+
+.accordion-header.active .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-body.open {
+  max-height: 5000px;
+}
+
+.accordion-content {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ===== TRANSFORMATION STATES ===== */
+.transformer-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.state-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.state-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-light);
+}
+
+.state-card.active {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(253,121,168,0.1));
+}
+
+.state-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.state-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.state-desc {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.state-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--primary);
+  align-self: center;
+}
+
+.transform-preview {
+  background: linear-gradient(135deg, rgba(108,92,231,0.05), rgba(0,184,148,0.05));
+  border-radius: var(--radius);
+  padding: 2rem;
+  margin-top: 1.5rem;
+  border: 2px dashed var(--primary-light);
+}
+
+/* ===== FLOWCHART ===== */
+.flowchart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 2rem;
+}
+
+.flow-step {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.25rem 2rem;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--primary);
+  width: 100%;
+  max-width: 500px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.flow-step:hover {
+  transform: translateX(10px);
+  box-shadow: var(--shadow-hover);
+}
+
+.flow-step.active {
+  border-left-color: var(--accent);
+  background: linear-gradient(90deg, rgba(0,184,148,0.05), transparent);
+}
+
+.flow-arrow {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+.flow-number {
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.flow-step.active .flow-number {
+  background: var(--accent);
+}
+
+/* ===== VALUE CARDS ===== */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.value-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.value-card.selected {
+  border-color: var(--accent);
+  background: rgba(0,184,148,0.05);
+}
+
+.value-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.value-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* ===== STORY OUTPUT ===== */
+.story-book {
+  background: linear-gradient(135deg, #fff9f0, #fff);
+  border-radius: var(--radius);
+  padding: 3rem;
+  box-shadow: var(--shadow);
+  border: 1px solid #f0e0d0;
+  position: relative;
+  overflow: hidden;
+}
+
+.story-book::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+}
+
+.story-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.story-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.story-meta {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.story-content {
+  font-size: 1.1rem;
+  line-height: 2;
+  color: var(--text);
+}
+
+.story-content p {
+  margin-bottom: 1.25rem;
+  text-indent: 1.5rem;
+}
+
+.story-section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 2rem 0 1rem;
+  text-indent: 0;
+}
+
+/* ===== SECONDARY CHARACTERS ===== */
+.char-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.char-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.char-title {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.btn-small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-add {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-add:hover { background: #00a383; }
+
+.btn-remove {
+  background: var(--accent3);
+  color: white;
+}
+
+.btn-remove:hover { background: #d65a3d; }
+
+/* ===== LOADING ===== */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.95);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.loading-overlay.active { display: flex; }
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== TOOLTIP ===== */
+.tooltip-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-light);
+  color: white;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  cursor: help;
+  margin-left: 0.5rem;
+  position: relative;
+}
+
+.tooltip-box {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  background: var(--text);
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+  pointer-events: none;
+}
+
+.tooltip-box.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip-box::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: var(--text);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .form-row { grid-template-columns: 1fr; }
+  .transformer-container { grid-template-columns: repeat(2, 1fr); }
+  .checkbox-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .hero { min-height: 50vh; }
+  .story-book { padding: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 1rem; }
+  .card { padding: 1rem; }
+  .transformer-container { grid-template-columns: 1fr; }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* ===== PROGRESS BAR ===== */
+.progress-container {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--primary);
+  z-index: 10000;
+  transition: width 0.3s;
+}
+
+/* ===== STORY SUGGESTIONS ===== */
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.suggestion-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.suggestion-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+}
+
+.suggestion-header {
+  padding: 1.25rem;
+  background: linear-gradient(135deg, var(--primary-light), var(--accent));
+  color: white;
+}
+
+.suggestion-value {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.suggestion-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+}
+
+.suggestion-body {
+  padding: 1.25rem;
+}
+
+.suggestion-desc {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.suggestion-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+/* ===== REPORT SECTION ===== */
+#reportSection {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.pdf-header {
+  text-align: center;
+  padding-bottom: 2rem;
+  border-bottom: 3px solid var(--primary);
+  margin-bottom: 2rem;
+}
+
+.pdf-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.pdf-meta {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.pdf-section {
+  margin-bottom: 2rem;
+}
+
+.pdf-section h3 {
+  color: var(--primary);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.pdf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.pdf-table th {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.pdf-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pdf-table tr:nth-child(even) {
+  background: rgba(108,92,231,0.03);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, var(--text), #1a1a2e);
+  color: white;
+  margin-top: 4rem;
+}
+
+.footer-text {
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  nav, .btn, .loading-overlay, .progress-container { display: none !important; }
+  .hero { min-height: auto; padding: 2rem; }
+  .story-book { box-shadow: none; border: 1px solid #ddd; }
+}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-container" id="progressBar" style="width:0%"></div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p style="color:var(--text);font-weight:600">Generando tu cuento mágico...</p>
+  <p style="color:var(--text-light);font-size:0.9rem">Esto puede tomar unos segundos</p>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-brand">CreaTuCuento</div>
+  <div class="nav-links">
+    <button class="active" onclick="scrollToSection('hero')">Inicio</button>
+    <button onclick="scrollToSection('formSection')">Formulario</button>
+    <button onclick="scrollToSection('transformSection')">Transformación</button>
+    <button onclick="scrollToSection('flowSection')">Diagrama</button>
+    <button onclick="scrollToSection('storySection')">Cuento</button>
+    <button onclick="scrollToSection('reportSection')">Reporte PDF</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <h1>CreaTuCuento</h1>
+    <p>Creador de cuentos infantiles terapéuticos basado en perfiles psicológicos. Transforma desafíos emocionales en historias mágicas con valores educativos.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="scrollToSection('formSection')">Comenzar a Crear</button>
+      <button class="btn btn-secondary" onclick="scrollToSection('suggestionsSection')">Ver 5 Cuentos Sugeridos</button>
+    </div>
+  </div>
+</section>
+
+<!-- Main Container -->
+<div class="container">
+
+<!-- Form Section -->
+<section class="section" id="formSection">
+  <h2 class="section-title">Configuración del Cuento</h2>
+  <p class="section-subtitle">Completa los datos para generar un cuento personalizado terapéutico</p>
+
+  <div class="accordion" id="mainAccordion">
+
+    <!-- SECTION 0: Student Data -->
+    <div class="accordion-item">
+      <div class="accordion-header active" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">👤</span>
+          <div>
+            <div>Datos del Estudiante</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Información básica del creador</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body open">
+        <div class="accordion-content">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="studentName">Nombre(s) del Estudiante *</label>
+              <input type="text" id="studentName" placeholder="Ej: María Fernanda" required>
+            </div>
+            <div class="form-group">
+              <label for="studentLastName">Apellido(s) del Estudiante *</label>
+              <input type="text" id="studentLastName" placeholder="Ej: López García" required>
+            </div>
+          </div>
+          <div class="form-group" style="max-width:300px">
+            <label for="taskDate">Fecha de Desarrollo *</label>
+            <input type="date" id="taskDate" required>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: Main Character -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">🦸</span>
+          <div>
+            <div>Personaje Principal</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Define al protagonista de la historia</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div class="form-group">
+            <label for="mainCharName">Nombre del Personaje Principal *</label>
+            <input type="text" id="mainCharName" placeholder="Ej: Lucía" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="mainCharAge">Edad</label>
+              <input type="number" id="mainCharAge" min="3" max="12" placeholder="Ej: 7">
+            </div>
+            <div class="form-group">
+              <label for="mainCharGender">Género</label>
+              <select id="mainCharGender">
+                <option value="">Selecciona...</option>
+                <option value="femenino">Femenino</option>
+                <option value="masculino">Masculino</option>
+                <option value="no-binario">No binario</option>
+                <option value="animal">Animal</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="mainCharDesc">Descripción Física y Personalidad</label>
+            <textarea id="mainCharDesc" placeholder="Ej: Es una niña pequeña con cabello rizado, muy curiosa y a veces se frustra cuando las cosas no salen a la primera..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: Secondary Characters -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">🤝</span>
+          <div>
+            <div>Personajes Secundarios (1-3)</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Compañeros que apoyan al protagonista</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div id="secondaryCharsContainer">
+            <!-- Character 1 -->
+            <div class="char-card" data-index="1">
+              <div class="char-header">
+                <span class="char-title">Personaje Secundario 1</span>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Nombre</label>
+                  <input type="text" class="sec-name" placeholder="Ej: Max">
+                </div>
+                <div class="form-group">
+                  <label>Relación con el protagonista</label>
+                  <select class="sec-relation">
+                    <option value="">Selecciona...</option>
+                    <option value="amigo">Amigo/a</option>
+                    <option value="hermano">Hermano/a</option>
+                    <option value="mascota">Mascota</option>
+                    <option value="maestro">Maestro/a</option>
+                    <option value="abuelo">Abuelo/a</option>
+                    <option value="vecino">Vecino/a</option>
+                    <option value="companero">Compañero/a de aventuras</option>
+                    <option value="guia">Guía espiritual</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Tipo de Apoyo</label>
+                <select class="sec-support">
+                  <option value="">Selecciona el tipo de apoyo...</option>
+                  <option value="emocional">Apoyo Emocional - Escucha y consuela al protagonista</option>
+                  <option value="motivacional">Apoyo Motivacional - Anima a seguir adelante</option>
+                  <option value="inteligencia">Apoyo Inteligente - Ayuda a resolver problemas</option>
+                  <option value="protector">Apoyo Protector - Cuida y defiende al protagonista</option>
+                  <option value="comico">Apoyo Cómico - Alivia la tensión con humor</option>
+                  <option value="sabiduria">Apoyo de Sabiduría - Comparte consejos y enseñanzas</option>
+                  <option value="fuerza">Apoyo de Fuerza - Proporciona coraje y valentía</option>
+                  <option value="creativo">Apoyo Creativo - Inspira nuevas ideas y soluciones</option>
+                  <option value="leal">Apoyo de Lealtad - Permanece siempre a su lado</option>
+                  <option value="practico">Apoyo Práctico - Ayuda con herramientas o recursos</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem;margin-top:1rem">
+            <button type="button" class="btn-small btn-add" onclick="addSecondaryChar()">+ Agregar Personaje</button>
+            <button type="button" class="btn-small btn-remove" onclick="removeSecondaryChar()">- Quitar Personaje</button>
+          </div>
+          <p style="font-size:0.85rem;color:var(--text-light);margin-top:0.75rem">Máximo 3 personajes secundarios. Mínimo 1.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: Background -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">📖</span>
+          <div>
+            <div>Antecedentes del Personaje</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Historia y contexto familiar</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div class="form-group">
+            <label for="familyContext">Contexto Familiar</label>
+            <textarea id="familyContext" placeholder="Describe la dinámica familiar, personas con las que vive..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="schoolContext">Contexto Escolar</label>
+            <textarea id="schoolContext" placeholder="¿Cómo le va en la escuela? ¿Tiene amigos? ¿Qué le gusta y qué le cuesta?"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="medicalHistory">Antecedentes Médicos/Relevantes</label>
+            <textarea id="medicalHistory" placeholder="Condiciones médicas, terapias en curso, medicaciones..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: Attitude -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">🎭</span>
+          <div>
+            <div>Actitud y Comportamiento</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Patrones de conducta observados</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div class="form-group">
+            <label for="attitudeHome">Actitud en Casa</label>
+            <textarea id="attitudeHome" placeholder="¿Cómo se comporta en el hogar? ¿Es colaborativo? ¿Hay rabietas?"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="attitudeSchool">Actitud en la Escuela</label>
+            <textarea id="attitudeSchool" placeholder="Participación, atención, relación con maestros..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="attitudePeers">Actitud con Compañeros</label>
+            <textarea id="attitudePeers" placeholder="¿Juega en grupo? ¿Es líder o seguidor? ¿Hay conflictos?"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: Talents -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">✨</span>
+          <div>
+            <div>Habilidades y Talentos</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Fortalezas y capacidades</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div class="form-group">
+            <label for="talents">Talentos Destacados</label>
+            <textarea id="talents" placeholder="Ej: Buen dibujante, memoria excelente, muy rápido corriendo..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="interests">Intereses y Aficiones</label>
+            <textarea id="interests" placeholder="Ej: Le encantan los dinosaurios, toca piano, le gusta cocinar..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="learningStyle">Estilo de Aprendizaje Preferido</label>
+            <select id="learningStyle">
+              <option value="">Selecciona...</option>
+              <option value="visual">Visual (aprende viendo)</option>
+              <option value="auditivo">Auditivo (aprende escuchando)</option>
+              <option value="kinestesico">Kinestésico (aprende haciendo)</option>
+              <option value="lectoescritura">Lecto-escritura (aprende leyendo)</option>
+              <option value="mixto">Mixto</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: Social Interaction -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">🌍</span>
+          <div>
+            <div>Interacción Social</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Relaciones y comunicación</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div class="form-group">
+            <label for="socialSkills">Habilidades Sociales</label>
+            <textarea id="socialSkills" placeholder="¿Comparte? ¿Pide ayuda? ¿Expresa emociones verbalmente?"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="communication">Estilo de Comunicación</label>
+            <select id="communication">
+              <option value="">Selecciona...</option>
+              <option value="verbal">Verbal (habla mucho)</option>
+              <option value="no-verbal">No verbal (gestos, dibujos)</option>
+              <option value="mixto">Mixto</option>
+              <option value="repetitivo">Repetitivo (ecolalia)</option>
+              <option value="selectivo">Selectivo (habla con pocos)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="emotionalRegulation">Regulación Emocional</label>
+            <textarea id="emotionalRegulation" placeholder="¿Cómo maneja frustración, enojo, tristeza? ¿Se calma solo o necesita ayuda?"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 7: Disorders -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">🧩</span>
+          <div>
+            <div>Condiciones y Metáforas Terapéuticas</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Selecciona las que apliquen (se transformarán en elementos mágicos)</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <p style="margin-bottom:1rem;color:var(--text-light);font-size:0.9rem">
+            Las condiciones seleccionadas se transformarán en elementos mágicos dentro del cuento. 
+            Pasa el mouse sobre ⓘ para ver la metáfora mágica que se usará.
+          </p>
+          <div class="checkbox-grid" id="disordersGrid">
+            <!-- Generated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 8: Story Settings -->
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <div class="accordion-title">
+          <span style="font-size:1.3rem">📚</span>
+          <div>
+            <div>Configuración del Cuento</div>
+            <div style="font-size:0.8rem;font-weight:400;color:var(--text-light)">Parámetros narrativos y valores educativos</div>
+          </div>
+        </div>
+        <span class="accordion-icon">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="targetAge">Edad Objetivo del Cuento</label>
+              <select id="targetAge">
+                <option value="3-5">3-5 años (Preescolar)</option>
+                <option value="6-8" selected>6-8 años (Primaria baja)</option>
+                <option value="9-12">9-12 años (Primaria alta)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="storyGenre">Género Narrativo</label>
+              <select id="storyGenre">
+                <option value="aventura">Aventura</option>
+                <option value="fantasia">Fantasía</option>
+                <option value="fabula">Fábula</option>
+                <option value="viaje">Viaje de descubrimiento</option>
+                <option value="misterio">Misterio</option>
+                <option value="cuento-hadas">Cuento de hadas moderno</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="storyDuration">Duración Aproximada</label>
+              <select id="storyDuration">
+                <option value="corta">Corta (5-10 minutos)</option>
+                <option value="media" selected>Media (10-15 minutos)</option>
+                <option value="larga">Larga (15-20 minutos)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="storyTone">Tono del Cuento</label>
+              <select id="storyTone">
+                <option value="esperanzador">Esperanzador y cálido</option>
+                <option value="divertido">Divertido y juguetón</option>
+                <option value="tranquilo">Tranquilo y reflexivo</option>
+                <option value="valiente">Valiente y motivador</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Valores Educativos a Potenciar (selecciona hasta 3)</label>
+            <div class="values-grid" id="valuesGrid">
+              <div class="value-card" data-value="empatia" onclick="toggleValue(this)">
+                <div class="value-icon">💚</div>
+                <div class="value-name">Empatía</div>
+              </div>
+              <div class="value-card" data-value="responsabilidad" onclick="toggleValue(this)">
+                <div class="value-icon">🎯</div>
+                <div class="value-name">Responsabilidad</div>
+              </div>
+              <div class="value-card" data-value="solidaridad" onclick="toggleValue(this)">
+                <div class="value-icon">🤝</div>
+                <div class="value-name">Solidaridad</div>
+              </div>
+              <div class="value-card" data-value="tolerancia" onclick="toggleValue(this)">
+                <div class="value-icon">🌈</div>
+                <div class="value-name">Tolerancia</div>
+              </div>
+              <div class="value-card" data-value="respeto" onclick="toggleValue(this)">
+                <div class="value-icon">🙏</div>
+                <div class="value-name">Respeto</div>
+              </div>
+              <div class="value-card" data-value="honestidad" onclick="toggleValue(this)">
+                <div class="value-icon">💎</div>
+                <div class="value-name">Honestidad</div>
+              </div>
+              <div class="value-card" data-value="perseverancia" onclick="toggleValue(this)">
+                <div class="value-icon">🧗</div>
+                <div class="value-name">Perseverancia</div>
+              </div>
+              <div class="value-card" data-value="creatividad" onclick="toggleValue(this)">
+                <div class="value-icon">🎨</div>
+                <div class="value-name">Creatividad</div>
+              </div>
+              <div class="value-card" data-value="coraje" onclick="toggleValue(this)">
+                <div class="value-icon">🦁</div>
+                <div class="value-name">Coraje</div>
+              </div>
+              <div class="value-card" data-value="amistad" onclick="toggleValue(this)">
+                <div class="value-icon">❤️</div>
+                <div class="value-name">Amistad</div>
+              </div>
+              <div class="value-card" data-value="humildad" onclick="toggleValue(this)">
+                <div class="value-icon">🌱</div>
+                <div class="value-name">Humildad</div>
+              </div>
+              <div class="value-card" data-value="generosidad" onclick="toggleValue(this)">
+                <div class="value-icon">🎁</div>
+                <div class="value-name">Generosidad</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:1.5rem">
+            <label for="therapeuticGoal">Objetivo Terapéutico del Cuento</label>
+            <textarea id="therapeuticGoal" placeholder="¿Qué quieres que el niño aprenda o sienta al leer este cuento? Ej: Sentir que no está solo en su frustración, entender que pedir ayuda es valiente..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end accordion -->
+
+  <div style="text-align:center;margin-top:2rem">
+    <button class="btn btn-primary" style="font-size:1.1rem;padding:1rem 3rem" onclick="generateStory()">
+      ✨ Generar Cuento Mágico
+    </button>
+  </div>
+</section>
+
+<!-- Transformation Section -->
+<section class="section" id="transformSection">
+  <h2 class="section-title">Transformación del Personaje</h2>
+  <p class="section-subtitle">El personaje puede transformarse en 5 estados diferentes a lo largo de la historia</p>
+
+  <div class="card">
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <p style="color:var(--text-light)">Selecciona el estado de transformación para ver cómo se adapta la narrativa:</p>
+    </div>
+    <div class="transformer-container" id="transformerContainer">
+      <div class="state-card active" data-state="humano" onclick="selectState(this)">
+        <div class="state-icon">🧒</div>
+        <div class="state-name">Humano</div>
+        <div class="state-desc">Forma original del personaje</div>
+      </div>
+      <div class="state-card" data-state="animal" onclick="selectState(this)">
+        <div class="state-icon">🦊</div>
+        <div class="state-name">Animal</div>
+        <div class="state-desc">Se transforma en un animal con características especiales</div>
+      </div>
+      <div class="state-card" data-state="objeto-inerte" onclick="selectState(this)">
+        <div class="state-icon">🪨</div>
+        <div class="state-name">Objeto Inerte</div>
+        <div class="state-desc">Se convierte en un objeto con conciencia mágica</div>
+      </div>
+      <div class="state-card" data-state="objeto-2d" onclick="selectState(this)">
+        <div class="state-icon">🖼️</div>
+        <div class="state-name">Objeto 2D</div>
+        <div class="state-desc">Entra al mundo de dibujos y pinturas</div>
+      </div>
+      <div class="state-card" data-state="espectro" onclick="selectState(this)">
+        <div class="state-icon">👻</div>
+        <div class="state-name">Espectro</div>
+        <div class="state-desc">Forma etérea con poderes especiales</div>
+      </div>
+    </div>
+
+    <div class="transform-preview" id="transformPreview">
+      <h4 style="color:var(--primary);margin-bottom:0.75rem">🔄 Estado Actual: Humano</h4>
+      <p id="transformDesc">El personaje mantiene su forma humana. La historia se desarrolla desde una perspectiva humana con emociones y pensamientos que los niños pueden identificar fácilmente. Los desafíos se enfrentan con herramientas humanas como el diálogo, el pensamiento creativo y el apoyo de otros.</p>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(108,92,231,0.08);border-radius:8px">
+        <strong>Ejemplo narrativo:</strong> <em id="transformExample">"María caminó por el bosque con su linterna, sintiendo el crujir de las hojas bajo sus pies. Su corazón latía rápido, pero respiró hondo y recordó lo que su abuela le había enseñado: 'El coraje no es no tener miedo, es seguir adelante aunque lo sientas.'"</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Flowchart Section -->
+<section class="section" id="flowSection">
+  <h2 class="section-title">Diagrama de Flujo Narrativo</h2>
+  <p class="section-subtitle">Estructura interactiva de la historia para guiar el desarrollo del cuento</p>
+
+  <div class="card">
+    <div class="flowchart" id="flowchart">
+      <div class="flow-step" data-step="1" onclick="activateFlowStep(this)">
+        <div class="flow-number">1</div>
+        <h4 style="color:var(--primary);margin-bottom:0.5rem">Presentación del Mundo</h4>
+        <p style="font-size:0.9rem;color:var(--text-light)">Se presenta al personaje principal en su entorno cotidiano. Se establece la "normalidad" y se introducen pistas del desafío.</p>
+        <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--accent)"><strong>Elementos:</strong> Personaje, escenario, rutina diaria</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step" data-step="2" onclick="activateFlowStep(this)">
+        <div class="flow-number">2</div>
+        <h4 style="color:var(--primary);margin-bottom:0.5rem">Llamado a la Aventura</h4>
+        <p style="font-size:0.9rem;color:var(--text-light)">Aparece el desafío o problema. El personaje debe decidir si enfrentarlo o quedarse en su zona de confort.</p>
+        <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--accent)"><strong>Elementos:</strong> Conflicto, duda, primeras emociones</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step" data-step="3" onclick="activateFlowStep(this)">
+        <div class="flow-number">3</div>
+        <h4 style="color:var(--primary);margin-bottom:0.5rem">Transformación y Pruebas</h4>
+        <p style="font-size:0.9rem;color:var(--text-light)">El personaje se transforma (cambia de forma o perspectiva) y enfrenta pruebas que reflejan sus desafíos internos de forma simbólica.</p>
+        <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--accent)"><strong>Elementos:</strong> Metáforas mágicas, aliados, obstáculos</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step" data-step="4" onclick="activateFlowStep(this)">
+        <div class="flow-number">4</div>
+        <h4 style="color:var(--primary);margin-bottom:0.5rem">Momento de Crisis y Elección</h4>
+        <p style="font-size:0.9rem;color:var(--text-light)">Punto máximo de tensión. El personaje debe aplicar lo aprendido y elegir entre rendirse o perseverar.</p>
+        <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--accent)"><strong>Elementos:</strong> Decisión valiente, apoyo de aliados, recurso interno</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step" data-step="5" onclick="activateFlowStep(this)">
+        <div class="flow-number">5</div>
+        <h4 style="color:var(--primary);margin-bottom:0.5rem">Resolución y Vuelta al Hogar</h4>
+        <p style="font-size:0.9rem;color:var(--text-light)">El personaje supera el desafío, regresa transformado y comparte lo aprendido. Cierre con mensaje terapéutico positivo.</p>
+        <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--accent)"><strong>Elementos:</strong> Celebración, integración, mensaje de esperanza</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Script Section -->
+<section class="section" id="scriptSection">
+  <h2 class="section-title">Guion Técnico del Cuento</h2>
+  <p class="section-subtitle">Estructura narrativa detallada con escenas y elementos técnicos</p>
+
+  <div class="form-grid" id="scriptContainer">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(108,92,231,0.15)">🎬</div>
+        <div>
+          <div class="card-title">Escena 1: El Mundo Ordinario</div>
+          <div class="card-subtitle">Presentación y contexto</div>
+        </div>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:0.75rem">El protagonista se presenta en su entorno familiar. Se muestra su rutina, sus relaciones y su forma de ver el mundo. El lector conecta emocionalmente.</p>
+      <div style="font-size:0.85rem">
+        <strong style="color:var(--primary)">Duración:</strong> 2-3 min | 
+        <strong style="color:var(--primary)">Tono:</strong> Cálido y familiar | 
+        <strong style="color:var(--primary)">POV:</strong> Personaje principal
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(253,121,168,0.15)">⚡</div>
+        <div>
+          <div class="card-title">Escena 2: El Desafío Aparece</div>
+          <div class="card-subtitle">Incidencia narrativa</div>
+        </div>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:0.75rem">Algo altera la normalidad. Puede ser externo (un problema, una pérdida) o interno (una emoción, una duda). El personaje siente resistencia.</p>
+      <div style="font-size:0.85rem">
+        <strong style="color:var(--primary)">Duración:</strong> 2-3 min | 
+        <strong style="color:var(--primary)">Tono:</strong> Tensión creciente | 
+        <strong style="color:var(--primary)">Giro:</strong> Conflicto central
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(0,184,148,0.15)">🧚</div>
+        <div>
+          <div class="card-title">Escena 3: Transformación Mágica</div>
+          <div class="card-subtitle">Metáfora terapéutica central</div>
+        </div>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:0.75rem">El personaje cambia de forma (humano→animal→objeto→espectro). Esta metamorfosis representa el cambio de perspectiva necesario para enfrentar el problema.</p>
+      <div style="font-size:0.85rem">
+        <strong style="color:var(--primary)">Duración:</strong> 3-4 min | 
+        <strong style="color:var(--primary)">Tono:</strong> Maravilla y misterio | 
+        <strong style="color:var(--primary)">Símbolo:</strong> Metáfora activa
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(225,112,85,0.15)">🔥</div>
+        <div>
+          <div class="card-title">Escena 4: Pruebas y Aliados</div>
+          <div class="card-subtitle">Desarrollo del conflicto</div>
+        </div>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:0.75rem">En la nueva forma, el personaje enfrenta pruebas simbólicas. Los personajes secundarios aparecen para ofrecer su tipo de apoyo específico.</p>
+      <div style="font-size:0.85rem">
+        <strong style="color:var(--primary)">Duración:</strong> 4-5 min | 
+        <strong style="color:var(--primary)">Tono:</strong> Acción y emoción | 
+        <strong style="color:var(--primary)">Dinámica:</strong> Superación progresiva
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(253,203,110,0.15)">🏆</div>
+        <div>
+          <div class="card-title">Escena 5: Clímax y Resolución</div>
+          <div class="card-subtitle">Transformación interior</div>
+        </div>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:0.75rem">El personaje aplica todo lo aprendido. Supera la crisis no por fuerza externa sino por comprensión interna. El valor educativo se manifiesta.</p>
+      <div style="font-size:0.85rem">
+        <strong style="color:var(--primary)">Duración:</strong> 3-4 min | 
+        <strong style="color:var(--primary)">Tono:</strong> Triunfo emocional | 
+        <strong style="color:var(--primary)">Mensaje:</strong> Valor central
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 Story Suggestions Section -->
+<section class="section" id="suggestionsSection">
+  <h2 class="section-title">5 Cuentos Terapéuticos Sugeridos</h2>
+  <p class="section-subtitle">Historias de Pedro Pablo Sacristán adaptadas con valores educativos específicos</p>
+
+  <div class="suggestions-grid">
+    <div class="suggestion-card">
+      <div class="suggestion-header">
+        <div class="suggestion-value">Valor: Empatía</div>
+        <div class="suggestion-title">El Árbol de los Corazones</div>
+      </div>
+      <div class="suggestion-body">
+        <p class="suggestion-desc">Un niño descubre un árbol mágico cuyas hojas cambian de color según los sentimientos de las personas. Aprende a reconocer emociones ajenas y ayuda a sanar corazones heridos en su pueblo.</p>
+        <div class="suggestion-meta">
+          <span>⏱ 12 min</span>
+          <span>🎯 5-8 años</span>
+          <span>📖 Fantasía</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-header" style="background:linear-gradient(135deg,#fd79a8,#e17055)">
+        <div class="suggestion-value">Valor: Perseverancia</div>
+        <div class="suggestion-title">La Semilla que Nunca se Rindió</div>
+      </div>
+      <div class="suggestion-body">
+        <p class="suggestion-desc">Una pequeña semilla debe atravesar rocas, viento y sequía para crecer. A pesar de todos los obstáculos, sigue intentando hasta convertirse en el árbol más hermoso del valle.</p>
+        <div class="suggestion-meta">
+          <span>⏱ 10 min</span>
+          <span>🎯 4-7 años</span>
+          <span>📖 Fábula</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-header" style="background:linear-gradient(135deg,#00b894,#00cec9)">
+        <div class="suggestion-value">Valor: Solidaridad</div>
+        <div class="suggestion-title">Los Tres Amigos del Puente</div>
+      </div>
+      <div class="suggestion-body">
+        <p class="suggestion-desc">Tres amigos muy diferentes (un conejo miedoso, un oso torpe y un zorro travieso) deben cruzar un puente peligroso. Solo logran llegar al otro lado cuando combinan sus habilidades únicas.</p>
+        <div class="suggestion-meta">
+          <span>⏱ 15 min</span>
+          <span>🎯 6-9 años</span>
+          <span>📖 Aventura</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-header" style="background:linear-gradient(135deg,#fdcb6e,#e17055)">
+        <div class="suggestion-value">Valor: Coraje</div>
+        <div class="suggestion-title">La Niña que Enfrentó a la Sombra</div>
+      </div>
+      <div class="suggestion-body">
+        <p class="suggestion-desc">Una niña con miedo a la oscuridad descubre que las sombras de su cuarto son criaturas perdidas que necesitan su ayuda. Debe encontrar el valor para guiarlas de vuelta a casa.</p>
+        <div class="suggestion-meta">
+          <span>⏱ 12 min</span>
+          <span>🎯 5-8 años</span>
+          <span>📖 Fantasía</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="suggestion-card">
+      <div class="suggestion-header" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">
+        <div class="suggestion-value">Valor: Honestidad</div>
+        <div class="suggestion-title">El Espejo que Decía la Verdad</div>
+      </div>
+      <div class="suggestion-body">
+        <p class="suggestion-desc">Un niño encuentra un espejo mágico que solo refleja la verdad. Al principio le molesta, pero aprende que la honestidad le trae mejores amigos y lo hace sentir orgulloso de sí mismo.</p>
+        <div class="suggestion-meta">
+          <span>⏱ 10 min</span>
+          <span>🎯 6-9 años</span>
+          <span>📖 Cuento de hadas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Story Output Section -->
+<section class="section" id="storySection" style="display:none">
+  <h2 class="section-title">Tu Cuento Generado</h2>
+  <p class="section-subtitle">Historia personalizada basada en los parámetros terapéuticos</p>
+
+  <div class="story-book" id="storyOutput">
+    <div class="story-header">
+      <h2 class="story-title" id="storyTitle">Título del Cuento</h2>
+      <p class="story-meta" id="storyMeta">Generado para [Nombre] | [Fecha]</p>
+    </div>
+    <div class="story-content" id="storyContent">
+      <p>El cuento aparecerá aquí después de generarlo...</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:1.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+    <button class="btn btn-primary" onclick="generateStory()">🔄 Regenerar Cuento</button>
+    <button class="btn btn-secondary" onclick="scrollToSection('reportSection')" style="color:var(--text)">📄 Ver Reporte PDF</button>
+  </div>
+</section>
+
+<!-- Report Section -->
+<section class="section" id="reportSection">
+  <h2 class="section-title">Reporte Completo en PDF</h2>
+  <p class="section-subtitle">Genera un informe profesional con todos los datos, análisis y el cuento terapéutico</p>
+
+  <div style="text-align:center;margin-bottom:2rem">
+    <button class="btn btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem" onclick="generatePDF()">
+      📄 Generar Reporte PDF
+    </button>
+    <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.75rem">Incluye: datos del estudiante, perfil del personaje, metáforas terapéuticas, cuento generado y análisis narrativo</p>
+  </div>
+
+  <!-- PDF Preview Container -->
+  <div id="pdfPreview">
+    <div id="pdfContent">
+      <!-- Cover Page -->
+      <div class="pdf-header">
+        <div style="font-size:3rem;margin-bottom:1rem">📚</div>
+        <h1 class="pdf-title">Reporte Terapéutico: CreaTuCuento</h1>
+        <p class="pdf-meta" id="pdfStudentInfo">Estudiante: [Nombre Apellido] | Fecha: [Fecha]</p>
+      </div>
+
+      <!-- Student Data -->
+      <div class="pdf-section">
+        <h3>1. Datos del Estudiante</h3>
+        <table class="pdf-table">
+          <tr><th>Campo</th><th>Información</th></tr>
+          <tr><td>Nombre(s)</td><td id="pdfStudentName">-</td></tr>
+          <tr><td>Apellido(s)</td><td id="pdfStudentLastName">-</td></tr>
+          <tr><td>Fecha de desarrollo</td><td id="pdfDate">-</td></tr>
+        </table>
+      </div>
+
+      <!-- Main Character -->
+      <div class="pdf-section">
+        <h3>2. Personaje Principal</h3>
+        <table class="pdf-table">
+          <tr><th>Campo</th><th>Información</th></tr>
+          <tr><td>Nombre</td><td id="pdfCharName">-</td></tr>
+          <tr><td>Edad</td><td id="pdfCharAge">-</td></tr>
+          <tr><td>Género</td><td id="pdfCharGender">-</td></tr>
+          <tr><td>Descripción</td><td id="pdfCharDesc">-</td></tr>
+        </table>
+      </div>
+
+      <!-- Secondary Characters -->
+      <div class="pdf-section">
+        <h3>3. Personajes Secundarios</h3>
+        <div id="pdfSecondaryChars"></div>
+      </div>
+
+      <!-- Background -->
+      <div class="pdf-section">
+        <h3>4. Antecedentes del Personaje</h3>
+        <p><strong>Contexto Familiar:</strong></p>
+        <p id="pdfFamilyContext" style="margin-bottom:1rem;color:var(--text-light)">-</p>
+        <p><strong>Contexto Escolar:</strong></p>
+        <p id="pdfSchoolContext" style="margin-bottom:1rem;color:var(--text-light)">-</p>
+        <p><strong>Antecedentes Médicos:</strong></p>
+        <p id="pdfMedical" style="color:var(--text-light)">-</p>
+      </div>
+
+      <!-- Attitude -->
+      <div class="pdf-section">
+        <h3>5. Actitud y Comportamiento</h3>
+        <table class="pdf-table">
+          <tr><th>Entorno</th><th>Observaciones</th></tr>
+          <tr><td>En casa</td><td id="pdfAttitudeHome">-</td></tr>
+          <tr><td>En la escuela</td><td id="pdfAttitudeSchool">-</td></tr>
+          <tr><td>Con compañeros</td><td id="pdfAttitudePeers">-</td></tr>
+        </table>
+      </div>
+
+      <!-- Talents -->
+      <div class="pdf-section">
+        <h3>6. Habilidades y Talentos</h3>
+        <table class="pdf-table">
+          <tr><th>Campo</th><th>Información</th></tr>
+          <tr><td>Talentos</td><td id="pdfTalents">-</td></tr>
+          <tr><td>Intereses</td><td id="pdfInterests">-</td></tr>
+          <tr><td>Estilo de aprendizaje</td><td id="pdfLearningStyle">-</td></tr>
+        </table>
+      </div>
+
+      <!-- Social -->
+      <div class="pdf-section">
+        <h3>7. Interacción Social</h3>
+        <table class="pdf-table">
+          <tr><th>Campo</th><th>Información</th></tr>
+          <tr><td>Habilidades sociales</td><td id="pdfSocialSkills">-</td></tr>
+          <tr><td>Comunicación</td><td id="pdfCommunication">-</td></tr>
+          <tr><td>Regulación emocional</td><td id="pdfEmotionalReg">-</td></tr>
+        </table>
+      </div>
+
+      <!-- Disorders / Metaphors -->
+      <div class="pdf-section">
+        <h3>8. Condiciones y Metáforas Mágicas Seleccionadas</h3>
+        <div id="pdfDisorders"></div>
+      </div>
+
+      <!-- Story Settings -->
+      <div class="pdf-section">
+        <h3>9. Configuración del Cuento</h3>
+        <table class="pdf-table">
+          <tr><th>Parámetro</th><th>Selección</th></tr>
+          <tr><td>Edad objetivo</td><td id="pdfTargetAge">-</td></tr>
+          <tr><td>Género narrativo</td><td id="pdfGenre">-</td></tr>
+          <tr><td>Duración</td><td id="pdfDuration">-</td></tr>
+          <tr><td>Tono</td><td id="pdfTone">-</td></tr>
+          <tr><td>Valores educativos</td><td id="pdfValues">-</td></tr>
+          <tr><td>Objetivo terapéutico</td><td id="pdfGoal">-</td></tr>
+        </table>
+      </div>
+
+      <!-- Transformation State -->
+      <div class="pdf-section">
+        <h3>10. Estado de Transformación Seleccionado</h3>
+        <p id="pdfTransformState" style="font-size:1.1rem;color:var(--primary);font-weight:600">Humano</p>
+        <p id="pdfTransformDesc" style="color:var(--text-light);margin-top:0.5rem">El personaje mantiene su forma humana durante toda la historia.</p>
+      </div>
+
+      <!-- Flowchart Summary -->
+      <div class="pdf-section">
+        <h3>11. Estructura Narrativa (Diagrama de Flujo)</h3>
+        <table class="pdf-table">
+          <tr><th>Paso</th><th>Nombre</th><th>Descripción</th></tr>
+          <tr><td>1</td><td>Presentación del Mundo</td><td>Se presenta al personaje en su entorno cotidiano</td></tr>
+          <tr><td>2</td><td>Llamado a la Aventura</td><td>Aparece el desafío, el personaje debe decidir</td></tr>
+          <tr><td>3</td><td>Transformación y Pruebas</td><td>Metáforas mágicas, aliados y obstáculos</td></tr>
+          <tr><td>4</td><td>Crisis y Elección</td><td>Punto máximo, decisión valiente</td></tr>
+          <tr><td>5</td><td>Resolución</td><td>Superación, regreso transformado</td></tr>
+        </table>
+      </div>
+
+      <!-- Generated Story -->
+      <div class="pdf-section">
+        <h3>12. Cuento Terapéutico Generado</h3>
+        <h4 id="pdfStoryTitle" style="text-align:center;color:var(--primary);margin-bottom:1rem;font-size:1.3rem">-</h4>
+        <div id="pdfStoryContent" style="line-height:2;font-size:1rem;text-align:justify"></div>
+      </div>
+
+      <!-- Technical Script -->
+      <div class="pdf-section">
+        <h3>13. Guion Técnico Narrativo</h3>
+        <table class="pdf-table">
+          <tr><th>Escena</th><th>Título</th><th>Duración</th><th>Elementos Clave</th></tr>
+          <tr><td>1</td><td>El Mundo Ordinario</td><td>2-3 min</td><td>Presentación, contexto, conexión emocional</td></tr>
+          <tr><td>2</td><td>El Desafío Aparece</td><td>2-3 min</td><td>Conflicto, duda, emociones</td></tr>
+          <tr><td>3</td><td>Transformación Mágica</td><td>3-4 min</td><td>Metáfora central, cambio de perspectiva</td></tr>
+          <tr><td>4</td><td>Pruebas y Aliados</td><td>4-5 min</td><td>Superación progresiva, apoyo</td></tr>
+          <tr><td>5</td><td>Clímax y Resolución</td><td>3-4 min</td><td>Triunfo emocional, mensaje</td></tr>
+        </table>
+      </div>
+
+      <!-- 5 Story Suggestions -->
+      <div class="pdf-section">
+        <h3>14. Cuentos Sugeridos por Valor Educativo</h3>
+        <table class="pdf-table">
+          <tr><th>Valor</th><th>Título</th><th>Duración</th><th>Edad</th></tr>
+          <tr><td>Empatía</td><td>El Árbol de los Corazones</td><td>12 min</td><td>5-8 años</td></tr>
+          <tr><td>Perseverancia</td><td>La Semilla que Nunca se Rindió</td><td>10 min</td><td>4-7 años</td></tr>
+          <tr><td>Solidaridad</td><td>Los Tres Amigos del Puente</td><td>15 min</td><td>6-9 años</td></tr>
+          <tr><td>Coraje</td><td>La Niña que Enfrentó a la Sombra</td><td>12 min</td><td>5-8 años</td></tr>
+          <tr><td>Honestidad</td><td>El Espejo que Decía la Verdad</td><td>10 min</td><td>6-9 años</td></tr>
+        </table>
+      </div>
+
+      <!-- Narrative Arc Chart (CSS-based) -->
+      <div class="pdf-section">
+        <h3>15. Arco Narrativo del Cuento Generado</h3>
+        <div style="background:var(--bg);border-radius:12px;padding:1.5rem;border:1px solid var(--border)">
+          <svg viewBox="0 0 600 200" style="width:100%;height:auto">
+            <defs>
+              <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:var(--primary)"/>
+                <stop offset="50%" style="stop-color:var(--secondary)"/>
+                <stop offset="100%" style="stop-color:var(--accent)"/>
+              </linearGradient>
+            </defs>
+            <!-- Grid lines -->
+            <line x1="50" y1="30" x2="550" y2="30" stroke="#e0e0e0" stroke-width="1"/>
+            <line x1="50" y1="80" x2="550" y2="80" stroke="#e0e0e0" stroke-width="1"/>
+            <line x1="50" y1="130" x2="550" y2="130" stroke="#e0e0e0" stroke-width="1"/>
+            <line x1="50" y1="180" x2="550" y2="180" stroke="#e0e0e0" stroke-width="1"/>
+            <!-- Axis -->
+            <line x1="50" y1="180" x2="550" y2="180" stroke="#333" stroke-width="2"/>
+            <line x1="50" y1="30" x2="50" y2="180" stroke="#333" stroke-width="2"/>
+            <!-- Arc curve -->
+            <path d="M 50 150 Q 80 140 125 130 Q 170 115 200 120 Q 240 130 275 90 Q 310 40 340 50 Q 380 65 400 80 Q 450 110 475 100 Q 510 85 550 70" fill="none" stroke="#6C5CE7" stroke-width="3"/>
+            <!-- Points -->
+            <circle cx="50" cy="150" r="6" fill="#6C5CE7"/>
+            <circle cx="125" cy="130" r="6" fill="#A29BFE"/>
+            <circle cx="200" cy="120" r="6" fill="#FD79A8"/>
+            <circle cx="275" cy="90" r="6" fill="#E17055"/>
+            <circle cx="340" cy="50" r="6" fill="#00B894"/>
+            <circle cx="400" cy="80" r="6" fill="#00CEC9"/>
+            <circle cx="475" cy="100" r="6" fill="#FDCB6E"/>
+            <circle cx="550" cy="70" r="6" fill="#6C5CE7"/>
+            <!-- Labels -->
+            <text x="50" y="200" font-size="10" text-anchor="middle" fill="#666">Inicio</text>
+            <text x="150" y="200" font-size="10" text-anchor="middle" fill="#666">Presentación</text>
+            <text x="250" y="200" font-size="10" text-anchor="middle" fill="#666">Conflicto</text>
+            <text x="350" y="200" font-size="10" text-anchor="middle" fill="#666">Clímax</text>
+            <text x="450" y="200" font-size="10" text-anchor="middle" fill="#666">Resolución</text>
+            <text x="550" y="200" font-size="10" text-anchor="middle" fill="#666">Fin</text>
+            <text x="35" y="185" font-size="10" text-anchor="end" fill="#666">Bajo</text>
+            <text x="35" y="35" font-size="10" text-anchor="end" fill="#666">Alto</text>
+            <text x="300" y="18" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Intensidad Emocional a lo largo de la historia</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="pdf-section" style="background:rgba(253,203,110,0.1);padding:1.5rem;border-radius:12px;border-left:4px solid var(--accent2)">
+        <h4 style="color:var(--accent3);margin-bottom:0.75rem">📝 Notas para el Terapeuta / Docente</h4>
+        <p style="font-size:0.9rem;color:var(--text-light);line-height:1.8">
+          Este cuento ha sido diseñado utilizando principios de biblioterapia y reestructuración cognitiva. 
+          Las metáforas mágicas transforman desafíos psicológicos en elementos narrativos con los que el niño 
+          puede identificarse sin sentirse expuesto. Se recomienda leer el cuento en un ambiente seguro, 
+          permitir preguntas y dibujos posteriores, y observar las reacciones emocionales durante la lectura.
+        </p>
+        <p style="font-size:0.9rem;color:var(--text-light);line-height:1.8;margin-top:0.5rem">
+          <strong>Objetivos terapéuticos sugeridos:</strong> Identificación proyectiva, modelado de afrontamiento, 
+          normalización de emociones difíciles, y reforzamiento de recursos personales a través de la narrativa.
+        </p>
+      </div>
+
+      <!-- Signature -->
+      <div style="margin-top:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem">
+        <div style="border-top:2px solid var(--text);padding-top:0.5rem">
+          <p style="font-size:0.85rem;color:var(--text-light)">Firma del Terapeuta / Docente</p>
+        </div>
+        <div style="border-top:2px solid var(--text);padding-top:0.5rem">
+          <p style="font-size:0.85rem;color:var(--text-light)">Firma del Acudiente</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- end container -->
+
+<!-- Footer -->
+<footer>
+  <p class="footer-text">
+    <strong>CreaTuCuento</strong> - Herramienta de biblioterapia y creación de cuentos terapéuticos infantiles
+  </p>
+  <p class="footer-text" style="margin-top:0.5rem;font-size:0.8rem">
+    Diseñado para profesionales de la salud mental y educación | Principios de reestructuración cognitiva y narrativa terapéutica
+  </p>
+</footer>
+
+<script>
+// ===== DATA: METAPHOR MAP =====
+const METAPHOR_MAP = {
+  'tdah': {
+    name: 'TDAH (Déficit de Atención e Hiperactividad)',
+    metaphor: 'Un colibrí que vuela de flor en flor porque su naturaleza le permite ver belleza en todas partes, pero necesita aprender a descansar en una flor cuando es necesario.',
+    animal: 'Colibrí veloz con alas de mil colores',
+    object: 'Péndulo mágico que oscila entre mundos',
+    spectrum: 'Chispa de energía luminosa que ilumina todo a su paso'
+  },
+  'tea': {
+    name: 'TEA (Trastorno del Espectro Autista)',
+    metaphor: 'Un zorro que vive en un bosque donde todos los sonidos tienen colores y los números tienen personalidad. Su forma de ver el mundo es única y especial.',
+    animal: 'Zorro estelar con sentidos mágicos',
+    object: 'Prisma que refracta la realidad de forma única',
+    spectrum: 'Constelación con patrones propios e infinitos'
+  },
+  'ansiedad': {
+    name: 'Ansiedad Generalizada',
+    metaphor: 'Un pequeño ciervo con orejas enormes que escucha demasiado bien todos los sonidos del bosque. Aprende que no todos los sonidos son peligrosos.',
+    animal: 'Ciervo sismógrafo con orejas sensitivas',
+    object: 'Campana de viento que detecta cada brisa',
+    spectrum: 'Eco reverberante que capta vibraciones del entorno'
+  },
+  'depresion-infantil': {
+    name: 'Depresión Infantil',
+    metaphor: 'Un oso pardo que ha olvidado hibernar porque todo le parece gris. Descubre que dentro de su cueva hay colores que nadie más puede ver.',
+    animal: 'Oso que guarda un arcoíris en su corazón',
+    object: 'Farol encantado que ilumina la penumbra',
+    spectrum: 'Nube gris que contiene lluvia de estrellas doradas'
+  },
+  'oposicion': {
+    name: 'Trastorno Negativista Desafiante',
+    metaphor: 'Un pequeño dragón que escupe fuego cuando siente que le quitan su autonomía. Aprende que su fuego puede calentar en vez de quemar.',
+    animal: 'Dragón guardián de su propia libertad',
+    object: 'Yunque mágico que transforma golpes en creaciones',
+    spectrum: 'Llama eterna que busca ser comprendida'
+  },
+  'separacion': {
+    name: 'Ansiedad por Separación',
+    metaphor: 'Un perrito con un hilo invisible que lo conecta con su hogar, sin importar qué tan lejos vaya. El hilo nunca se rompe, solo se estira.',
+    animal: 'Perrito con hilo dorado invisible al hogar',
+    object: 'Brújula que siempre apunta al amor',
+    spectrum: 'Vínculo luminoso indestructible'
+  },
+  'mutismo': {
+    name: 'Mutismo Selectivo',
+    metaphor: 'Un ruiseñor que canta canciones hermosas pero solo cuando está solo o con quienes confía. Su voz es un tesoro que comparte selectivamente.',
+    animal: 'Ruiseñor guardián de melodías secretas',
+    object: 'Libro mágico cuyas páginas hablan en susurros',
+    spectrum: 'Melodía etérea que fluye en espacios seguros'
+  },
+  'tec': {
+    name: 'Trastorno de Estrés Postraumático Infantil',
+    metaphor: 'Un gatito que saltó de un árbol muy alto y ahora mira dos veces antes de trepar. Con paciencia, vuelve a confiar en las ramas.',
+    animal: 'Gatito valiente que reaprende a trepar',
+    object: 'Cristal de memoria que filtra recuerdos dolorosos',
+    spectrum: 'Sombra protectora que evoluciona en luz suave'
+  },
+  ' bipolar-infantil': {
+    name: 'Trastorno Bipolar Infantil',
+    metaphor: 'Un delfín que nada entre dos océanos: uno de tormentas eléctricas y otro de aguas cristalinas. Aprende a navegar ambos con gracia.',
+    animal: 'Delfín que navega dos océanos internos',
+    object: 'Termómetro mágico que equilibra temperaturas',
+    spectrum: 'Dualidad de auroras en equilibrio perfecto'
+  },
+  'tics': {
+    name: 'Trastorno por Tics',
+    metaphor: 'Un conejo que mueve la nariz y las orejas de formas únicas cuando está emocionado. Sus movimientos son bailes que expresan sus sentimientos.',
+    animal: 'Conejo bailarín de expresiones mágicas',
+    object: 'Marioneta de cristal con movimientos propios',
+    spectrum: 'Ritmo cósmico único e irrepetible'
+  },
+  'aprendizaje': {
+    name: 'Trastorno de Aprendizaje',
+    metaphor: 'Un pez que nada de lado mientras todos nadan recto. Descubre que su forma de nadar le permite ver tesoros que otros no pueden encontrar.',
+    animal: 'Pez que nada en direcciones mágicas',
+    object: 'Mapa mágico con rutas invisibles para otros',
+    spectrum: 'Corriente alternativa que revela caminos ocultos'
+  },
+  'alimentacion': {
+    name: 'Trastorno de Alimentación Infantil',
+    metaphor: 'Un pajarito que necesita encontrar las semillas exactas que su cuerpo necesita. Cada pajarito tiene semillas mágicas diferentes.',
+    animal: 'Pájaro buscador de semillas perfectas',
+    object: 'Cáliz mágico que nutre según necesidades únicas',
+    spectrum: 'Energía vital que busca su forma ideal'
+  },
+  'enuresis': {
+    name: 'Enuresis / Encopresis',
+    metaphor: 'Un osito de peluche que a veces se moja cuando sueña demasiado profundo. Su cuerpo está aprendiendo a escuchar las señales del sueño.',
+    animal: 'Osito soñador que aprende señales del cuerpo',
+    object: 'Reloj de arena que enseña ritmos corporales',
+    spectrum: 'Niebla que se disipa con la luz del entendimiento'
+  },
+  'sueño': {
+    name: 'Trastornos del Sueño',
+    metaphor: 'Un búho que mira las estrellas en vez de dormir porque tiene demasiadas preguntas. Aprende que las respuestas también llegan en sueños.',
+    animal: 'Búho filósofo de la noche estrellada',
+    object: 'Lámpara mágica que invita al descanso',
+    spectrum: 'Guardián del umbral entre mundos'
+  },
+  'adherencia': {
+    name: 'Incumplimiento Terapéutico / Adherencia',
+    metaphor: 'Un caballero que debe tomar una poción mágica todos los días para mantener su escudo protector. A veces olvida, pero sus amigos le recuerdan.',
+    animal: 'Caballero con poción de protección mágica',
+    object: 'Amuleto que brilla al seguir el ritual',
+    spectrum: 'Tejido protector que se fortalece cada día'
+  },
+  'duelo': {
+    name: 'Duelo Infantil',
+    metaphor: 'Un cachorro que extraña a su compañero de juegos que se fue al cielo. Descubre que el amor no desaparece, se transforma en estrellas.',
+    animal: 'Cachorro que mira al cielo con amor eterno',
+    object: 'Estrella fugaz que guarda recuerdos vivos',
+    spectrum: 'Puente de luz que conecta corazones'
+  },
+  'abuso': {
+    name: 'Secuelas de Abuso',
+    metaphor: 'Un gatito que fue tocado sin permiso y ahora necesita reconstruir su casa segura. Con ayuda, vuelve a ronronear y confiar.',
+    animal: 'Gatito constructor de su propio santuario',
+    object: 'Fortaleza mágica con puerta de consentimiento',
+    spectrum: 'Resplandor de sanación que crece desde adentro'
+  },
+  'adopcion': {
+    name: 'Proceso de Adopción',
+    metaphor: 'Una semilla que fue plantada en un jardín nuevo. Aunque vino de otro lugar, crece fuerte y hermosa en su tierra actual.',
+    animal: 'Semilla de dos jardines, árbol único',
+    object: 'Puente mágico entre dos mundos de amor',
+    spectrum: 'Raíces invisibles que nutren desde lejos'
+  },
+  'divorcio': {
+    name: 'Divorcio Parental',
+    metaphor: 'Un pajarito con dos nidos en diferentes árboles. Vuela entre ambos, llevando amor de uno a otro. Ningún nido es mejor, ambos son suyos.',
+    animal: 'Pájaro mensajero de amor entre dos nidos',
+    object: 'Reloj mágico que marca tiempo en dos hogares',
+    spectrum: 'Doble haz de luz que ilumina por igual'
+  },
+  'fobias': {
+    name: 'Fobias Específicas Infantiles',
+    metaphor: 'Un conejo que tiene miedo a las arañas hasta que conoce a una tejedora que hace redes para salvar a los insectos. El miedo se transforma en amistad.',
+    animal: 'Conejo que se hace amigo de sus miedos',
+    object: 'Lentes mágicos que revelan la belleza oculta',
+    spectrum: 'Sombra que se disuelve en comprensión'
+  },
+  'baja-autoestima': {
+    name: 'Baja Autoestima',
+    metaphor: 'Un elefantito que piensa que es muy pequeño porque no puede hacer lo que hacen los grandes. Descubre que su tamaño es perfecto para abrazar corazones.',
+    animal: 'Elefante perfecto para abrazar corazones',
+    object: 'Espejo mágico que refleja belleza interior',
+    spectrum: 'Luz tenue que brilla intensamente al ser vista'
+  },
+  'agresividad': {
+    name: 'Agresividad Infantil',
+    metaphor: 'Un torito que carga cuando siente frustración. Aprende a usar su fuerza para construir en vez de derribar, convirtiéndose en protector.',
+    animal: 'Toro constructor con fuerza de montaña',
+    object: 'Martillo mágico que construye puentes',
+    spectrum: 'Fuerza bruta transformada en energía protectora'
+  },
+  'social': {
+    name: 'Dificultades de Relación Social',
+    metaphor: 'Un erizo que a veces pincha sin querer cuando otros se acercan. Aprende que puede acercarse despacio y que su abrazo es especial.',
+    animal: 'Erizo que aprende abrazos suaves',
+    object: 'Guante mágico para tocar sin pinchar',
+    spectrum: 'Espinas que se transforman en pétalos'
+  },
+  'obsesivo': {
+    name: 'Ritualidades / Pensamientos Obsesivos',
+    metaphor: 'Un ardilla que organiza sus bellotas en patrones perfectos. Descubre que a veces el desorden también tiene belleza y magia.',
+    animal: 'Ardilla que encuentra belleza en el desorden',
+    object: 'Caja de música que acepta ritmos nuevos',
+    spectrum: 'Patrón que se abre a la improvisación'
+  }
+};
+
+// ===== STATE =====
+let selectedValues = [];
+let selectedState = 'humano';
+let currentStory = '';
+let secondaryCharCount = 1;
+
+// ===== UTILS =====
+function $(id) { return document.getElementById(id); }
+
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  const idx = ['hero','formSection','transformSection','flowSection','storySection','reportSection'].indexOf(id);
+  if (idx >= 0 && document.querySelectorAll('.nav-links button')[idx]) {
+    document.querySelectorAll('.nav-links button')[idx].classList.add('active');
+  }
+}
+
+// ===== ACCORDION =====
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.accordion-body').forEach(b => {
+    b.classList.remove('open');
+    b.style.maxHeight = '0';
+  });
+  document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+  if (!isOpen) {
+    body.classList.add('open');
+    body.style.maxHeight = '5000px';
+    header.classList.add('active');
+  }
+}
+
+// ===== DISORDERS CHECKBOXES =====
+function renderDisorders() {
+  const grid = $('disordersGrid');
+  grid.innerHTML = Object.entries(METAPHOR_MAP).map(([key, data]) => `
+    <div class="checkbox-item">
+      <input type="checkbox" id="dis-${key}" value="${key}">
+      <div class="checkbox-content">
+        <div class="checkbox-title">
+          ${data.name}
+          <span class="tooltip-trigger" onmouseenter="showTooltip(this,'${key}')" onmouseleave="hideTooltip(this)">ⓘ
+            <div class="tooltip-box" id="tip-${key}"></div>
+          </span>
+        </div>
+        <div class="checkbox-desc">${data.metaphor.substring(0, 80)}...</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function showTooltip(el, key) {
+  const tip = el.querySelector('.tooltip-box');
+  const data = METAPHOR_MAP[key];
+  if (data) {
+    tip.innerHTML = `<strong>Metáfora mágica:</strong><br>${data.metaphor}<br><br><strong>Como animal:</strong> ${data.animal}<br><strong>Como objeto:</strong> ${data.object}<br><strong>Como espectro:</strong> ${data.spectrum}`;
+    tip.classList.add('show');
+  }
+}
+
+function hideTooltip(el) {
+  el.querySelector('.tooltip-box').classList.remove('show');
+}
+
+// ===== SECONDARY CHARACTERS =====
+function addSecondaryChar() {
+  if (secondaryCharCount >= 3) return;
+  secondaryCharCount++;
+  const container = $('secondaryCharsContainer');
+  const card = document.createElement('div');
+  card.className = 'char-card';
+  card.setAttribute('data-index', secondaryCharCount);
+  card.innerHTML = `
+    <div class="char-header">
+      <span class="char-title">Personaje Secundario ${secondaryCharCount}</span>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" class="sec-name" placeholder="Ej: Luna">
+      </div>
+      <div class="form-group">
+        <label>Relación con el protagonista</label>
+        <select class="sec-relation">
+          <option value="">Selecciona...</option>
+          <option value="amigo">Amigo/a</option>
+          <option value="hermano">Hermano/a</option>
+          <option value="mascota">Mascota</option>
+          <option value="maestro">Maestro/a</option>
+          <option value="abuelo">Abuelo/a</option>
+          <option value="vecino">Vecino/a</option>
+          <option value="companero">Compañero/a de aventuras</option>
+          <option value="guia">Guía espiritual</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Tipo de Apoyo</label>
+      <select class="sec-support">
+        <option value="">Selecciona el tipo de apoyo...</option>
+        <option value="emocional">Apoyo Emocional - Escucha y consuela al protagonista</option>
+        <option value="motivacional">Apoyo Motivacional - Anima a seguir adelante</option>
+        <option value="inteligencia">Apoyo Inteligente - Ayuda a resolver problemas</option>
+        <option value="protector">Apoyo Protector - Cuida y defiende al protagonista</option>
+        <option value="comico">Apoyo Cómico - Alivia la tensión con humor</option>
+        <option value="sabiduria">Apoyo de Sabiduría - Comparte consejos y enseñanzas</option>
+        <option value="fuerza">Apoyo de Fuerza - Proporciona coraje y valentía</option>
+        <option value="creativo">Apoyo Creativo - Inspira nuevas ideas y soluciones</option>
+        <option value="leal">Apoyo de Lealtad - Permanece siempre a su lado</option>
+        <option value="practico">Apoyo Práctico - Ayuda con herramientas o recursos</option>
+      </select>
+    </div>
+  `;
+  container.appendChild(card);
+}
+
+function removeSecondaryChar() {
+  if (secondaryCharCount <= 1) return;
+  const container = $('secondaryCharsContainer');
+  container.removeChild(container.lastElementChild);
+  secondaryCharCount--;
+}
+
+// ===== VALUE TOGGLE =====
+function toggleValue(card) {
+  const val = card.dataset.value;
+  if (card.classList.contains('selected')) {
+    card.classList.remove('selected');
+    selectedValues = selectedValues.filter(v => v !== val);
+  } else if (selectedValues.length < 3) {
+    card.classList.add('selected');
+    selectedValues.push(val);
+  }
+}
+
+// ===== TRANSFORMATION STATES =====
+const STATE_DATA = {
+  humano: {
+    name: 'Humano',
+    desc: 'El personaje mantiene su forma humana. La historia se desarrolla desde una perspectiva humana con emociones y pensamientos que los niños pueden identificar fácilmente. Los desafíos se enfrentan con herramientas humanas como el diálogo, el pensamiento creativo y el apoyo de otros.',
+    example: '"María caminó por el bosque con su linterna, sintiendo el crujir de las hojas bajo sus pies. Su corazón latía rápido, pero respiró hondo y recordó lo que su abuela le había enseñado: 'El coraje no es no tener miedo, es seguir adelante aunque lo sientas.'"'
+  },
+  animal: {
+    name: 'Animal',
+    desc: 'El personaje se transforma en un animal mágico que representa sus fortalezas y desafíos internos. Como animal, puede hacer cosas imposibles para los humanos: volar, nadar en aguas profundas, oler emociones. Esta forma le permite enfrentar el problema desde una nueva perspectiva instintiva.',
+    example: '"El zorro plateado olfateó el miedo en el aire. Sus cuatro patas le permitieron correr por senderos imposibles, y su cola brillante iluminaba la oscuridad del bosque encantado. Ahora entendía lo que su corazón le gritaba."'
+  },
+  'objeto-inerte': {
+    name: 'Objeto Inerte',
+    desc: 'El personaje se convierte en un objeto con conciencia mágica: una lámpara, una piedra, un reloj. Desde esta perspectiva inmóvil, observa el mundo con paciencia infinita y descubre que la quietud tiene un poder propio. Aprende a escuchar sin hablar y a ser fuerte sin moverse.',
+    example: '"Como piedra del río, sintió cada gota que pasaba sobre él. No podía correr ni esconderse, pero descubrió que su simple presencia calmaba las aguas turbulentas. Los viajeros se sentaban sobre él y depositaban sus preocupaciones."'
+  },
+  'objeto-2d': {
+    name: 'Objeto Bidimensional',
+    desc: 'El personaje entra al mundo de los dibujos y pinturas. Ahora existe en lienzos, páginas de libros y murales. Puede saltar entre cuadros, cambiar de estilo artístico, y comunicarse a través de colores y formas. La bidimensionalidad le enseña que la profundidad no siempre se mide en dimensiones.',
+    example: '"Saltó del cuadro del bosque al paisaje marino con un trazo de pincel mágico. En el mundo 2D, sus emociones se veían como colores: el miedo era gris, la esperanza amarilla, y el amor un rosa brillante que se expandía por toda la pintura."'
+  },
+  espectro: {
+    name: 'Espectro',
+    desc: 'El personaje adquiere una forma etérea fantasmal con poderes especiales: atravesar paredes, volar, volverse invisible. Como espectro, aprende que lo que parece una limitación (no tener cuerpo físico) es en realidad una liberación. Puede estar donde más se le necesita sin restricciones.',
+    example: '"Flotó sobre el jardín como un suspiro de luna. Sin peso, sin miedo a caer, pudo atravesar la ventana de la habitación donde su hermana lloraba y envolverla con su calidez invisible. Por primera vez, ser diferente se sintió como un superpoder."'
+  }
+};
+
+function selectState(card) {
+  document.querySelectorAll('.state-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  selectedState = card.dataset.state;
+  const data = STATE_DATA[selectedState];
+  $('transformPreview').querySelector('h4').innerHTML = `🔄 Estado Actual: ${data.name}`;
+  $('transformDesc').textContent = data.desc;
+  $('transformExample').textContent = data.example;
+}
+
+// ===== FLOWCHART =====
+function activateFlowStep(step) {
+  document.querySelectorAll('.flow-step').forEach(s => s.classList.remove('active'));
+  step.classList.add('active');
+}
+
+// ===== STORY GENERATOR =====
+function generateStory() {
+  // Validate
+  const sName = $('studentName').value.trim();
+  const sLastName = $('studentLastName').value.trim();
+  const sDate = $('taskDate').value;
+  const charName = $('mainCharName').value.trim();
+
+  if (!sName || !sLastName || !sDate || !charName) {
+    alert('Por favor completa los campos obligatorios: Nombre y apellidos del estudiante, fecha, y nombre del personaje principal.');
+    toggleAccordion(document.querySelectorAll('.accordion-header')[0]);
+    return;
+  }
+
+  // Show loading
+  $('loadingOverlay').classList.add('active');
+  updateProgress(10);
+
+  // Collect data
+  const charAge = $('mainCharAge').value;
+  const charGender = $('mainCharGender').value;
+  const charDesc = $('mainCharDesc').value;
+
+  // Secondary chars
+  const secChars = [];
+  document.querySelectorAll('.char-card').forEach(card => {
+    const name = card.querySelector('.sec-name').value.trim();
+    const relation = card.querySelector('.sec-relation').value;
+    const support = card.querySelector('.sec-support').value;
+    if (name) secChars.push({ name, relation, support });
+  });
+
+  // Disorders
+  const selectedDisorders = [];
+  document.querySelectorAll('#disordersGrid input:checked').forEach(cb => {
+    selectedDisorders.push(cb.value);
+  });
+
+  // Values
+  const targetAge = $('targetAge').value;
+  const genre = $('storyGenre').value;
+  const duration = $('storyDuration').value;
+  const tone = $('storyTone').value;
+  const goal = $('therapeuticGoal').value;
+
+  updateProgress(30);
+
+  // Build story
+  const story = buildStory({
+    sName, sLastName, sDate, charName, charAge, charGender, charDesc,
+    secChars, selectedDisorders, selectedValues, targetAge, genre,
+    duration, tone, goal, selectedState
+  });
+
+  currentStory = story;
+
+  updateProgress(80);
+
+  // Render
+  $('storyTitle').textContent = generateTitle(charName, selectedValues, genre);
+  $('storyMeta').textContent = `Generado para ${sName} ${sLastName} | ${sDate} | Estado: ${STATE_DATA[selectedState].name}`;
+  $('storyContent').innerHTML = story;
+  $('storySection').style.display = 'block';
+
+  updateProgress(100);
+
+  setTimeout(() => {
+    $('loadingOverlay').classList.remove('active');
+    $('progressBar').style.width = '0%';
+    scrollToSection('storySection');
+  }, 500);
+}
+
+function updateProgress(pct) {
+  $('progressBar').style.width = pct + '%';
+}
+
+function generateTitle(charName, values, genre) {
+  const valueNames = {
+    empatia: 'el Corazón Compasivo',
+    responsabilidad: 'la Misión Especial',
+    solidaridad: 'los Amigos Valientes',
+    tolerancia: 'el Mundo de Colores',
+    respeto: 'el Valor de Escuchar',
+    honestidad: 'la Verdad Mágica',
+    perseverancia: 'la Semilla que Nunca se Rindió',
+    creatividad: 'el Pincel de los Sueños',
+    coraje: 'la Luz en la Oscuridad',
+    amistad: 'el Puente de Confianza',
+    humildad: 'la Raíz Sabia',
+    generosidad: 'el Árbol de los Regalos'
+  };
+  const v = values.length > 0 ? valueNames[values[0]] || 'la Aventura Mágica' : 'la Aventura Mágica';
+  const gTitles = {
+    aventura: `${charName} y ${v}`,
+    fantasia: `El Mundo Mágico de ${charName}`,
+    fabula: `${charName}: Una Historia de ${v}`,
+    viaje: `El Viaje de ${charName} hacia ${v}`,
+    misterio: `El Secreto de ${charName} y ${v}`,
+    'cuento-hadas': `${charName} y el Reino de ${v}`
+  };
+  return gTitles[genre] || `${charName} y ${v}`;
+}
+
+function buildStory(data) {
+  const { charName, secChars, selectedDisorders, selectedValues, selectedState, charGender } = data;
+
+  // Get metaphor data
+  const disorders = selectedDisorders.length > 0 ? selectedDisorders : ['ansiedad'];
+  const mainDisorder = METAPHOR_MAP[disorders[0]];
+  const metaphor = mainDisorder ? mainDisorder.metaphor : 'Un ser mágico con habilidades especiales';
+
+  // Get secondary char info
+  let secCharText = '';
+  if (secChars.length > 0) {
+    secCharText = secChars.map((sc, i) => {
+      const supportLabels = {
+        emocional: 'escucha y consuela', motivacional: 'anima a seguir adelante',
+        inteligencia: 'ayuda a resolver problemas', protector: 'cuida y defiende',
+        comico: 'alivia la tensión con humor', sabiduria: 'comparte consejos sabios',
+        fuerza: 'proporciona coraje', creativo: 'inspira nuevas ideas',
+        leal: 'permanece siempre a su lado', practico: 'ayuda con recursos útiles'
+      };
+      return `${sc.name} (${sc.relation}), quien le ${supportLabels[sc.support] || 'apoya en todo momento'}`;
+    }).join(', y ');
+  }
+
+  // Get state transformation description
+  const stateData = STATE_DATA[selectedState];
+
+  // Get value descriptions
+  const valueLabels = {
+    empatia: 'ponerse en el lugar del otro', responsabilidad: 'cumplir con sus deberes',
+    solidaridad: 'ayudar a quien lo necesita', tolerancia: 'aceptar las diferencias',
+    respeto: 'valorar a los demás', honestidad: 'decir siempre la verdad',
+    perseverancia: 'no rendirse nunca', creatividad: 'encontrar soluciones nuevas',
+    coraje: 'enfrentar sus miedos', amistad: 'ser un buen compañero',
+    humildad: 'reconocer que siempre puede aprender', generosidad: 'compartir lo que tiene'
+  };
+  const mainValue = selectedValues.length > 0 ? valueLabels[selectedValues[0]] : 'ser valiente';
+
+  // Generate story HTML
+  let story = '';
+
+  // SCENE 1
+  story += `<h4 class="story-section-title">Capítulo 1: El Mundo de ${charName}</h4>`;
+  story += `<p>Había una vez ${charGender === 'femenino' ? 'una niña llamada' : charGender === 'masculino' ? 'un niño llamado' : 'un ser mágico llamado'} <strong>${charName}</strong>, `;
+  story += `que vivía en un pequeño pueblo rodeado de colinas verdes y un bosque lleno de secretos. `;
+  story += `${charName} no era como los demás: ${charGender === 'femenino' ? 'ella' : charGender === 'masculino' ? 'él' : ''} tenía una cualidad especial que la hacía única.</p>`;
+
+  story += `<p>${metaphor.split('.')[0]}.</p>`;
+
+  if (secChars.length > 0) {
+    story += `<p>Afortunadamente, ${charName} no estaba solo. Contaba con la compañía de ${secCharText}. Juntos formaban un equipo inigualable.</p>`;
+  }
+
+  // SCENE 2
+  story += `<h4 class="story-section-title">Capítulo 2: El Desafío Llega</h4>`;
+  story += `<p>Un día, algo cambió en el pueblo. Una sombra misteriosa comenzó a extenderse sobre el bosque, `;
+  story += `y los aldeanos empezaron a sentirse preocupados. ${charName} sintió que su corazón se aceleraba, `;
+  story += `y por un momento quiso esconderse. Pero entonces recordó las palabras de su maestra: `;
+  story += `"Los héroes no son los que no sienten miedo, sino los que deciden actuar a pesar de él."</p>`;
+
+  // SCENE 3
+  story += `<h4 class="story-section-title">Capítulo 3: La Transformación Mágica</h4>`;
+  story += `<p>Fue entonces cuando ocurrió lo increíble. ${charName} comenzó a brillar con una luz suave y dorada, `;
+  story += `y su cuerpo se transformó. ${stateData.desc.split('.')[0]}.</p>`;
+
+  if (selectedState === 'animal') {
+    story += `<p>Ahora ${charName} podía moverse con la agilidad de una criatura del bosque, `;
+    story += `sentir con sus nuevos sentidos mágicos, y ver el mundo desde una perspectiva completamente nueva.</p>`;
+  } else if (selectedState === 'objeto-inerte') {
+    story += `<p>Aunque no podía moverse como antes, descubrió que su nueva forma le permitía `;
+    story += `observar con una paciencia infinita y entender cosas que antes pasaban desapercibidas.</p>`;
+  } else if (selectedState === 'objeto-2d') {
+    story += `<p>El mundo se convirtió en un lienzo lleno de colores y posibilidades. `;
+    story += `${charName} podía deslizarse entre las páginas de los libros y saltar de cuadro en cuadro.</p>`;
+  } else if (selectedState === 'espectro') {
+    story += `<p>Sin el peso de un cuerpo físico, ${charName} flotaba libremente, `;
+    story += `pudiendo estar donde más se le necesitaba y ayudar de maneras que antes eran imposibles.</p>`;
+  }
+
+  // Add disorder metaphors as challenges
+  if (disorders.length > 0) {
+    story += `<h4 class="story-section-title">Capítulo 4: Las Pruebas del Bosque</h4>`;
+    story += `<p>${charName} debía atravesar el Bosque de las Emociones, donde cada árbol representaba un sentimiento diferente. `;
+
+    disorders.forEach((d, i) => {
+      const dm = METAPHOR_MAP[d];
+      if (dm) {
+        const challenges = [
+          `El Árbol del Miedo tenía ramas que se movían como serpientes, pero ${charName} recordó que ${dm.metaphor.toLowerCase().split('.')[0]} y logró pasar.`,
+          `El Puente de la Tristeza crujía bajo sus pies, pero ${charName} supo que ${dm.metaphor.toLowerCase().split('.')[0]}.`,
+          `La Cueva del Enfado lanzaba chispas, pero ${charName} entendió que ${dm.metaphor.toLowerCase().split('.')[0]}.`
+        ];
+        story += `<p>${challenges[i % challenges.length]}</p>`;
+      }
+    });
+  }
+
+  // Secondary chars help
+  if (secChars.length > 0) {
+    story += `<h4 class="story-section-title">Capítulo 5: La Ayuda Inesperada</h4>`;
+    secChars.forEach(sc => {
+      const supportDesc = {
+        emocional: `${sc.name} se sentó junto a ${charName} y simplemente escuchó. A veces, las palabras no son necesarias; solo el acompañamiento basta.`,
+        motivacional: `${sc.name} recordó a ${charName} todas las veces que había superado obstáculos. "Puedes hacerlo", dijo con una sonrisa.`,
+        inteligencia: `${sc.name} observó el problema desde diferentes ángulos hasta encontrar una solución brillante que nadie más había visto.`,
+        protector: `${sc.name} se interpuso entre ${charName} y el peligro, creando un escudo de amor inquebrantable.`,
+        comico: `${sc.name} contó un chiste tan divertido que ${charName} olvidó por un momento su miedo. La risa es magia, después de todo.`,
+        sabiduria: `${sc.name} compartió una enseñanza antigua: "Las tormentas no duran para siempre, pero las lecciones que traen sí."`,
+        fuerza: `${sc.name} tomó la mano de ${charName} y le transmitió una fuerza que parecía imposible. Juntos eran invencibles.`,
+        creativo: `${sc.name} propuso una idea tan original que cambió todo. A veces la solución está en ver el problema de otra forma.`,
+        leal: `${sc.name} no se movió de su lado, ni un solo instante. La lealtad es el regalo más valioso en tiempos difíciles.`,
+        practico: `${sc.name} preparó todo lo necesario: comida, herramientas, y un mapa. Con organización, todo es posible.`
+      };
+      story += `<p>${supportDesc[sc.support] || `${sc.name} estuvo ahí para ${charName}, apoyando con todo su corazón.`}</p>`;
+    });
+  }
+
+  // SCENE 5 - Resolution
+  story += `<h4 class="story-section-title">Capítulo 6: El Triunfo del Corazón</h4>`;
+  story += `<p>Al final, ${charName} comprendió que su diferencia no era una debilidad, sino su mayor fortaleza. `;
+  story += `Lo que lo hacía especial también lo hacía poderoso. Con esta comprensión, enfrentó la sombra del bosque `;
+  story += `y descubrió que no era un monstruo, sino solo miedo disfrazado.</p>`;
+
+  story += `<p>${charName} aprendió algo que nunca olvidaría: la importancia de <strong>${mainValue}</strong>. `;
+  story += `Esto no solo salvó al bosque, sino que transformó a ${charName} en una versión mejor de sí mismo.</p>`;
+
+  // Return to original form if transformed
+  if (selectedState !== 'humano') {
+    story += `<p>Con su misión cumplida, la magia se desvaneció lentamente y ${charName} volvió a su forma original. `;
+    story += `Pero algo había cambiado para siempre: ahora sabía que dentro de él existía un poder mágico que podía invocar cuando lo necesitara.</p>`;
+  }
+
+  story += `<p>Desde ese día, ${charName} caminó por el mundo con la cabeza en alto, sabiendo que era especial, `;
+  story += `amado y capaz de grandes cosas. Y cada vez que alguien del pueblo sentía miedo o tristeza, `;
+  story += `${charName} estaba ahí para recordarle que todos tenemos magia dentro de nosotros, solo necesitamos creer en ella.</p>`;
+
+  story += `<p style="text-align:center;margin-top:2rem;font-style:italic;color:var(--primary);font-weight:600">— FIN —</p>`;
+
+  return story;
+}
+
+
+// ===== PDF GENERATOR =====
+function generatePDF() {
+  if (!currentStory) {
+    alert('Primero debes generar un cuento. Haz clic en "Generar Cuento Magico" en el formulario.');
+    scrollToSection('formSection');
+    return;
+  }
+
+  document.getElementById('loadingOverlay').classList.add('active');
+  updateProgress(15);
+
+  fillPDFData();
+  updateProgress(50);
+
+  var element = document.getElementById('pdfContent');
+  var opt = {
+    margin: [10, 10, 10, 10],
+    filename: 'Reporte_CreaTuCuento_' + document.getElementById('studentName').value + '_' + document.getElementById('studentLastName').value + '.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, logging: false },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  updateProgress(70);
+
+  html2pdf().set(opt).from(element).save().then(function() {
+    updateProgress(100);
+    setTimeout(function() {
+      document.getElementById('loadingOverlay').classList.remove('active');
+      document.getElementById('progressBar').style.width = '0%';
+      alert('PDF generado exitosamente. Revisa tu carpeta de descargas.');
+    }, 300);
+  }).catch(function(err) {
+    document.getElementById('loadingOverlay').classList.remove('active');
+    console.error(err);
+    alert('Hubo un error generando el PDF. Intenta de nuevo.');
+  });
+}
+
+function fillPDFData() {
+  document.getElementById('pdfStudentName').textContent = document.getElementById('studentName').value || '-';
+  document.getElementById('pdfStudentLastName').textContent = document.getElementById('studentLastName').value || '-';
+  document.getElementById('pdfDate').textContent = document.getElementById('taskDate').value || '-';
+  document.getElementById('pdfStudentInfo').textContent = 'Estudiante: ' + (document.getElementById('studentName').value || '') + ' ' + (document.getElementById('studentLastName').value || '') + ' | Fecha: ' + (document.getElementById('taskDate').value || '');
+
+  document.getElementById('pdfCharName').textContent = document.getElementById('mainCharName').value || '-';
+  document.getElementById('pdfCharAge').textContent = document.getElementById('mainCharAge').value || '-';
+  document.getElementById('pdfCharGender').textContent = document.getElementById('mainCharGender').value || '-';
+  document.getElementById('pdfCharDesc').textContent = document.getElementById('mainCharDesc').value || '-';
+
+  var secContainer = document.getElementById('pdfSecondaryChars');
+  secContainer.innerHTML = '';
+  var secCards = document.querySelectorAll('.char-card');
+  var hasSecondary = false;
+  var relationLabels = { amigo: 'Amigo/a', hermano: 'Hermano/a', mascota: 'Mascota', maestro: 'Maestro/a', abuelo: 'Abuelo/a', vecino: 'Vecino/a', companero: 'Companero/a de aventuras', guia: 'Guia espiritual' };
+  var supportLabels = { emocional: 'Apoyo Emocional', motivacional: 'Apoyo Motivacional', inteligencia: 'Apoyo Inteligente', protector: 'Apoyo Protector', comico: 'Apoyo Comico', sabiduria: 'Apoyo de Sabiduria', fuerza: 'Apoyo de Fuerza', creativo: 'Apoyo Creativo', leal: 'Apoyo de Lealtad', practico: 'Apoyo Practico' };
+  secCards.forEach(function(card) {
+    var name = card.querySelector('.sec-name').value.trim();
+    var relation = card.querySelector('.sec-relation').value;
+    var support = card.querySelector('.sec-support').value;
+    if (name) {
+      hasSecondary = true;
+      secContainer.innerHTML += '<p><strong>' + name + '</strong> (' + (relationLabels[relation] || relation) + ') - ' + (supportLabels[support] || support) + '</p>';
+    }
+  });
+  if (!hasSecondary) secContainer.innerHTML = '<p style="color:var(--text-light)">No se registraron personajes secundarios.</p>';
+
+  document.getElementById('pdfFamilyContext').textContent = document.getElementById('familyContext').value || '-';
+  document.getElementById('pdfSchoolContext').textContent = document.getElementById('schoolContext').value || '-';
+  document.getElementById('pdfMedical').textContent = document.getElementById('medicalHistory').value || '-';
+
+  document.getElementById('pdfAttitudeHome').textContent = document.getElementById('attitudeHome').value || '-';
+  document.getElementById('pdfAttitudeSchool').textContent = document.getElementById('attitudeSchool').value || '-';
+  document.getElementById('pdfAttitudePeers').textContent = document.getElementById('attitudePeers').value || '-';
+
+  document.getElementById('pdfTalents').textContent = document.getElementById('talents').value || '-';
+  document.getElementById('pdfInterests').textContent = document.getElementById('interests').value || '-';
+  var lsLabels = { visual: 'Visual (aprende viendo)', auditivo: 'Auditivo (aprende escuchando)', kinestesico: 'Kinestesico (aprende haciendo)', lectoescritura: 'Lecto-escritura (aprende leyendo)', mixto: 'Mixto' };
+  document.getElementById('pdfLearningStyle').textContent = lsLabels[document.getElementById('learningStyle').value] || '-';
+
+  document.getElementById('pdfSocialSkills').textContent = document.getElementById('socialSkills').value || '-';
+  var commLabels = { verbal: 'Verbal (habla mucho)', 'no-verbal': 'No verbal (gestos, dibujos)', mixto: 'Mixto', repetitivo: 'Repetitivo (ecolalia)', selectivo: 'Selectivo (habla con pocos)' };
+  document.getElementById('pdfCommunication').textContent = commLabels[document.getElementById('communication').value] || '-';
+  document.getElementById('pdfEmotionalReg').textContent = document.getElementById('emotionalRegulation').value || '-';
+
+  var disordersDiv = document.getElementById('pdfDisorders');
+  var selectedDisorders = document.querySelectorAll('#disordersGrid input:checked');
+  if (selectedDisorders.length === 0) {
+    disordersDiv.innerHTML = '<p style="color:var(--text-light)">No se seleccionaron condiciones.</p>';
+  } else {
+    var tableHtml = '<table class="pdf-table"><tr><th>Condicion</th><th>Metafora Magica</th></tr>';
+    selectedDisorders.forEach(function(cb) {
+      var d = METAPHOR_MAP[cb.value];
+      tableHtml += '<tr><td>' + (d ? d.name : cb.value) + '</td><td>' + (d ? d.metaphor : '-') + '</td></tr>';
+    });
+    tableHtml += '</table>';
+    disordersDiv.innerHTML = tableHtml;
+  }
+
+  var ageLabels = { '3-5': '3-5 anos (Preescolar)', '6-8': '6-8 anos (Primaria baja)', '9-12': '9-12 anos (Primaria alta)' };
+  var genreLabels = { aventura: 'Aventura', fantasia: 'Fantasia', fabula: 'Fabula', viaje: 'Viaje de descubrimiento', misterio: 'Misterio', 'cuento-hadas': 'Cuento de hadas moderno' };
+  var durLabels = { corta: 'Corta (5-10 minutos)', media: 'Media (10-15 minutos)', larga: 'Larga (15-20 minutos)' };
+  var toneLabels = { esperanzador: 'Esperanzador y calido', divertido: 'Divertido y jugueton', tranquilo: 'Tranquilo y reflexivo', valiente: 'Valiente y motivador' };
+  var valLabels = { empatia: 'Empatia', responsabilidad: 'Responsabilidad', solidaridad: 'Solidaridad', tolerancia: 'Tolerancia', respeto: 'Respeto', honestidad: 'Honestidad', perseverancia: 'Perseverancia', creatividad: 'Creatividad', coraje: 'Coraje', amistad: 'Amistad', humildad: 'Humildad', generosidad: 'Generosidad' };
+
+  document.getElementById('pdfTargetAge').textContent = ageLabels[document.getElementById('targetAge').value] || '-';
+  document.getElementById('pdfGenre').textContent = genreLabels[document.getElementById('storyGenre').value] || '-';
+  document.getElementById('pdfDuration').textContent = durLabels[document.getElementById('storyDuration').value] || '-';
+  document.getElementById('pdfTone').textContent = toneLabels[document.getElementById('storyTone').value] || '-';
+  document.getElementById('pdfValues').textContent = selectedValues.map(function(v) { return valLabels[v]; }).join(', ') || '-';
+  document.getElementById('pdfGoal').textContent = document.getElementById('therapeuticGoal').value || '-';
+
+  document.getElementById('pdfTransformState').textContent = STATE_DATA[selectedState].name;
+  document.getElementById('pdfTransformDesc').textContent = STATE_DATA[selectedState].desc;
+
+  document.getElementById('pdfStoryTitle').textContent = document.getElementById('storyTitle').textContent;
+  document.getElementById('pdfStoryContent').innerHTML = currentStory;
+}
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', function() {
+  renderDisorders();
+
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('taskDate').value = today;
+
+  window.addEventListener('scroll', function() {
+    var sections = ['hero', 'formSection', 'transformSection', 'flowSection', 'storySection', 'reportSection'];
+    var navBtns = document.querySelectorAll('.nav-links button');
+    sections.forEach(function(sec, i) {
+      var el = document.getElementById(sec);
+      if (el) {
+        var rect = el.getBoundingClientRect();
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          navBtns.forEach(function(b) { b.classList.remove('active'); });
+          if (navBtns[i]) navBtns[i].classList.add('active');
+        }
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
