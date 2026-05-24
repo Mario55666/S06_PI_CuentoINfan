@@ -303,12 +303,16 @@ textarea {
   cursor: pointer;
   transition: var(--transition);
   position: relative;
+  font-weight: normal;
+  margin-bottom: 0;
 }
 
 .checkbox-item:hover {
   border-color: var(--primary-light);
-  background: rgba(108,92,231,0.03);
+  background: rgba(108,92,231,0.05);
 }
+
+/* Hover consolidated above */
 
 .checkbox-item input[type="checkbox"] {
   width: 18px;
@@ -720,11 +724,25 @@ textarea {
   visibility: hidden;
   transition: all 0.2s;
   pointer-events: none;
+  max-width: 90vw;
 }
 
 .tooltip-box.show {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
+}
+
+.tooltip-box.right-edge {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.tooltip-box.right-edge::after {
+  left: auto;
+  right: 20px;
+  transform: none;
 }
 
 .tooltip-box::after {
@@ -920,7 +938,6 @@ footer {
   .story-book { box-shadow: none; border: 1px solid #ddd; }
 }
 </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -965,7 +982,7 @@ footer {
 <!-- Form Section -->
 <section class="section" id="formSection">
   <h2 class="section-title">Configuración del Cuento</h2>
-  <p class="section-subtitle">Completa los datos para generar un cuento personalizado terapéutico</p>
+  <p class="section-subtitle">Completa los datos para generar un cuento personalizado terapéutico. Los ejemplos se basan en casos clínicos documentados en la literatura de referencia.</p>
 
   <div class="accordion" id="mainAccordion">
 
@@ -986,11 +1003,11 @@ footer {
           <div class="form-row">
             <div class="form-group">
               <label for="studentName">Nombre(s) del Estudiante *</label>
-              <input type="text" id="studentName" placeholder="Ej: María Fernanda" required>
+              <input type="text" id="studentName" placeholder="Ej: Bart (caso: niño con TDAH e inseguridad)" required>
             </div>
             <div class="form-group">
               <label for="studentLastName">Apellido(s) del Estudiante *</label>
-              <input type="text" id="studentLastName" placeholder="Ej: López García" required>
+              <input type="text" id="studentLastName" placeholder="Ej: Simpson (ref.: trastorno conductual)" required>
             </div>
           </div>
           <div class="form-group" style="max-width:300px">
@@ -1017,12 +1034,12 @@ footer {
         <div class="accordion-content">
           <div class="form-group">
             <label for="mainCharName">Nombre del Personaje Principal *</label>
-            <input type="text" id="mainCharName" placeholder="Ej: Lucía" required>
+            <input type="text" id="mainCharName" placeholder="Ej: Bart (caso: 10 años, TDAH, trastorno de conducta)" required>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label for="mainCharAge">Edad</label>
-              <input type="number" id="mainCharAge" min="3" max="12" placeholder="Ej: 7">
+              <input type="number" id="mainCharAge" min="3" max="12" placeholder="Ej: 10 (Bart), 8 (Lisa/Piglet), 4 (Bob Esponja)">
             </div>
             <div class="form-group">
               <label for="mainCharGender">Género</label>
@@ -1037,7 +1054,7 @@ footer {
           </div>
           <div class="form-group">
             <label for="mainCharDesc">Descripción Física y Personalidad</label>
-            <textarea id="mainCharDesc" placeholder="Ej: Es una niña pequeña con cabello rizado, muy curiosa y a veces se frustra cuando las cosas no salen a la primera..."></textarea>
+            <textarea id="mainCharDesc" placeholder="Ej: Niño con actitud explosiva, nunca se cansa, se mueve constantemente y se distrae fácilmente. Puede concentrarse en una sola cosa por poco tiempo. Muestra inseguridad, rebeldía, miedo y soledad. (Ref.: Pato Lucas - TDAH, Zúñiga 2018)"></textarea>
           </div>
         </div>
       </div>
@@ -1066,7 +1083,7 @@ footer {
               <div class="form-row">
                 <div class="form-group">
                   <label>Nombre</label>
-                  <input type="text" class="sec-name" placeholder="Ej: Max">
+                  <input type="text" class="sec-name" placeholder="Ej: Marge (madre conciliadora que alterna fuerza con cariño)">
                 </div>
                 <div class="form-group">
                   <label>Relación con el protagonista</label>
@@ -1126,15 +1143,15 @@ footer {
         <div class="accordion-content">
           <div class="form-group">
             <label for="familyContext">Contexto Familiar</label>
-            <textarea id="familyContext" placeholder="Describe la dinámica familiar, personas con las que vive..."></textarea>
+            <textarea id="familyContext" placeholder="Ej: Padre con bajo coeficiente intelectual, alcohólico, perezoso e inculto. Madre ama de casa que intenta mantener a la familia unida mediante actos de conciliación que alternan fuerza con cariño. Tiene dos hermanos menores. La madre es ignorada por el padre y menospreciada por los hijos, lo que la hace propensa a adicciones. (Ref.: Los Simpson, Zúñiga 2018)"></textarea>
           </div>
           <div class="form-group">
             <label for="schoolContext">Contexto Escolar</label>
-            <textarea id="schoolContext" placeholder="¿Cómo le va en la escuela? ¿Tiene amigos? ¿Qué le gusta y qué le cuesta?"></textarea>
+            <textarea id="schoolContext" placeholder="Ej: Cursa cuarto grado. Padece TDAH mal diagnosticado que está en tratamiento. Es el clásico niño con trastorno de conducta que los padres no quieren reconocer. Tiene dificultades de atención, se distrae fácilmente y sus compañeros lo ven como el rebelde del salón. A pesar de su conducta disruptiva, busca reconocimiento y afecto. (Ref.: Bart Simpson, Zúñiga 2018)"></textarea>
           </div>
           <div class="form-group">
             <label for="medicalHistory">Antecedentes Médicos/Relevantes</label>
-            <textarea id="medicalHistory" placeholder="Condiciones médicas, terapias en curso, medicaciones..."></textarea>
+            <textarea id="medicalHistory" placeholder="Ej: TDAH (Trastorno por Déficit de Atención e Hiperactividad) mal diagnosticado, en tratamiento. Trastorno de conducta. Terapia cognitivo-conductual en curso. Comorbilidad: puede presentar ansiedad por separación o TOC. (Ref.: Pato Lucas TDAH, Zúñiga 2018; Winnie Pooh comorbilidad TOC-TDAH, Shea 2000)"></textarea>
           </div>
         </div>
       </div>
@@ -1156,15 +1173,15 @@ footer {
         <div class="accordion-content">
           <div class="form-group">
             <label for="attitudeHome">Actitud en Casa</label>
-            <textarea id="attitudeHome" placeholder="¿Cómo se comporta en el hogar? ¿Es colaborativo? ¿Hay rabietas?"></textarea>
+            <textarea id="attitudeHome" placeholder="Ej: Actitud explosiva, nunca se cansa, parece que la energía no se le agota. Se mueve constantemente de un lugar a otro. Tiene dificultad para seguir instrucciones, especialmente cuando provienen del padre. Se deja influenciar fácilmente por sus pares. En momentos de calma, muestra inseguridad y miedo profundo. (Ref.: Pato Lucas TDAH, Stan Marsh depresión, Zúñiga 2018)"></textarea>
           </div>
           <div class="form-group">
             <label for="attitudeSchool">Actitud en la Escuela</label>
-            <textarea id="attitudeSchool" placeholder="Participación, atención, relación con maestros..."></textarea>
+            <textarea id="attitudeSchool" placeholder="Ej: No presta atención en clase, se distrae con cualquier estímulo. Tiene dificultad para concentrarse en una sola tarea por más de unos minutos. Sus maestros lo describen como inquieto e impulsivo. A pesar de su conducta disruptiva, muestra momentos de inteligencia y creatividad. Rara vez logra hacer lo correcto porque se deja influenciar fácilmente por otros. (Ref.: Bart Simpson TDAH, Stan Marsh, Zúñiga 2018)"></textarea>
           </div>
           <div class="form-group">
             <label for="attitudePeers">Actitud con Compañeros</label>
-            <textarea id="attitudePeers" placeholder="¿Juega en grupo? ¿Es líder o seguidor? ¿Hay conflictos?"></textarea>
+            <textarea id="attitudePeers" placeholder="Ej: Tiene dificultades para mantener amistades estables. Se deja influenciar fácilmente por compañeros con conductas disruptivas. A veces muestra agresividad verbal, pero por debajo existe un niño inseguro que teme el rechazo. Tiende a formar vínculos con compañeros que también vienen de familias disfuncionales. (Ref.: Stan Marsh, Kenny McCormick, Zúñiga 2018)"></textarea>
           </div>
         </div>
       </div>
@@ -1186,11 +1203,11 @@ footer {
         <div class="accordion-content">
           <div class="form-group">
             <label for="talents">Talentos Destacados</label>
-            <textarea id="talents" placeholder="Ej: Buen dibujante, memoria excelente, muy rápido corriendo..."></textarea>
+            <textarea id="talents" placeholder="Ej: Desarrolló dotes artísticas tempranas. Tiene gran creatividad y capacidad de improvisación. Cuando se concentra, muestra un ingenio superior al promedio. Tiene habilidades atléticas (salto, trepa). Empatía hacia los demás que facilita las relaciones sociales. (Ref.: Lisa Simpson artista, Tigger habilidades, Zúñiga 2018)"></textarea>
           </div>
           <div class="form-group">
             <label for="interests">Intereses y Aficiones</label>
-            <textarea id="interests" placeholder="Ej: Le encantan los dinosaurios, toca piano, le gusta cocinar..."></textarea>
+            <textarea id="interests" placeholder="Ej: Le gusta hacer travesuras que llamen la atención. Busca actividades de alto impacto y ritmo rápido. Disfruta de juegos competitivos. Tiene obsesiones específicas (ej. coleccionar objetos). Idealiza la juventud y la libertad. A veces habla solo o con objetos imaginarios como mecanismo de escape. (Ref.: Bart Simpson travesuras, Calvin esquizofrenia, Zúñiga 2018)"></textarea>
           </div>
           <div class="form-group">
             <label for="learningStyle">Estilo de Aprendizaje Preferido</label>
@@ -1223,7 +1240,7 @@ footer {
         <div class="accordion-content">
           <div class="form-group">
             <label for="socialSkills">Habilidades Sociales</label>
-            <textarea id="socialSkills" placeholder="¿Comparte? ¿Pide ayuda? ¿Expresa emociones verbalmente?"></textarea>
+            <textarea id="socialSkills" placeholder="Ej: Tiene dificultades para expresar emociones de forma saludable. Suele externalizar frustración mediante conductas explosivas. Es capaz de compartir cuando se siente seguro. Pide ayuda indirectamente a través de conductas de llamada de atención. Su comunicación tiende a ser impulsiva. (Ref.: Pato Lucas actitud explosiva, Taz T. Explosivo, Zúñiga 2018)"></textarea>
           </div>
           <div class="form-group">
             <label for="communication">Estilo de Comunicación</label>
@@ -1238,7 +1255,7 @@ footer {
           </div>
           <div class="form-group">
             <label for="emotionalRegulation">Regulación Emocional</label>
-            <textarea id="emotionalRegulation" placeholder="¿Cómo maneja frustración, enojo, tristeza? ¿Se calma solo o necesita ayuda?"></textarea>
+            <textarea id="emotionalRegulation" placeholder="Ej: Umbral de frustración muy bajo. Cualquier contrariedad, por insignificante que parezca, provoca cólera súbita. Pasa de la calma a la agitación y termina en euforia. Tiene dificultad para manejar el enojo y la tristeza. Necesita apoyo externo para calmarse. Puede presentar arranques violentos si se le contradice fuertemente. (Ref.: Taz - Trastorno Explosivo Intermitente, Zúñiga 2018; Cartman TLP)"></textarea>
           </div>
         </div>
       </div>
@@ -1378,7 +1395,7 @@ footer {
           </div>
           <div class="form-group" style="margin-top:1.5rem">
             <label for="therapeuticGoal">Objetivo Terapéutico del Cuento</label>
-            <textarea id="therapeuticGoal" placeholder="¿Qué quieres que el niño aprenda o sienta al leer este cuento? Ej: Sentir que no está solo en su frustración, entender que pedir ayuda es valiente..."></textarea>
+            <textarea id="therapeuticGoal" placeholder="Ej: Que el niño comprenda que su TDAH no le impide lograr cosas importantes, que puede canalizar su energía de forma positiva. Ayudarle a identificar sus emociones (inseguridad, rebeldía, miedo) y expresarlas sin conductas explosivas. Reforzar que pedir ayuda es valiente y que su familia está para apoyarle, aunque parezca disfuncional. (Ref.: Bart Simpson TDAH, Pato Lucas, Zúñiga 2018)"></textarea>
           </div>
         </div>
       </div>
@@ -1848,9 +1865,9 @@ footer {
           <svg viewBox="0 0 600 200" style="width:100%;height:auto">
             <defs>
               <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:var(--primary)"/>
-                <stop offset="50%" style="stop-color:var(--secondary)"/>
-                <stop offset="100%" style="stop-color:var(--accent)"/>
+                <stop offset="0%" stop-color="#6C5CE7"/>
+                <stop offset="50%" stop-color="#FD79A8"/>
+                <stop offset="100%" stop-color="#00B894"/>
               </linearGradient>
             </defs>
             <!-- Grid lines -->
@@ -1985,7 +2002,7 @@ const METAPHOR_MAP = {
     object: 'Cristal de memoria que filtra recuerdos dolorosos',
     spectrum: 'Sombra protectora que evoluciona en luz suave'
   },
-  ' bipolar-infantil': {
+  'bipolar-infantil': {
     name: 'Trastorno Bipolar Infantil',
     metaphor: 'Un delfín que nada entre dos océanos: uno de tormentas eléctricas y otro de aguas cristalinas. Aprende a navegar ambos con gracia.',
     animal: 'Delfín que navega dos océanos internos',
@@ -2137,33 +2154,71 @@ function toggleAccordion(header) {
 function renderDisorders() {
   const grid = $('disordersGrid');
   grid.innerHTML = Object.entries(METAPHOR_MAP).map(([key, data]) => `
-    <div class="checkbox-item">
-      <input type="checkbox" id="dis-${key}" value="${key}">
+    <label class="checkbox-item" for="dis-${key}">
+      <input type="checkbox" id="dis-${key}" value="${key}" onclick="event.stopPropagation()">
       <div class="checkbox-content">
         <div class="checkbox-title">
           ${data.name}
-          <span class="tooltip-trigger" onmouseenter="showTooltip(this,'${key}')" onmouseleave="hideTooltip(this)">ⓘ
+          <span class="tooltip-trigger" onclick="event.stopPropagation()" onmouseenter="showTooltip(this,'${key}')" onmouseleave="hideTooltip(this)">ⓘ
             <div class="tooltip-box" id="tip-${key}"></div>
           </span>
         </div>
         <div class="checkbox-desc">${data.metaphor.substring(0, 80)}...</div>
       </div>
-    </div>
+    </label>
   `).join('');
 }
 
+var tooltipHideTimer = null;
+
 function showTooltip(el, key) {
-  const tip = el.querySelector('.tooltip-box');
-  const data = METAPHOR_MAP[key];
+  if (tooltipHideTimer) {
+    clearTimeout(tooltipHideTimer);
+    tooltipHideTimer = null;
+  }
+  var tip = el.querySelector('.tooltip-box');
+  var data = METAPHOR_MAP[key];
   if (data) {
-    tip.innerHTML = `<strong>Metáfora mágica:</strong><br>${data.metaphor}<br><br><strong>Como animal:</strong> ${data.animal}<br><strong>Como objeto:</strong> ${data.object}<br><strong>Como espectro:</strong> ${data.spectrum}`;
+    tip.innerHTML = '<strong>Metáfora mágica:</strong><br>' + data.metaphor + '<br><br><strong>Como animal:</strong> ' + data.animal + '<br><strong>Como objeto:</strong> ' + data.object + '<br><strong>Como espectro:</strong> ' + data.spectrum;
+    // Check if near right edge and adjust
+    var rect = el.getBoundingClientRect();
+    if (rect.left + 140 > window.innerWidth - 20) {
+      tip.classList.add('right-edge');
+    } else {
+      tip.classList.remove('right-edge');
+    }
     tip.classList.add('show');
   }
 }
 
 function hideTooltip(el) {
-  el.querySelector('.tooltip-box').classList.remove('show');
+  tooltipHideTimer = setTimeout(function() {
+    var tip = el.querySelector('.tooltip-box');
+    if (tip) tip.classList.remove('show');
+  }, 200);
 }
+
+// Keep tooltip open when hovering over it
+document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('mouseover', function(e) {
+    var tooltip = e.target.closest('.tooltip-box');
+    if (tooltip) {
+      if (tooltipHideTimer) {
+        clearTimeout(tooltipHideTimer);
+        tooltipHideTimer = null;
+      }
+      tooltip.classList.add('show');
+    }
+  });
+  document.addEventListener('mouseout', function(e) {
+    var tooltip = e.target.closest('.tooltip-box');
+    if (tooltip) {
+      tooltipHideTimer = setTimeout(function() {
+        tooltip.classList.remove('show');
+      }, 150);
+    }
+  });
+});
 
 // ===== SECONDARY CHARACTERS =====
 function addSecondaryChar() {
@@ -2241,7 +2296,7 @@ const STATE_DATA = {
   humano: {
     name: 'Humano',
     desc: 'El personaje mantiene su forma humana. La historia se desarrolla desde una perspectiva humana con emociones y pensamientos que los niños pueden identificar fácilmente. Los desafíos se enfrentan con herramientas humanas como el diálogo, el pensamiento creativo y el apoyo de otros.',
-    example: '"María caminó por el bosque con su linterna, sintiendo el crujir de las hojas bajo sus pies. Su corazón latía rápido, pero respiró hondo y recordó lo que su abuela le había enseñado: 'El coraje no es no tener miedo, es seguir adelante aunque lo sientas.'"'
+    example: '"María caminó por el bosque con su linterna, sintiendo el crujir de las hojas bajo sus pies. Su corazón latía rápido, pero respiró hondo y recordó lo que su abuela le había enseñado: \'El coraje no es no tener miedo, es seguir adelante aunque lo sientas.\'"'
   },
   animal: {
     name: 'Animal',
@@ -2291,7 +2346,18 @@ function generateStory() {
 
   if (!sName || !sLastName || !sDate || !charName) {
     alert('Por favor completa los campos obligatorios: Nombre y apellidos del estudiante, fecha, y nombre del personaje principal.');
-    toggleAccordion(document.querySelectorAll('.accordion-header')[0]);
+    // Open first accordion explicitly without toggling closed if already open
+    var firstHeader = document.querySelectorAll('.accordion-header')[0];
+    var firstBody = firstHeader.nextElementSibling;
+    document.querySelectorAll('.accordion-body').forEach(function(b) {
+      b.classList.remove('open');
+      b.style.maxHeight = '0';
+    });
+    document.querySelectorAll('.accordion-header').forEach(function(h) { h.classList.remove('active'); });
+    firstBody.classList.add('open');
+    firstBody.style.maxHeight = '5000px';
+    firstHeader.classList.add('active');
+    firstHeader.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
 
@@ -2347,9 +2413,14 @@ function generateStory() {
 
   updateProgress(100);
 
-  setTimeout(() => {
+  setTimeout(function() {
     $('loadingOverlay').classList.remove('active');
+    // Disable transition momentarily to prevent visible shrink animation
+    $('progressBar').style.transition = 'none';
     $('progressBar').style.width = '0%';
+    // Force reflow
+    void $('progressBar').offsetWidth;
+    $('progressBar').style.transition = 'width 0.3s';
     scrollToSection('storySection');
   }, 500);
 }
@@ -2555,7 +2626,12 @@ function generatePDF() {
     updateProgress(100);
     setTimeout(function() {
       document.getElementById('loadingOverlay').classList.remove('active');
-      document.getElementById('progressBar').style.width = '0%';
+      // Disable transition momentarily to prevent visible shrink animation
+      var pb = document.getElementById('progressBar');
+      pb.style.transition = 'none';
+      pb.style.width = '0%';
+      void pb.offsetWidth;
+      pb.style.transition = 'width 0.3s';
       alert('PDF generado exitosamente. Revisa tu carpeta de descargas.');
     }, 300);
   }).catch(function(err) {
