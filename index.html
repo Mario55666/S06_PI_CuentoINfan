@@ -1335,7 +1335,7 @@ footer {
     <button onclick="scrollToSection('transformSection')">Transformación</button>
     <button onclick="scrollToSection('flowSection')">Diagrama</button>
     <button onclick="scrollToSection('storySection')">Cuento</button>
-    <button onclick="scrollToSection('reportSection')">Reporte PDF</button>
+    <button onclick="scrollToSection('reportSection')">Exportar</button>
   </div>
 </nav>
 
@@ -2158,7 +2158,7 @@ footer {
 
   <div style="text-align:center;margin-top:1.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
     <button class="btn btn-primary" onclick="generateStory()">🔄 Regenerar Cuento</button>
-    <button class="btn btn-secondary" onclick="scrollToSection('reportSection')" style="color:var(--text)">📄 Ver Reporte PDF</button>
+    <button class="btn btn-secondary" onclick="scrollToSection('reportSection')" style="color:var(--text)">📊 Exportar Datos</button>
   </div>
 
   <!-- Narrative Arc Comparison -->
@@ -2205,19 +2205,12 @@ footer {
 
 <!-- Report Section -->
 <section class="section" id="reportSection">
-  <h2 class="section-title">Reporte Completo en PDF</h2>
-  <p class="section-subtitle">Genera un informe profesional con todos los datos, análisis y el cuento terapéutico</p>
-
-  <div style="text-align:center;margin-bottom:2rem">
-    <button class="btn btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem" onclick="generatePDF()">
-      📄 Generar Reporte PDF
-    </button>
-    <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.75rem">Incluye: datos del estudiante, perfil del personaje, metáforas terapéuticas, cuento generado y análisis narrativo</p>
-  </div>
+  <h2 class="section-title">Exportar Datos del Formulario</h2>
+  <p class="section-subtitle">Imprime o exporta todos los datos registrados en el formulario</p>
 
   <!-- Print Form Button -->
   <div style="text-align:center;margin-bottom:2rem">
-    <button class="btn btn-secondary" style="font-size:1.1rem;padding:1rem 2.5rem" onclick="printFormToPDF()">
+    <button class="btn btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem" onclick="printFormToPDF()">
       🖨️ Imprimir Formulario en PDF
     </button>
     <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.75rem">Imprime todos los datos registrados en el formulario usando la impresora del navegador</p>
