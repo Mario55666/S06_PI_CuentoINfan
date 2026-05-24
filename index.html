@@ -781,6 +781,118 @@ textarea {
   .transformer-container { grid-template-columns: 1fr; }
 }
 
+/* ===== PRINT FORM STYLES ===== */
+.print-form-container {
+  display: none;
+  background: white;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+}
+
+.print-form-header {
+  text-align: center;
+  border-bottom: 3px solid #333;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.print-form-header h1 {
+  font-size: 16pt;
+  margin: 0.5rem 0;
+  color: #000;
+}
+
+.print-form-header h2 {
+  font-size: 12pt;
+  margin: 0.3rem 0;
+  font-weight: normal;
+  color: #333;
+}
+
+.print-form-header .print-meta {
+  font-size: 9pt;
+  color: #555;
+  margin-top: 0.5rem;
+}
+
+.print-form-section {
+  margin-bottom: 1.2rem;
+  page-break-inside: avoid;
+}
+
+.print-form-section h3 {
+  font-size: 12pt;
+  color: #000;
+  border-bottom: 1px solid #999;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.6rem;
+  background: #f0f0f0;
+  padding: 0.4rem 0.6rem;
+}
+
+.print-form-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+  font-size: 10pt;
+}
+
+.print-form-table th,
+.print-form-table td {
+  border: 1px solid #bbb;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.print-form-table th {
+  background: #e8e8e8;
+  font-weight: bold;
+  width: 30%;
+}
+
+.print-form-table td {
+  background: #fff;
+}
+
+.print-form-footer {
+  text-align: center;
+  font-size: 8pt;
+  color: #666;
+  border-top: 1px solid #ccc;
+  padding-top: 0.5rem;
+  margin-top: 2rem;
+}
+
+.print-form-page-break {
+  page-break-before: always;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-form-container,
+  .print-form-container * {
+    visibility: visible;
+  }
+  .print-form-container {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 1cm;
+  }
+  .print-form-section {
+    page-break-inside: avoid;
+  }
+}
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -816,6 +928,183 @@ textarea {
 .suggestion-card:hover {
   box-shadow: var(--shadow-hover);
   transform: translateY(-4px);
+}
+
+.suggestion-card.clickable {
+  cursor: pointer;
+  position: relative;
+}
+
+.suggestion-card.clickable::after {
+  content: '⚡ Aplicar al formulario';
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: var(--accent);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.suggestion-card.clickable:hover::after {
+  opacity: 1;
+}
+
+/* ===== DEMO BUTTONS ===== */
+.demo-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.demo-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.demo-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.demo-card.high { border-color: #00B894; }
+.demo-card.high:hover { border-color: #00d6a8; background: rgba(0,184,148,0.05); }
+
+.demo-card.medium { border-color: #fdcb6e; }
+.demo-card.medium:hover { border-color: #ffe082; background: rgba(253,203,110,0.08); }
+
+.demo-card.poor { border-color: #E17055; }
+.demo-card.poor:hover { border-color: #ff8a6a; background: rgba(225,112,85,0.06); }
+
+.demo-badge {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+
+.demo-badge.high { background: rgba(0,184,148,0.15); color: #00B894; }
+.demo-badge.medium { background: rgba(253,203,110,0.2); color: #d4a03a; }
+.demo-badge.poor { background: rgba(225,112,85,0.15); color: #E17055; }
+
+.demo-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.demo-desc {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.demo-arc {
+  height: 60px;
+  margin: 0.5rem 0;
+}
+
+.demo-arc svg {
+  width: 100%;
+  height: 100%;
+}
+
+.demo-meta {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 0.75rem;
+}
+
+.demo-meta span {
+  display: inline-block;
+  margin: 0.15rem 0.3rem;
+  padding: 0.15rem 0.5rem;
+  background: rgba(108,92,231,0.06);
+  border-radius: 4px;
+}
+
+/* ===== NARRATIVE ARC COMPARISON ===== */
+.arc-compare-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.arc-compare-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--border);
+}
+
+.arc-compare-card.high { border-left-color: #00B894; }
+.arc-compare-card.medium { border-left-color: #fdcb6e; }
+.arc-compare-card.poor { border-left-color: #E17055; }
+
+.arc-compare-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.arc-compare-card.high h4 { color: #00B894; }
+.arc-compare-card.medium h4 { color: #d4a03a; }
+.arc-compare-card.poor h4 { color: #E17055; }
+
+.arc-score {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.arc-score-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.arc-score-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s ease-out;
+}
+
+.arc-score-fill.high { background: linear-gradient(90deg, #00B894, #55efc4); }
+.arc-score-fill.medium { background: linear-gradient(90deg, #fdcb6e, #ffeaa7); }
+.arc-score-fill.poor { background: linear-gradient(90deg, #E17055, #fab1a0); }
+
+.arc-score-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  min-width: 2rem;
+  text-align: right;
 }
 
 .suggestion-header {
@@ -863,53 +1152,139 @@ textarea {
   box-shadow: var(--shadow);
 }
 
-.pdf-header {
+/* ===== PDF COVER & LAYOUT ===== */
+.pdf-cover {
   text-align: center;
-  padding-bottom: 2rem;
-  border-bottom: 3px solid var(--primary);
-  margin-bottom: 2rem;
+  padding: 2rem;
+  page-break-after: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 700px;
 }
 
-.pdf-title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--primary);
+.pdf-cover-institute {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 2px;
   margin-bottom: 0.5rem;
 }
 
-.pdf-meta {
+.pdf-cover-specialty {
+  font-size: 0.8rem;
+  color: var(--primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 2rem;
+  padding: 0.4rem 1.2rem;
+  border: 2px solid var(--primary);
+  display: inline-block;
+  align-self: center;
+}
+
+.pdf-cover-logo {
+  font-size: 4rem;
+  margin: 1rem 0;
+}
+
+.pdf-cover-title {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.pdf-cover-subtitle {
+  font-size: 1rem;
   color: var(--text-light);
-  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.pdf-cover-divider {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  margin: 1rem auto;
+  border-radius: 2px;
+}
+
+.pdf-cover-student {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-top: 2rem;
+}
+
+.pdf-cover-date {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+
+.pdf-cover-footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  font-size: 0.7rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.pdf-page-header {
+  text-align: center;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid var(--primary);
+  margin-bottom: 1.5rem;
+  font-size: 0.7rem;
+  color: var(--primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.pdf-page-footer {
+  text-align: center;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border);
+  margin-top: 1.5rem;
+  font-size: 0.65rem;
+  color: var(--text-light);
 }
 
 .pdf-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  page-break-inside: avoid;
+}
+
+.pdf-page-break {
+  page-break-before: always;
 }
 
 .pdf-section h3 {
   color: var(--primary);
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
   border-bottom: 2px solid var(--border);
 }
 
 .pdf-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
 }
 
 .pdf-table th {
   background: var(--primary);
   color: white;
-  padding: 0.75rem;
+  padding: 0.6rem 0.75rem;
   text-align: left;
   font-weight: 600;
 }
 
 .pdf-table td {
-  padding: 0.75rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -978,6 +1353,59 @@ footer {
 
 <!-- Main Container -->
 <div class="container">
+
+<!-- 3 Demos Section -->
+<section class="section" id="demosSection">
+  <h2 class="section-title">Demos de Arco Narrativo: Impacto Terapéutico</h2>
+  <p class="section-subtitle">Haz clic en cualquier demo para cargar una configuración predefinida y ver cómo cambia la profundidad del arco narrativo</p>
+
+  <div class="demo-container">
+    <div class="demo-card high" onclick="applyPreset('high')">
+      <div class="demo-badge high">Alto Impacto</div>
+      <div class="demo-title">Caso Bart Simpson</div>
+      <div class="demo-desc">TDAH + trastorno conductual completo. Historia rica en metáforas terapéuticas con transformación animal y aliados.</div>
+      <div class="demo-arc">
+        <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+          <polyline points="0,42 25,38 50,35 75,25 100,8 125,12 150,20 175,15 200,10" fill="none" stroke="#00B894" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="100" cy="8" r="3" fill="#00B894"/>
+        </svg>
+      </div>
+      <div class="demo-meta">
+        <span>TDAH</span> <span>Empatía</span> <span>Animal</span> <span>Bosque</span>
+      </div>
+    </div>
+
+    <div class="demo-card medium" onclick="applyPreset('medium')">
+      <div class="demo-badge medium">Impacto Medio</div>
+      <div class="demo-title">Caso Piglet (Puerquito)</div>
+      <div class="demo-desc">Ansiedad generalizada con apoyo de un aliado. Metáfora terapéutica moderada en transformación humana.</div>
+      <div class="demo-arc">
+        <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+          <polyline points="0,40 25,37 50,35 75,30 100,22 125,25 150,28 175,26 200,24" fill="none" stroke="#fdcb6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="100" cy="22" r="3" fill="#fdcb6e"/>
+        </svg>
+      </div>
+      <div class="demo-meta">
+        <span>Ansiedad</span> <span>Perseverancia</span> <span>Humano</span> <span>Jardín</span>
+      </div>
+    </div>
+
+    <div class="demo-card poor" onclick="applyPreset('poor')">
+      <div class="demo-badge poor">Pobre Impacto</div>
+      <div class="demo-title">Cuento Genérico</div>
+      <div class="demo-desc">Sin condición específica ni valores terapéuticos. Arco narrativo plano sin metáforas ni transformación mágica.</div>
+      <div class="demo-arc">
+        <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+          <polyline points="0,35 25,34 50,34 75,33 100,33 125,32 150,32 175,31 200,31" fill="none" stroke="#E17055" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="100" cy="33" r="3" fill="#E17055"/>
+        </svg>
+      </div>
+      <div class="demo-meta">
+        <span>Sin condición</span> <span>Sin valor</span> <span>Humano</span> <span>Pueblo</span>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Form Section -->
 <section class="section" id="formSection">
@@ -1052,6 +1480,18 @@ footer {
               </select>
             </div>
           </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="mainCharTransform">Transformación del Personaje Principal</label>
+              <select id="mainCharTransform">
+                <option value="humano" selected>Humano - Forma original con emociones y pensamientos identificables</option>
+                <option value="animal">Animal - Se transforma en una criatura con características especiales</option>
+                <option value="objeto-inerte">Objeto Inerte - Se convierte en un objeto con conciencia mágica</option>
+                <option value="objeto-2d">Objeto 2D - Entra al mundo de dibujos y pinturas</option>
+                <option value="espectro">Espectro - Forma etérea con poderes especiales</option>
+              </select>
+            </div>
+          </div>
           <div class="form-group">
             <label for="mainCharDesc">Descripción Física y Personalidad</label>
             <textarea id="mainCharDesc" placeholder="Ej: Niño con actitud explosiva, nunca se cansa, se mueve constantemente y se distrae fácilmente. Puede concentrarse en una sola cosa por poco tiempo. Muestra inseguridad, rebeldía, miedo y soledad. (Ref.: Pato Lucas - TDAH, Zúñiga 2018)"></textarea>
@@ -1099,6 +1539,16 @@ footer {
                     <option value="guia">Guía espiritual</option>
                   </select>
                 </div>
+              </div>
+              <div class="form-group">
+                <label>Transformación del Personaje Secundario</label>
+                <select class="sec-transform">
+                  <option value="humano" selected>Humano - Forma original</option>
+                  <option value="animal">Animal - Criatura con características especiales</option>
+                  <option value="objeto-inerte">Objeto Inerte - Objeto con conciencia mágica</option>
+                  <option value="objeto-2d">Objeto 2D - Mundo de dibujos y pinturas</option>
+                  <option value="espectro">Espectro - Forma etérea con poderes</option>
+                </select>
               </div>
               <div class="form-group">
                 <label>Tipo de Apoyo</label>
@@ -1301,6 +1751,28 @@ footer {
       <div class="accordion-body">
         <div class="accordion-content">
           <div class="form-row">
+            <div class="form-group">
+              <label for="storySetting">Ambiente / Escenario de la Historia</label>
+              <select id="storySetting">
+                <option value="">Selecciona un escenario...</option>
+                <option value="bosque-encantado">Bosque Encantado</option>
+                <option value="ciudad-magica">Ciudad Magica</option>
+                <option value="playa">Playa y Mar</option>
+                <option value="montanas">Montanas Nevadas</option>
+                <option value="espacio">Espacio Exterior</option>
+                <option value="pueblo">Pueblo Pequeno</option>
+                <option value="castillo">Castillo Medieval</option>
+                <option value="granja">Granja y Campo</option>
+                <option value="selva">Selva Tropical</option>
+                <option value="desierto">Desierto Dorado</option>
+                <option value="jardin">Jardin Secreto</option>
+                <option value="isla">Isla Misteriosa</option>
+                <option value="mundo-subterraneo">Mundo Subterraneo</option>
+                <option value="nubes">Reino de las Nubes</option>
+                <option value="polo-norte">Polo Norte Helado</option>
+                <option value="volcan">Volcan Activo</option>
+              </select>
+            </div>
             <div class="form-group">
               <label for="targetAge">Edad Objetivo del Cuento</label>
               <select id="targetAge">
@@ -1592,7 +2064,7 @@ footer {
   <p class="section-subtitle">Historias de Pedro Pablo Sacristán adaptadas con valores educativos específicos</p>
 
   <div class="suggestions-grid">
-    <div class="suggestion-card">
+    <div class="suggestion-card clickable" onclick="applyPreset('cuento1')">
       <div class="suggestion-header">
         <div class="suggestion-value">Valor: Empatía</div>
         <div class="suggestion-title">El Árbol de los Corazones</div>
@@ -1607,7 +2079,7 @@ footer {
       </div>
     </div>
 
-    <div class="suggestion-card">
+    <div class="suggestion-card clickable" onclick="applyPreset('cuento2')">
       <div class="suggestion-header" style="background:linear-gradient(135deg,#fd79a8,#e17055)">
         <div class="suggestion-value">Valor: Perseverancia</div>
         <div class="suggestion-title">La Semilla que Nunca se Rindió</div>
@@ -1622,7 +2094,7 @@ footer {
       </div>
     </div>
 
-    <div class="suggestion-card">
+    <div class="suggestion-card clickable" onclick="applyPreset('cuento3')">
       <div class="suggestion-header" style="background:linear-gradient(135deg,#00b894,#00cec9)">
         <div class="suggestion-value">Valor: Solidaridad</div>
         <div class="suggestion-title">Los Tres Amigos del Puente</div>
@@ -1637,7 +2109,7 @@ footer {
       </div>
     </div>
 
-    <div class="suggestion-card">
+    <div class="suggestion-card clickable" onclick="applyPreset('cuento4')">
       <div class="suggestion-header" style="background:linear-gradient(135deg,#fdcb6e,#e17055)">
         <div class="suggestion-value">Valor: Coraje</div>
         <div class="suggestion-title">La Niña que Enfrentó a la Sombra</div>
@@ -1652,7 +2124,7 @@ footer {
       </div>
     </div>
 
-    <div class="suggestion-card">
+    <div class="suggestion-card clickable" onclick="applyPreset('cuento5')">
       <div class="suggestion-header" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">
         <div class="suggestion-value">Valor: Honestidad</div>
         <div class="suggestion-title">El Espejo que Decía la Verdad</div>
@@ -1688,6 +2160,47 @@ footer {
     <button class="btn btn-primary" onclick="generateStory()">🔄 Regenerar Cuento</button>
     <button class="btn btn-secondary" onclick="scrollToSection('reportSection')" style="color:var(--text)">📄 Ver Reporte PDF</button>
   </div>
+
+  <!-- Narrative Arc Comparison -->
+  <div id="arcComparison" style="display:none;margin-top:2rem">
+    <h3 style="text-align:center;font-size:1.3rem;color:var(--primary);margin-bottom:1rem">📊 Comparativa de Arco Narrativo</h3>
+    <p style="text-align:center;color:var(--text-light);font-size:0.85rem;margin-bottom:1.5rem">Impacto terapéutico del cuento generado vs. configuraciones alternativas</p>
+    <div class="arc-compare-container">
+      <div class="arc-compare-card high">
+        <h4>🟢 Alto Impacto</h4>
+        <p style="font-size:0.8rem;color:var(--text-light)">Condición + Valor + Transformación + Aliados + Escenario rico</p>
+        <div class="arc-score">
+          <div class="arc-score-bar"><div class="arc-score-fill high" id="arcHighBar" style="width:0%"></div></div>
+          <div class="arc-score-label" id="arcHighScore">95</div>
+        </div>
+        <svg viewBox="0 0 200 40" style="width:100%;height:40px;margin-top:0.5rem">
+          <polyline points="0,35 30,30 60,28 90,18 120,5 150,10 180,8 200,6" fill="none" stroke="#00B894" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="arc-compare-card medium">
+        <h4>🟡 Impacto Medio</h4>
+        <p style="font-size:0.8rem;color:var(--text-light)">Condición + Valor básico + 1 aliado</p>
+        <div class="arc-score">
+          <div class="arc-score-bar"><div class="arc-score-fill medium" id="arcMedBar" style="width:0%"></div></div>
+          <div class="arc-score-label" id="arcMedScore">60</div>
+        </div>
+        <svg viewBox="0 0 200 40" style="width:100%;height:40px;margin-top:0.5rem">
+          <polyline points="0,32 30,29 60,27 90,22 120,15 150,18 180,16 200,14" fill="none" stroke="#fdcb6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="arc-compare-card poor">
+        <h4>🔴 Pobre Impacto</h4>
+        <p style="font-size:0.8rem;color:var(--text-light)">Sin condición ni valores terapéuticos específicos</p>
+        <div class="arc-score">
+          <div class="arc-score-bar"><div class="arc-score-fill poor" id="arcPoorBar" style="width:0%"></div></div>
+          <div class="arc-score-label" id="arcPoorScore">20</div>
+        </div>
+        <svg viewBox="0 0 200 40" style="width:100%;height:40px;margin-top:0.5rem">
+          <polyline points="0,28 30,27 60,27 90,26 120,26 150,25 180,25 200,24" fill="none" stroke="#E17055" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Report Section -->
@@ -1702,244 +2215,373 @@ footer {
     <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.75rem">Incluye: datos del estudiante, perfil del personaje, metáforas terapéuticas, cuento generado y análisis narrativo</p>
   </div>
 
+  <!-- Print Form Button -->
+  <div style="text-align:center;margin-bottom:2rem">
+    <button class="btn btn-secondary" style="font-size:1.1rem;padding:1rem 2.5rem" onclick="printFormToPDF()">
+      🖨️ Imprimir Formulario en PDF
+    </button>
+    <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.75rem">Imprime todos los datos registrados en el formulario usando la impresora del navegador</p>
+  </div>
+
+  <!-- CSV Button -->
+  <div style="text-align:center;margin-bottom:2rem">
+    <button class="btn btn-secondary" style="font-size:1.1rem;padding:1rem 2.5rem" onclick="generateCSV()">
+      📊 Exportar Datos a CSV
+    </button>
+    <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.75rem">Exporta todos los datos del formulario en formato CSV para Excel</p>
+  </div>
+
   <!-- PDF Preview Container -->
   <div id="pdfPreview">
     <div id="pdfContent">
-      <!-- Cover Page -->
-      <div class="pdf-header">
-        <div style="font-size:3rem;margin-bottom:1rem">📚</div>
-        <h1 class="pdf-title">Reporte Terapéutico: CreaTuCuento</h1>
-        <p class="pdf-meta" id="pdfStudentInfo">Estudiante: [Nombre Apellido] | Fecha: [Fecha]</p>
+      <!-- COVER PAGE -->
+      <div class="pdf-cover">
+        <div class="pdf-cover-institute">Instituto de Educacion Superior Publico</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--primary);letter-spacing:1px;">"Diseno y comunicacion"</div>
+        <div class="pdf-cover-specialty">Especialidad de Diseno Publicitario</div>
+        <div class="pdf-cover-logo">📚</div>
+        <div class="pdf-cover-title">Reporte Terapeutico</div>
+        <div class="pdf-cover-subtitle">CreaTuCuento - Cuento Terapeutico Infantil Personalizado</div>
+        <div class="pdf-cover-divider"></div>
+        <div class="pdf-cover-student" id="pdfCoverStudent">Estudiante: [Nombre Apellido]</div>
+        <div class="pdf-cover-date" id="pdfCoverDate">Fecha: [Fecha]</div>
+        <div class="pdf-cover-footer">
+          Curso: Proyecto Illustrador - 2026<br>
+          Docente: Mg Mario Quiroz Martinez<br>
+          Herramienta de biblioterapia y creacion de cuentos terapeuticos infantiles
+        </div>
       </div>
 
-      <!-- Student Data -->
+      <!-- PAGE 1: Student + Character -->
+      <div class="pdf-page-header">Especialidad de Diseno Publicitario | Instituto de Educacion Superior Publico "Diseno y comunicacion"</div>
+
       <div class="pdf-section">
         <h3>1. Datos del Estudiante</h3>
         <table class="pdf-table">
-          <tr><th>Campo</th><th>Información</th></tr>
+          <tr><th>Campo</th><th>Informacion</th></tr>
           <tr><td>Nombre(s)</td><td id="pdfStudentName">-</td></tr>
           <tr><td>Apellido(s)</td><td id="pdfStudentLastName">-</td></tr>
           <tr><td>Fecha de desarrollo</td><td id="pdfDate">-</td></tr>
         </table>
       </div>
 
-      <!-- Main Character -->
       <div class="pdf-section">
         <h3>2. Personaje Principal</h3>
         <table class="pdf-table">
-          <tr><th>Campo</th><th>Información</th></tr>
+          <tr><th>Campo</th><th>Informacion</th></tr>
           <tr><td>Nombre</td><td id="pdfCharName">-</td></tr>
           <tr><td>Edad</td><td id="pdfCharAge">-</td></tr>
-          <tr><td>Género</td><td id="pdfCharGender">-</td></tr>
-          <tr><td>Descripción</td><td id="pdfCharDesc">-</td></tr>
+          <tr><td>Genero</td><td id="pdfCharGender">-</td></tr>
+          <tr><td>Transformacion</td><td id="pdfCharTransform">-</td></tr>
+          <tr><td>Descripcion</td><td id="pdfCharDesc">-</td></tr>
         </table>
       </div>
 
-      <!-- Secondary Characters -->
       <div class="pdf-section">
         <h3>3. Personajes Secundarios</h3>
         <div id="pdfSecondaryChars"></div>
       </div>
 
-      <!-- Background -->
+      <div class="pdf-page-footer">Curso: Proyecto Illustrador - 2026 | Docente: Mg Mario Quiroz Martinez</div>
+
+      <!-- PAGE 2: Background + Attitude -->
+      <div class="pdf-page-break"></div>
+      <div class="pdf-page-header">Especialidad de Diseno Publicitario | Instituto de Educacion Superior Publico "Diseno y comunicacion"</div>
+
       <div class="pdf-section">
         <h3>4. Antecedentes del Personaje</h3>
         <p><strong>Contexto Familiar:</strong></p>
         <p id="pdfFamilyContext" style="margin-bottom:1rem;color:var(--text-light)">-</p>
         <p><strong>Contexto Escolar:</strong></p>
         <p id="pdfSchoolContext" style="margin-bottom:1rem;color:var(--text-light)">-</p>
-        <p><strong>Antecedentes Médicos:</strong></p>
+        <p><strong>Antecedentes Medicos:</strong></p>
         <p id="pdfMedical" style="color:var(--text-light)">-</p>
       </div>
 
-      <!-- Attitude -->
       <div class="pdf-section">
         <h3>5. Actitud y Comportamiento</h3>
         <table class="pdf-table">
           <tr><th>Entorno</th><th>Observaciones</th></tr>
           <tr><td>En casa</td><td id="pdfAttitudeHome">-</td></tr>
           <tr><td>En la escuela</td><td id="pdfAttitudeSchool">-</td></tr>
-          <tr><td>Con compañeros</td><td id="pdfAttitudePeers">-</td></tr>
+          <tr><td>Con companeros</td><td id="pdfAttitudePeers">-</td></tr>
         </table>
       </div>
 
-      <!-- Talents -->
       <div class="pdf-section">
         <h3>6. Habilidades y Talentos</h3>
         <table class="pdf-table">
-          <tr><th>Campo</th><th>Información</th></tr>
+          <tr><th>Campo</th><th>Informacion</th></tr>
           <tr><td>Talentos</td><td id="pdfTalents">-</td></tr>
           <tr><td>Intereses</td><td id="pdfInterests">-</td></tr>
           <tr><td>Estilo de aprendizaje</td><td id="pdfLearningStyle">-</td></tr>
         </table>
       </div>
 
-      <!-- Social -->
+      <div class="pdf-page-footer">Curso: Proyecto Illustrador - 2026 | Docente: Mg Mario Quiroz Martinez</div>
+
+      <!-- PAGE 3: Social + Disorders + Settings -->
+      <div class="pdf-page-break"></div>
+      <div class="pdf-page-header">Especialidad de Diseno Publicitario | Instituto de Educacion Superior Publico "Diseno y comunicacion"</div>
+
       <div class="pdf-section">
-        <h3>7. Interacción Social</h3>
+        <h3>7. Interaccion Social</h3>
         <table class="pdf-table">
-          <tr><th>Campo</th><th>Información</th></tr>
+          <tr><th>Campo</th><th>Informacion</th></tr>
           <tr><td>Habilidades sociales</td><td id="pdfSocialSkills">-</td></tr>
-          <tr><td>Comunicación</td><td id="pdfCommunication">-</td></tr>
-          <tr><td>Regulación emocional</td><td id="pdfEmotionalReg">-</td></tr>
+          <tr><td>Comunicacion</td><td id="pdfCommunication">-</td></tr>
+          <tr><td>Regulacion emocional</td><td id="pdfEmotionalReg">-</td></tr>
         </table>
       </div>
 
-      <!-- Disorders / Metaphors -->
       <div class="pdf-section">
-        <h3>8. Condiciones y Metáforas Mágicas Seleccionadas</h3>
+        <h3>8. Condiciones y Metaforas Magicas</h3>
         <div id="pdfDisorders"></div>
       </div>
 
-      <!-- Story Settings -->
       <div class="pdf-section">
-        <h3>9. Configuración del Cuento</h3>
+        <h3>9. Configuracion del Cuento</h3>
         <table class="pdf-table">
-          <tr><th>Parámetro</th><th>Selección</th></tr>
+          <tr><th>Parametro</th><th>Seleccion</th></tr>
+          <tr><td>Ambiente / Escenario</td><td id="pdfSetting">-</td></tr>
           <tr><td>Edad objetivo</td><td id="pdfTargetAge">-</td></tr>
-          <tr><td>Género narrativo</td><td id="pdfGenre">-</td></tr>
-          <tr><td>Duración</td><td id="pdfDuration">-</td></tr>
+          <tr><td>Genero narrativo</td><td id="pdfGenre">-</td></tr>
+          <tr><td>Duracion</td><td id="pdfDuration">-</td></tr>
           <tr><td>Tono</td><td id="pdfTone">-</td></tr>
           <tr><td>Valores educativos</td><td id="pdfValues">-</td></tr>
-          <tr><td>Objetivo terapéutico</td><td id="pdfGoal">-</td></tr>
+          <tr><td>Objetivo terapeutico</td><td id="pdfGoal">-</td></tr>
         </table>
       </div>
 
-      <!-- Transformation State -->
       <div class="pdf-section">
-        <h3>10. Estado de Transformación Seleccionado</h3>
+        <h3>10. Estado de Transformacion</h3>
         <p id="pdfTransformState" style="font-size:1.1rem;color:var(--primary);font-weight:600">Humano</p>
         <p id="pdfTransformDesc" style="color:var(--text-light);margin-top:0.5rem">El personaje mantiene su forma humana durante toda la historia.</p>
       </div>
 
-      <!-- Flowchart Summary -->
+      <div class="pdf-page-footer">Curso: Proyecto Illustrador - 2026 | Docente: Mg Mario Quiroz Martinez</div>
+
+      <!-- PAGE 4: Narrative Structure + Story -->
+      <div class="pdf-page-break"></div>
+      <div class="pdf-page-header">Especialidad de Diseno Publicitario | Instituto de Educacion Superior Publico "Diseno y comunicacion"</div>
+
       <div class="pdf-section">
-        <h3>11. Estructura Narrativa (Diagrama de Flujo)</h3>
+        <h3>11. Estructura Narrativa</h3>
         <table class="pdf-table">
-          <tr><th>Paso</th><th>Nombre</th><th>Descripción</th></tr>
-          <tr><td>1</td><td>Presentación del Mundo</td><td>Se presenta al personaje en su entorno cotidiano</td></tr>
-          <tr><td>2</td><td>Llamado a la Aventura</td><td>Aparece el desafío, el personaje debe decidir</td></tr>
-          <tr><td>3</td><td>Transformación y Pruebas</td><td>Metáforas mágicas, aliados y obstáculos</td></tr>
-          <tr><td>4</td><td>Crisis y Elección</td><td>Punto máximo, decisión valiente</td></tr>
-          <tr><td>5</td><td>Resolución</td><td>Superación, regreso transformado</td></tr>
+          <tr><th>Paso</th><th>Nombre</th><th>Descripcion</th></tr>
+          <tr><td>1</td><td>Presentacion del Mundo</td><td>Se presenta al personaje en su entorno cotidiano</td></tr>
+          <tr><td>2</td><td>Llamado a la Aventura</td><td>Aparece el desafio, el personaje debe decidir</td></tr>
+          <tr><td>3</td><td>Transformacion y Pruebas</td><td>Metaforas magicas, aliados y obstaculos</td></tr>
+          <tr><td>4</td><td>Crisis y Eleccion</td><td>Punto maximo, decision valiente</td></tr>
+          <tr><td>5</td><td>Resolucion</td><td>Superacion, regreso transformado</td></tr>
         </table>
       </div>
 
-      <!-- Generated Story -->
       <div class="pdf-section">
-        <h3>12. Cuento Terapéutico Generado</h3>
-        <h4 id="pdfStoryTitle" style="text-align:center;color:var(--primary);margin-bottom:1rem;font-size:1.3rem">-</h4>
-        <div id="pdfStoryContent" style="line-height:2;font-size:1rem;text-align:justify"></div>
+        <h3>12. Cuento Terapeutico Generado</h3>
+        <h4 id="pdfStoryTitle" style="text-align:center;color:var(--primary);margin-bottom:1rem;font-size:1.2rem">-</h4>
+        <div id="pdfStoryContent" style="line-height:1.8;font-size:0.9rem;text-align:justify"></div>
       </div>
 
-      <!-- Technical Script -->
+      <div class="pdf-page-footer">Curso: Proyecto Illustrador - 2026 | Docente: Mg Mario Quiroz Martinez</div>
+
+      <!-- PAGE 5: Technical Script + Suggestions + Notes -->
+      <div class="pdf-page-break"></div>
+      <div class="pdf-page-header">Especialidad de Diseno Publicitario | Instituto de Educacion Superior Publico "Diseno y comunicacion"</div>
+
       <div class="pdf-section">
-        <h3>13. Guion Técnico Narrativo</h3>
+        <h3>13. Guion Tecnico Narrativo</h3>
         <table class="pdf-table">
-          <tr><th>Escena</th><th>Título</th><th>Duración</th><th>Elementos Clave</th></tr>
-          <tr><td>1</td><td>El Mundo Ordinario</td><td>2-3 min</td><td>Presentación, contexto, conexión emocional</td></tr>
-          <tr><td>2</td><td>El Desafío Aparece</td><td>2-3 min</td><td>Conflicto, duda, emociones</td></tr>
-          <tr><td>3</td><td>Transformación Mágica</td><td>3-4 min</td><td>Metáfora central, cambio de perspectiva</td></tr>
-          <tr><td>4</td><td>Pruebas y Aliados</td><td>4-5 min</td><td>Superación progresiva, apoyo</td></tr>
-          <tr><td>5</td><td>Clímax y Resolución</td><td>3-4 min</td><td>Triunfo emocional, mensaje</td></tr>
+          <tr><th>Escena</th><th>Titulo</th><th>Duracion</th><th>Elementos Clave</th></tr>
+          <tr><td>1</td><td>El Mundo Ordinario</td><td>2-3 min</td><td>Presentacion, contexto, conexion emocional</td></tr>
+          <tr><td>2</td><td>El Desafio Aparece</td><td>2-3 min</td><td>Conflicto, duda, emociones</td></tr>
+          <tr><td>3</td><td>Transformacion Magica</td><td>3-4 min</td><td>Metafora central, cambio de perspectiva</td></tr>
+          <tr><td>4</td><td>Pruebas y Aliados</td><td>4-5 min</td><td>Superacion progresiva, apoyo</td></tr>
+          <tr><td>5</td><td>Climax y Resolucion</td><td>3-4 min</td><td>Triunfo emocional, mensaje</td></tr>
         </table>
       </div>
 
-      <!-- 5 Story Suggestions -->
       <div class="pdf-section">
         <h3>14. Cuentos Sugeridos por Valor Educativo</h3>
         <table class="pdf-table">
-          <tr><th>Valor</th><th>Título</th><th>Duración</th><th>Edad</th></tr>
-          <tr><td>Empatía</td><td>El Árbol de los Corazones</td><td>12 min</td><td>5-8 años</td></tr>
-          <tr><td>Perseverancia</td><td>La Semilla que Nunca se Rindió</td><td>10 min</td><td>4-7 años</td></tr>
-          <tr><td>Solidaridad</td><td>Los Tres Amigos del Puente</td><td>15 min</td><td>6-9 años</td></tr>
-          <tr><td>Coraje</td><td>La Niña que Enfrentó a la Sombra</td><td>12 min</td><td>5-8 años</td></tr>
-          <tr><td>Honestidad</td><td>El Espejo que Decía la Verdad</td><td>10 min</td><td>6-9 años</td></tr>
+          <tr><th>Valor</th><th>Titulo</th><th>Duracion</th><th>Edad</th></tr>
+          <tr><td>Empatia</td><td>El Arbol de los Corazones</td><td>12 min</td><td>5-8 anos</td></tr>
+          <tr><td>Perseverancia</td><td>La Semilla que Nunca se Rindio</td><td>10 min</td><td>4-7 anos</td></tr>
+          <tr><td>Solidaridad</td><td>Los Tres Amigos del Puente</td><td>15 min</td><td>6-9 anos</td></tr>
+          <tr><td>Coraje</td><td>La Nina que Enfrento a la Sombra</td><td>12 min</td><td>5-8 anos</td></tr>
+          <tr><td>Honestidad</td><td>El Espejo que Decia la Verdad</td><td>10 min</td><td>6-9 anos</td></tr>
         </table>
       </div>
 
-      <!-- Narrative Arc Chart (CSS-based) -->
-      <div class="pdf-section">
-        <h3>15. Arco Narrativo del Cuento Generado</h3>
-        <div style="background:var(--bg);border-radius:12px;padding:1.5rem;border:1px solid var(--border)">
-          <svg viewBox="0 0 600 200" style="width:100%;height:auto">
-            <defs>
-              <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#6C5CE7"/>
-                <stop offset="50%" stop-color="#FD79A8"/>
-                <stop offset="100%" stop-color="#00B894"/>
-              </linearGradient>
-            </defs>
-            <!-- Grid lines -->
-            <line x1="50" y1="30" x2="550" y2="30" stroke="#e0e0e0" stroke-width="1"/>
-            <line x1="50" y1="80" x2="550" y2="80" stroke="#e0e0e0" stroke-width="1"/>
-            <line x1="50" y1="130" x2="550" y2="130" stroke="#e0e0e0" stroke-width="1"/>
-            <line x1="50" y1="180" x2="550" y2="180" stroke="#e0e0e0" stroke-width="1"/>
-            <!-- Axis -->
-            <line x1="50" y1="180" x2="550" y2="180" stroke="#333" stroke-width="2"/>
-            <line x1="50" y1="30" x2="50" y2="180" stroke="#333" stroke-width="2"/>
-            <!-- Arc curve -->
-            <path d="M 50 150 Q 80 140 125 130 Q 170 115 200 120 Q 240 130 275 90 Q 310 40 340 50 Q 380 65 400 80 Q 450 110 475 100 Q 510 85 550 70" fill="none" stroke="#6C5CE7" stroke-width="3"/>
-            <!-- Points -->
-            <circle cx="50" cy="150" r="6" fill="#6C5CE7"/>
-            <circle cx="125" cy="130" r="6" fill="#A29BFE"/>
-            <circle cx="200" cy="120" r="6" fill="#FD79A8"/>
-            <circle cx="275" cy="90" r="6" fill="#E17055"/>
-            <circle cx="340" cy="50" r="6" fill="#00B894"/>
-            <circle cx="400" cy="80" r="6" fill="#00CEC9"/>
-            <circle cx="475" cy="100" r="6" fill="#FDCB6E"/>
-            <circle cx="550" cy="70" r="6" fill="#6C5CE7"/>
-            <!-- Labels -->
-            <text x="50" y="200" font-size="10" text-anchor="middle" fill="#666">Inicio</text>
-            <text x="150" y="200" font-size="10" text-anchor="middle" fill="#666">Presentación</text>
-            <text x="250" y="200" font-size="10" text-anchor="middle" fill="#666">Conflicto</text>
-            <text x="350" y="200" font-size="10" text-anchor="middle" fill="#666">Clímax</text>
-            <text x="450" y="200" font-size="10" text-anchor="middle" fill="#666">Resolución</text>
-            <text x="550" y="200" font-size="10" text-anchor="middle" fill="#666">Fin</text>
-            <text x="35" y="185" font-size="10" text-anchor="end" fill="#666">Bajo</text>
-            <text x="35" y="35" font-size="10" text-anchor="end" fill="#666">Alto</text>
-            <text x="300" y="18" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Intensidad Emocional a lo largo de la historia</text>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Notes -->
       <div class="pdf-section" style="background:rgba(253,203,110,0.1);padding:1.5rem;border-radius:12px;border-left:4px solid var(--accent2)">
-        <h4 style="color:var(--accent3);margin-bottom:0.75rem">📝 Notas para el Terapeuta / Docente</h4>
-        <p style="font-size:0.9rem;color:var(--text-light);line-height:1.8">
-          Este cuento ha sido diseñado utilizando principios de biblioterapia y reestructuración cognitiva. 
-          Las metáforas mágicas transforman desafíos psicológicos en elementos narrativos con los que el niño 
-          puede identificarse sin sentirse expuesto. Se recomienda leer el cuento en un ambiente seguro, 
+        <h4 style="color:var(--accent3);margin-bottom:0.75rem">Notas para el Terapeuta / Docente</h4>
+        <p style="font-size:0.85rem;color:var(--text-light);line-height:1.7">
+          Este cuento ha sido disenado utilizando principios de biblioterapia y reestructuracion cognitiva.
+          Las metaforas magicas transforman desafios psicologicos en elementos narrativos con los que el nino
+          puede identificarse sin sentirse expuesto. Se recomienda leer el cuento en un ambiente seguro,
           permitir preguntas y dibujos posteriores, y observar las reacciones emocionales durante la lectura.
         </p>
-        <p style="font-size:0.9rem;color:var(--text-light);line-height:1.8;margin-top:0.5rem">
-          <strong>Objetivos terapéuticos sugeridos:</strong> Identificación proyectiva, modelado de afrontamiento, 
-          normalización de emociones difíciles, y reforzamiento de recursos personales a través de la narrativa.
+        <p style="font-size:0.85rem;color:var(--text-light);line-height:1.7;margin-top:0.5rem">
+          <strong>Objetivos terapeuticos sugeridos:</strong> Identificacion proyectiva, modelado de afrontamiento,
+          normalizacion de emociones dificiles, y reforzamiento de recursos personales a traves de la narrativa.
         </p>
       </div>
 
-      <!-- Signature -->
-      <div style="margin-top:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem">
+      <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem">
         <div style="border-top:2px solid var(--text);padding-top:0.5rem">
-          <p style="font-size:0.85rem;color:var(--text-light)">Firma del Terapeuta / Docente</p>
+          <p style="font-size:0.8rem;color:var(--text-light)">Firma del Terapeuta / Docente</p>
         </div>
         <div style="border-top:2px solid var(--text);padding-top:0.5rem">
-          <p style="font-size:0.85rem;color:var(--text-light)">Firma del Acudiente</p>
+          <p style="font-size:0.8rem;color:var(--text-light)">Firma del Acudiente</p>
         </div>
       </div>
+
+      <div class="pdf-page-footer">Curso: Proyecto Illustrador - 2026 | Docente: Mg Mario Quiroz Martinez</div>
     </div>
   </div>
 </section>
 
 </div><!-- end container -->
 
+<!-- Print Form Container (hidden, shown only on print) -->
+<div class="print-form-container" id="printFormContainer" style="display:none">
+  <!-- Header -->
+  <div class="print-form-header">
+    <div style="font-size:9pt;color:#555;text-transform:uppercase;letter-spacing:2px">Instituto de Educacion Superior Publico "Diseno y comunicacion"</div>
+    <div style="font-size:8pt;color:#777;margin-top:0.2rem">Especialidad de Diseno Publicitario</div>
+    <h1>FICHA DE REGISTRO - CUENTO TERAPEUTICO INFANTIL</h1>
+    <h2>CreaTuCuento - Datos Completos del Formulario</h2>
+    <div class="print-meta" id="printMetaStudent">Estudiante: [Nombre] | Fecha: [Fecha]</div>
+    <div class="print-meta" id="printMetaDocente">Docente: Mg Mario Quiroz Martinez | Curso: Proyecto Illustrador - 2026</div>
+  </div>
+
+  <!-- SECCION 1: Datos del Estudiante -->
+  <div class="print-form-section">
+    <h3>1. Datos del Estudiante</h3>
+    <table class="print-form-table">
+      <tr><th>Nombre(s)</th><td id="printStudentName">-</td></tr>
+      <tr><th>Apellido(s)</th><td id="printStudentLastName">-</td></tr>
+      <tr><th>Fecha de desarrollo</th><td id="printDate">-</td></tr>
+    </table>
+  </div>
+
+  <!-- SECCION 2: Personaje Principal -->
+  <div class="print-form-section">
+    <h3>2. Personaje Principal</h3>
+    <table class="print-form-table">
+      <tr><th>Nombre</th><td id="printMainCharName">-</td></tr>
+      <tr><th>Edad</th><td id="printMainCharAge">-</td></tr>
+      <tr><th>Genero</th><td id="printMainCharGender">-</td></tr>
+      <tr><th>Transformacion</th><td id="printMainCharTransform">-</td></tr>
+      <tr><th>Descripcion Fisica y Personalidad</th><td id="printMainCharDesc" style="white-space:pre-wrap">-</td></tr>
+    </table>
+  </div>
+
+  <!-- SECCION 3: Personajes Secundarios -->
+  <div class="print-form-section">
+    <h3>3. Personajes Secundarios</h3>
+    <div id="printSecondaryChars"><p style="color:#666;font-size:10pt">No se registraron personajes secundarios.</p></div>
+  </div>
+
+  <!-- SECCION 4: Antecedentes del Personaje -->
+  <div class="print-form-section">
+    <h3>4. Antecedentes del Personaje</h3>
+    <table class="print-form-table">
+      <tr><th>Contexto Familiar</th><td id="printFamilyContext" style="white-space:pre-wrap">-</td></tr>
+      <tr><th>Contexto Escolar</th><td id="printSchoolContext" style="white-space:pre-wrap">-</td></tr>
+      <tr><th>Antecedentes Medicos/Relevantes</th><td id="printMedical" style="white-space:pre-wrap">-</td></tr>
+    </table>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="print-form-page-break"></div>
+
+  <!-- SECCION 5: Actitud y Comportamiento -->
+  <div class="print-form-section">
+    <h3>5. Actitud y Comportamiento</h3>
+    <table class="print-form-table">
+      <tr><th>Actitud en Casa</th><td id="printAttitudeHome" style="white-space:pre-wrap">-</td></tr>
+      <tr><th>Actitud en la Escuela</th><td id="printAttitudeSchool" style="white-space:pre-wrap">-</td></tr>
+      <tr><th>Actitud con Companeros</th><td id="printAttitudePeers" style="white-space:pre-wrap">-</td></tr>
+    </table>
+  </div>
+
+  <!-- SECCION 6: Habilidades y Talentos -->
+  <div class="print-form-section">
+    <h3>6. Habilidades y Talentos</h3>
+    <table class="print-form-table">
+      <tr><th>Talentos Destacados</th><td id="printTalents" style="white-space:pre-wrap">-</td></tr>
+      <tr><th>Intereses y Aficiones</th><td id="printInterests" style="white-space:pre-wrap">-</td></tr>
+      <tr><th>Estilo de Aprendizaje Preferido</th><td id="printLearningStyle">-</td></tr>
+    </table>
+  </div>
+
+  <!-- SECCION 7: Interaccion Social -->
+  <div class="print-form-section">
+    <h3>7. Interaccion Social</h3>
+    <table class="print-form-table">
+      <tr><th>Habilidades Sociales</th><td id="printSocialSkills" style="white-space:pre-wrap">-</td></tr>
+      <tr><th>Estilo de Comunicacion</th><td id="printCommunication">-</td></tr>
+      <tr><th>Regulacion Emocional</th><td id="printEmotionalReg" style="white-space:pre-wrap">-</td></tr>
+    </table>
+  </div>
+
+  <!-- SECCION 8: Condiciones y Metaforas -->
+  <div class="print-form-section">
+    <h3>8. Condiciones y Metaforas Terapeuticas Seleccionadas</h3>
+    <div id="printDisorders"><p style="color:#666;font-size:10pt">No se seleccionaron condiciones.</p></div>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="print-form-page-break"></div>
+
+  <!-- SECCION 9: Configuracion del Cuento -->
+  <div class="print-form-section">
+    <h3>9. Configuracion del Cuento</h3>
+    <table class="print-form-table">
+      <tr><th>Ambiente / Escenario</th><td id="printSetting">-</td></tr>
+      <tr><th>Edad Objetivo</th><td id="printTargetAge">-</td></tr>
+      <tr><th>Genero Narrativo</th><td id="printGenre">-</td></tr>
+      <tr><th>Duracion Aproximada</th><td id="printDuration">-</td></tr>
+      <tr><th>Tono del Cuento</th><td id="printTone">-</td></tr>
+      <tr><th>Valores Educativos Seleccionados</th><td id="printValues">-</td></tr>
+      <tr><th>Objetivo Terapeutico</th><td id="printGoal" style="white-space:pre-wrap">-</td></tr>
+    </table>
+  </div>
+
+  <!-- SECCION 10: Transformacion -->
+  <div class="print-form-section">
+    <h3>10. Estado de Transformacion del Personaje</h3>
+    <table class="print-form-table">
+      <tr><th>Transformacion Seleccionada</th><td id="printTransformState">-</td></tr>
+      <tr><th>Descripcion</th><td id="printTransformDesc">-</td></tr>
+    </table>
+  </div>
+
+  <!-- SECCION 11: Valores Educativos -->
+  <div class="print-form-section">
+    <h3>11. Valores Educativos a Potenciar</h3>
+    <div id="printValuesList"><p style="color:#666;font-size:10pt">No se seleccionaron valores.</p></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="print-form-footer">
+    Instituto de Educacion Superior Publico "Diseno y comunicacion" - Especialidad de Diseno Publicitario<br>
+    Curso: Proyecto Illustrador - 2026 | Docente: Mg Mario Quiroz Martinez<br>
+    Documento generado automaticamente por CreaTuCuento
+  </div>
+</div>
+
 <!-- Footer -->
 <footer>
   <p class="footer-text">
-    <strong>CreaTuCuento</strong> - Herramienta de biblioterapia y creación de cuentos terapéuticos infantiles
+    <strong>CreaTuCuento</strong> - Herramienta de biblioterapia y creacion de cuentos terapeuticos infantiles
   </p>
   <p class="footer-text" style="margin-top:0.5rem;font-size:0.8rem">
-    Diseñado para profesionales de la salud mental y educación | Principios de reestructuración cognitiva y narrativa terapéutica
+    Curso: Proyecto Illustrador - 2026 | Docente: Mg Mario Quiroz Martinez | Especialidad de Diseno Publicitario
+  </p>
+  <p class="footer-text" style="margin-top:0.3rem;font-size:0.75rem;color:var(--text-light)">
+    Instituto de Educacion Superior Publico "Diseno y comunicacion"
   </p>
 </footer>
 
@@ -2150,6 +2792,218 @@ function toggleAccordion(header) {
   }
 }
 
+// ===== PRESETS: DEMOS & SUGGESTIONS =====
+var PRESETS = {
+  high: {
+    studentName: 'Bart', studentLastName: 'Simpson',
+    mainCharName: 'Bruno', mainCharAge: '10', mainCharGender: 'masculino',
+    mainCharTransform: 'animal',
+    mainCharDesc: 'Niño con actitud explosiva, nunca se cansa, se mueve constantemente y se distrae fácilmente. Puede concentrarse en una sola cosa por poco tiempo. Muestra inseguridad, rebeldía, miedo y soledad. Mantiene dificultades de conducta no reconocidas por sus padres. (Ref.: Bart Simpson TDAH, Zúñiga 2018)',
+    secChars: [
+      { name: 'Margarita', relation: 'maestro', support: 'sabiduria', transform: 'humano' },
+      { name: 'Toby', relation: 'mascota', support: 'emocional', transform: 'animal' }
+    ],
+    disorders: ['tdah','oposicion'],
+    values: ['empatia','solidaridad'],
+    storySetting: 'bosque-encantado',
+    genre: 'fantasia', duration: 'media', tone: 'valiente', targetAge: '6-8',
+    therapeuticGoal: 'Que el niño comprenda que su TDAH no le impide lograr cosas importantes, que puede canalizar su energía de forma positiva. Ayudarle a identificar sus emociones (inseguridad, rebeldía, miedo) y expresarlas sin conductas explosivas. Reforzar que pedir ayuda es valiente y que su familia está para apoyarle, aunque parezca disfuncional. (Ref.: Bart Simpson TDAH, Zúñiga 2018)',
+    familyContext: 'Familia nuclear disfuncional. Padre calvo, obeso, perezoso e inculto con bajo coeficiente intelectual. Madre conciliadora que alterna fuerza con cariño pero es ignorada por los hijos. Hermana inteligente con conflictos existenciales. (Ref.: Los Simpson, Zúñiga 2018)',
+    attitudeHome: 'Actitud explosiva, nunca se cansa, parece que la energía no se le agota. Se mueve constantemente de un lugar a otro. Tiene dificultad para seguir instrucciones. Se deja influenciar fácilmente. En momentos de calma, muestra inseguridad y miedo. (Ref.: Bart Simpson TDAH, Pato Lucas TDAH, Zúñiga 2018)',
+    talents: 'Desarrolló dotes artísticas tempranas. Creatividad e ingenio superior al promedio cuando se concentra. Habilidades atléticas. Empatía hacia los demás que facilita relaciones sociales. (Ref.: Zúñiga 2018)',
+    socialSkills: 'Tiene dificultades para expresar emociones de forma saludable. Externaliza frustración mediante conductas explosivas. Es capaz de compartir cuando se siente seguro. Pide ayuda indirectamente. (Ref.: Pato Lucas TDAH, Zúñiga 2018)',
+    emotionalRegulation: 'Umbral de frustración muy bajo. Cualquier contrariedad provoca cólera súbita. Pasa de la calma a la agitación. Necesita apoyo externo para calmarse. (Ref.: Taz - Trastorno Explosivo Intermitente, Zúñiga 2018)',
+    arcScore: 95
+  },
+  medium: {
+    studentName: 'Piglet', studentLastName: 'Puerquito',
+    mainCharName: 'Pepito', mainCharAge: '8', mainCharGender: 'masculino',
+    mainCharTransform: 'humano',
+    mainCharDesc: 'Niño pequeño, nervioso y siempre preocupado. Tiene tensión continua que puede proceder de todo tipo de situaciones o incluso darse sin causa aparente. Se sobresalta fácilmente con ruidos. (Ref.: Piglet - Trastorno por Ansiedad Generalizada, Shea et al., Zúñiga 2018)',
+    secChars: [
+      { name: 'Luna', relation: 'amigo', support: 'motivacional', transform: 'humano' }
+    ],
+    disorders: ['ansiedad'],
+    values: ['perseverancia'],
+    storySetting: 'jardin',
+    genre: 'fabula', duration: 'corta', tone: 'tranquilo', targetAge: '3-5',
+    therapeuticGoal: 'Ayudar al niño a reconocer que su ansiedad es manejable, que puede pedir ayuda cuando se siente abrumado, y que cada pequeño paso cuenta como valentía. (Ref.: Piglet T.A.G., Shea et al., Zúñiga 2018)',
+    familyContext: 'Vive con su madre Kanga en una familia monoparental. La madre es sobreprotectora. (Ref.: Rito - Complejo de Edipo, Zúñiga 2018)',
+    attitudeHome: 'Nervioso y preocupado constantemente. Tiene tensión continua. Se sobresalta fácilmente. (Ref.: Piglet T.A.G., Zúñiga 2018)',
+    talents: 'Muy observador. Tiene gran capacidad de anticipar problemas. Creativo en encontrar soluciones alternativas.',
+    socialSkills: 'Expresa emociones verbalmente cuando se siente seguro. Pide ayuda después de pensarlo mucho. Se calma con apoyo de amigos cercanos.',
+    emotionalRegulation: 'Umbral de ansiedad alto. Necesita rutinas predecibles. Se calma con técnicas de respiración y presencia de aliados.',
+    arcScore: 60
+  },
+  poor: {
+    studentName: 'Niño', studentLastName: 'Genérico',
+    mainCharName: 'Pedrito', mainCharAge: '7', mainCharGender: 'masculino',
+    mainCharTransform: 'humano',
+    mainCharDesc: 'Un niño normal que vive en un pueblo pequeño. No tiene condiciones especiales ni desafíos particulares.',
+    secChars: [],
+    disorders: [],
+    values: [],
+    storySetting: 'pueblo',
+    genre: 'cuento-hadas', duration: 'corta', tone: 'divertido', targetAge: '6-8',
+    therapeuticGoal: 'Entretener al niño con una historia agradable.',
+    familyContext: 'Familia funcional. Vive con sus padres.',
+    attitudeHome: 'Conducta normal para su edad.',
+    talents: 'Le gusta jugar y explorar.',
+    socialSkills: 'Interactúa normalmente con otros niños.',
+    emotionalRegulation: 'Maneja sus emociones de forma típica para su edad.',
+    arcScore: 20
+  },
+  cuento1: {
+    mainCharName: 'Lucas', mainCharAge: '7', mainCharGender: 'masculino',
+    mainCharTransform: 'animal',
+    disorders: ['depresion-infantil'],
+    values: ['empatia'],
+    storySetting: 'bosque-encantado',
+    genre: 'fantasia', tone: 'esperanzador', duration: 'media', targetAge: '5-8',
+    therapeuticGoal: 'Desarrollar empatía hacia los demás reconociendo que cada persona tiene emociones valiosas que deben ser respetadas.'
+  },
+  cuento2: {
+    mainCharName: 'Semillita', mainCharAge: '5', mainCharGender: 'femenino',
+    mainCharTransform: 'objeto-inerte',
+    disorders: ['aprendizaje'],
+    values: ['perseverancia'],
+    storySetting: 'jardin',
+    genre: 'fabula', tone: 'valiente', duration: 'corta', targetAge: '4-7',
+    therapeuticGoal: 'Enseñar que los obstáculos pueden superarse con persistencia y que cada quien tiene su propio ritmo de crecimiento.'
+  },
+  cuento3: {
+    mainCharName: 'Conejito', mainCharAge: '8', mainCharGender: 'no-binario',
+    mainCharTransform: 'animal',
+    disorders: ['social'],
+    values: ['solidaridad'],
+    storySetting: 'selva',
+    genre: 'aventura', tone: 'valiente', duration: 'larga', targetAge: '6-9',
+    therapeuticGoal: 'Demostrar que la verdadera fuerza viene de la unión de amigos diferentes y que cada persona aporta algo único al equipo.'
+  },
+  cuento4: {
+    mainCharName: 'Estrella', mainCharAge: '6', mainCharGender: 'femenino',
+    mainCharTransform: 'espectro',
+    disorders: ['fobias'],
+    values: ['coraje'],
+    storySetting: 'isla',
+    genre: 'fantasia', tone: 'esperanzador', duration: 'media', targetAge: '5-8',
+    therapeuticGoal: 'Ayudar a enfrentar los miedos de forma creativa, transformando la oscuridad en un espacio de amistad y descubrimiento.'
+  },
+  cuento5: {
+    mainCharName: 'Espejito', mainCharAge: '8', mainCharGender: 'masculino',
+    mainCharTransform: 'objeto-2d',
+    disorders: ['baja-autoestima'],
+    values: ['honestidad'],
+    storySetting: 'castillo',
+    genre: 'cuento-hadas', tone: 'tranquilo', duration: 'media', targetAge: '6-9',
+    therapeuticGoal: 'Fomentar la honestidad como camino hacia mejores relaciones y autoaceptación, mostrando que ser auténtico es valioso.'
+  }
+};
+
+function applyPreset(key) {
+  var p = PRESETS[key];
+  if (!p) return;
+
+  // Student data
+  if (p.studentName) document.getElementById('studentName').value = p.studentName;
+  if (p.studentLastName) document.getElementById('studentLastName').value = p.studentLastName;
+
+  // Main character
+  if (p.mainCharName) document.getElementById('mainCharName').value = p.mainCharName;
+  if (p.mainCharAge) document.getElementById('mainCharAge').value = p.mainCharAge;
+  if (p.mainCharGender) document.getElementById('mainCharGender').value = p.mainCharGender;
+  if (p.mainCharTransform) document.getElementById('mainCharTransform').value = p.mainCharTransform;
+  if (p.mainCharDesc) document.getElementById('mainCharDesc').value = p.mainCharDesc;
+
+  // Secondary characters
+  if (p.secChars) {
+    var container = document.getElementById('secondaryCharsContainer');
+    container.innerHTML = '';
+    secondaryCharCount = 0;
+    p.secChars.forEach(function(sc) {
+      if (secondaryCharCount < 3) {
+        secondaryCharCount++;
+        var card = document.createElement('div');
+        card.className = 'char-card';
+        card.setAttribute('data-index', secondaryCharCount);
+        card.innerHTML = '<div class="char-header"><span class="char-title">Personaje Secundario ' + secondaryCharCount + '</span></div>' +
+          '<div class="form-row"><div class="form-group"><label>Nombre</label><input type="text" class="sec-name" value="' + (sc.name || '') + '"></div>' +
+          '<div class="form-group"><label>Relacion con el protagonista</label><select class="sec-relation">' +
+          '<option value="">Selecciona...</option><option value="amigo">Amigo/a</option><option value="hermano">Hermano/a</option><option value="mascota">Mascota</option><option value="maestro">Maestro/a</option><option value="abuelo">Abuelo/a</option><option value="vecino">Vecino/a</option><option value="companero">Companero/a de aventuras</option><option value="guia">Guia espiritual</option></select></div></div>' +
+          '<div class="form-group"><label>Transformacion del Personaje Secundario</label><select class="sec-transform">' +
+          '<option value="humano">Humano - Forma original</option><option value="animal">Animal - Criatura con caracteristicas especiales</option><option value="objeto-inerte">Objeto Inerte - Objeto con conciencia magica</option><option value="objeto-2d">Objeto 2D - Mundo de dibujos y pinturas</option><option value="espectro">Espectro - Forma eterea con poderes</option></select></div>' +
+          '<div class="form-group"><label>Tipo de Apoyo</label><select class="sec-support">' +
+          '<option value="">Selecciona el tipo de apoyo...</option><option value="emocional">Apoyo Emocional</option><option value="motivacional">Apoyo Motivacional</option><option value="inteligencia">Apoyo Inteligente</option><option value="protector">Apoyo Protector</option><option value="comico">Apoyo Comico</option><option value="sabiduria">Apoyo de Sabiduria</option><option value="fuerza">Apoyo de Fuerza</option><option value="creativo">Apoyo Creativo</option><option value="leal">Apoyo de Lealtad</option><option value="practico">Apoyo Practico</option></select></div>';
+        container.appendChild(card);
+        if (sc.name) card.querySelector('.sec-name').value = sc.name;
+        if (sc.relation) card.querySelector('.sec-relation').value = sc.relation;
+        if (sc.support) card.querySelector('.sec-support').value = sc.support;
+        if (sc.transform) card.querySelector('.sec-transform').value = sc.transform;
+      }
+    });
+  }
+
+  // Disorders
+  document.querySelectorAll('#disordersGrid input').forEach(function(cb) { cb.checked = false; });
+  if (p.disorders) {
+    p.disorders.forEach(function(d) {
+      var cb = document.getElementById('dis-' + d);
+      if (cb) cb.checked = true;
+    });
+  }
+
+  // Values
+  document.querySelectorAll('.value-card').forEach(function(vc) { vc.classList.remove('selected'); });
+  selectedValues = [];
+  if (p.values) {
+    p.values.forEach(function(v) {
+      var card = document.querySelector('.value-card[data-value="' + v + '"]');
+      if (card) {
+        card.classList.add('selected');
+        selectedValues.push(v);
+      }
+    });
+  }
+
+  // Story settings
+  if (p.storySetting) document.getElementById('storySetting').value = p.storySetting;
+  if (p.genre) document.getElementById('storyGenre').value = p.genre;
+  if (p.duration) document.getElementById('storyDuration').value = p.duration;
+  if (p.tone) document.getElementById('storyTone').value = p.tone;
+  if (p.targetAge) document.getElementById('targetAge').value = p.targetAge;
+  if (p.therapeuticGoal) document.getElementById('therapeuticGoal').value = p.therapeuticGoal;
+
+  // Background
+  if (p.familyContext) document.getElementById('familyContext').value = p.familyContext;
+  if (p.attitudeHome) document.getElementById('attitudeHome').value = p.attitudeHome;
+  if (p.talents) document.getElementById('talents').value = p.talents;
+  if (p.socialSkills) document.getElementById('socialSkills').value = p.socialSkills;
+  if (p.emotionalRegulation) document.getElementById('emotionalRegulation').value = p.emotionalRegulation;
+
+  // Set date if empty
+  if (!document.getElementById('taskDate').value) {
+    document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
+  }
+
+  // Update the transform section UI to match
+  var mctVal = document.getElementById('mainCharTransform').value;
+  var tCard = document.querySelector('.state-card[data-state="' + mctVal + '"]');
+  if (tCard) {
+    document.querySelectorAll('.state-card').forEach(function(c) { c.classList.remove('active'); });
+    tCard.classList.add('active');
+    var tData = STATE_DATA[mctVal];
+    if (tData) {
+      document.getElementById('transformPreview').querySelector('h4').innerHTML = '🔄 Estado Actual: ' + tData.name;
+      document.getElementById('transformDesc').textContent = tData.desc;
+      document.getElementById('transformExample').textContent = tData.example;
+    }
+  }
+
+  // Scroll to form
+  scrollToSection('formSection');
+  alert('Configuracion aplicada: "' + (p.studentName || p.mainCharName) + '" cargada. Revisa los campos y haz clic en "Generar Cuento Magico".');
+}
+
 // ===== DISORDERS CHECKBOXES =====
 function renderDisorders() {
   const grid = $('disordersGrid');
@@ -2251,6 +3105,16 @@ function addSecondaryChar() {
           <option value="guia">Guía espiritual</option>
         </select>
       </div>
+    </div>
+    <div class="form-group">
+      <label>Transformación del Personaje Secundario</label>
+      <select class="sec-transform">
+        <option value="humano" selected>Humano - Forma original</option>
+        <option value="animal">Animal - Criatura con características especiales</option>
+        <option value="objeto-inerte">Objeto Inerte - Objeto con conciencia mágica</option>
+        <option value="objeto-2d">Objeto 2D - Mundo de dibujos y pinturas</option>
+        <option value="espectro">Espectro - Forma etérea con poderes</option>
+      </select>
     </div>
     <div class="form-group">
       <label>Tipo de Apoyo</label>
@@ -2369,6 +3233,7 @@ function generateStory() {
   const charAge = $('mainCharAge').value;
   const charGender = $('mainCharGender').value;
   const charDesc = $('mainCharDesc').value;
+  const mainCharTransform = $('mainCharTransform').value;
 
   // Secondary chars
   const secChars = [];
@@ -2376,7 +3241,8 @@ function generateStory() {
     const name = card.querySelector('.sec-name').value.trim();
     const relation = card.querySelector('.sec-relation').value;
     const support = card.querySelector('.sec-support').value;
-    if (name) secChars.push({ name, relation, support });
+    const transform = card.querySelector('.sec-transform').value;
+    if (name) secChars.push({ name, relation, support, transform });
   });
 
   // Disorders
@@ -2394,11 +3260,14 @@ function generateStory() {
 
   updateProgress(30);
 
+  // Story setting
+  const storySetting = $('storySetting').value;
+
   // Build story
   const story = buildStory({
     sName, sLastName, sDate, charName, charAge, charGender, charDesc,
-    secChars, selectedDisorders, selectedValues, targetAge, genre,
-    duration, tone, goal, selectedState
+    mainCharTransform, secChars, selectedDisorders, selectedValues,
+    targetAge, genre, duration, tone, goal, storySetting
   });
 
   currentStory = story;
@@ -2407,9 +3276,41 @@ function generateStory() {
 
   // Render
   $('storyTitle').textContent = generateTitle(charName, selectedValues, genre);
-  $('storyMeta').textContent = `Generado para ${sName} ${sLastName} | ${sDate} | Estado: ${STATE_DATA[selectedState].name}`;
+  const mctData = STATE_DATA[$('mainCharTransform').value] || STATE_DATA['humano'];
+  $('storyMeta').textContent = `Generado para ${sName} ${sLastName} | ${sDate} | Transformación: ${mctData.name}`;
   $('storyContent').innerHTML = story;
   $('storySection').style.display = 'block';
+
+  // Show and update arc comparison
+  var arcDiv = document.getElementById('arcComparison');
+  if (arcDiv) {
+    arcDiv.style.display = 'block';
+    var disordersCount = selectedDisorders.length;
+    var valuesCount = selectedValues.length;
+    var hasTransform = document.getElementById('mainCharTransform').value !== 'humano';
+    var hasSetting = document.getElementById('storySetting').value !== '';
+    var hasGoal = document.getElementById('therapeuticGoal').value.trim() !== '';
+    var hasSecChars = secChars.length > 0;
+
+    var score = 20;
+    if (disordersCount > 0) score += 25;
+    if (disordersCount > 1) score += 10;
+    if (valuesCount > 0) score += 15;
+    if (valuesCount > 1) score += 5;
+    if (hasTransform) score += 10;
+    if (hasSetting) score += 5;
+    if (hasGoal) score += 5;
+    if (hasSecChars) score += 10;
+
+    setTimeout(function() {
+      document.getElementById('arcHighBar').style.width = Math.min(95, Math.max(score, 20)) + '%';
+      document.getElementById('arcHighScore').textContent = Math.min(95, Math.max(score, 20));
+      document.getElementById('arcMedBar').style.width = Math.min(70, Math.max(score - 15, 20)) + '%';
+      document.getElementById('arcMedScore').textContent = Math.min(70, Math.max(score - 15, 20));
+      document.getElementById('arcPoorBar').style.width = Math.min(30, Math.max(score - 40, 10)) + '%';
+      document.getElementById('arcPoorScore').textContent = Math.min(30, Math.max(score - 40, 10));
+    }, 300);
+  }
 
   updateProgress(100);
 
@@ -2457,14 +3358,35 @@ function generateTitle(charName, values, genre) {
 }
 
 function buildStory(data) {
-  const { charName, secChars, selectedDisorders, selectedValues, selectedState, charGender } = data;
+  const { charName, secChars, selectedDisorders, selectedValues, mainCharTransform, charGender, storySetting } = data;
 
   // Get metaphor data
   const disorders = selectedDisorders.length > 0 ? selectedDisorders : ['ansiedad'];
   const mainDisorder = METAPHOR_MAP[disorders[0]];
   const metaphor = mainDisorder ? mainDisorder.metaphor : 'Un ser mágico con habilidades especiales';
 
-  // Get secondary char info
+  // Setting descriptions
+  const settingLabels = {
+    'bosque-encantado': 'un Bosque Encantado donde los árboles susurraban secretos milenarios y los hongos brillaban con luz propia',
+    'ciudad-magica': 'una Ciudad Mágica donde cada edificio tenía puertas a dimensiones desconocidas y las farolas cobraban vida al anochecer',
+    'playa': 'una Playa y Mar de aguas cristalinas donde las olas cantaban melodías y las conchas guardaban recuerdos del océano',
+    'montanas': 'unas Montañas Nevadas donde cada pico tocaba las nubes y los vientos llevaban mensajes de sabiduría ancestral',
+    'espacio': 'el Espacio Exterior, un cosmos infinito lleno de nebulosas de colores y planetas con formas de vida inimaginables',
+    'pueblo': 'un Pueblo Pequeño donde todos se conocían y las tradiciones mágicas se transmitían de generación en generación',
+    'castillo': 'un Castillo Medieval con torres que se perdían entre las nubes y pasillos que guardaban secretos milenarios',
+    'granja': 'una Granja y Campo donde los animales hablaban al amanecer y las cosechas crecían al ritmo de la música',
+    'selva': 'una Selva Tropical donde cada hoja escondía criaturas mágicas y los ríos fluían con agua de cristal luminoso',
+    'desierto': 'un Desierto Dorado donde las dunas cambiaban de forma con el viento y los oasis eran portales a otros mundos',
+    'jardin': 'un Jardín Secreto donde cada flor tenía un poder especial y los laberintos de rosas protegían tesoros ocultos',
+    'isla': 'una Isla Misteriosa rodeada de niebla perpetua, donde cada rincón escondía un enigma por resolver',
+    'mundo-subterraneo': 'un Mundo Subterráneo de cuevas brillantes con cristales que iluminaban ciudades olvidadas bajo tierra',
+    'nubes': 'el Reino de las Nubes, un lugar etéreo donde caminar era como flotar y cada nube tenía una historia que contar',
+    'polo-norte': 'el Polo Norte Helado, un territorio de hielos eternos donde las auroras bailaban y los iglús eran templos de paz',
+    'volcan': 'un Volcán Activo cuyas entrañas guardaban cristales mágicos y cuyas llamadas purificaban el corazón de los valientes'
+  };
+  const settingDesc = storySetting ? settingLabels[storySetting] : 'un mundo mágico lleno de maravillas y secretos por descubrir';
+
+  // Get secondary char info with transformations
   let secCharText = '';
   if (secChars.length > 0) {
     secCharText = secChars.map((sc, i) => {
@@ -2475,12 +3397,13 @@ function buildStory(data) {
         fuerza: 'proporciona coraje', creativo: 'inspira nuevas ideas',
         leal: 'permanece siempre a su lado', practico: 'ayuda con recursos útiles'
       };
-      return `${sc.name} (${sc.relation}), quien le ${supportLabels[sc.support] || 'apoya en todo momento'}`;
+      const tLabel = sc.transform && sc.transform !== 'humano' ? ` [transformado en ${STATE_DATA[sc.transform]?.name || sc.transform}]` : '';
+      return `${sc.name} (${sc.relation}${tLabel}), quien le ${supportLabels[sc.support] || 'apoya en todo momento'}`;
     }).join(', y ');
   }
 
   // Get state transformation description
-  const stateData = STATE_DATA[selectedState];
+  const stateData = STATE_DATA[mainCharTransform] || STATE_DATA['humano'];
 
   // Get value descriptions
   const valueLabels = {
@@ -2499,8 +3422,8 @@ function buildStory(data) {
   // SCENE 1
   story += `<h4 class="story-section-title">Capítulo 1: El Mundo de ${charName}</h4>`;
   story += `<p>Había una vez ${charGender === 'femenino' ? 'una niña llamada' : charGender === 'masculino' ? 'un niño llamado' : 'un ser mágico llamado'} <strong>${charName}</strong>, `;
-  story += `que vivía en un pequeño pueblo rodeado de colinas verdes y un bosque lleno de secretos. `;
-  story += `${charName} no era como los demás: ${charGender === 'femenino' ? 'ella' : charGender === 'masculino' ? 'él' : ''} tenía una cualidad especial que la hacía única.</p>`;
+  story += `que vivía en ${settingDesc}. `;
+  story += `${charName} no era como los demás: ${charGender === 'femenino' ? 'ella' : charGender === 'masculino' ? 'él' : ''} tenía una cualidad especial que le hacía único.</p>`;
 
   story += `<p>${metaphor.split('.')[0]}.</p>`;
 
@@ -2582,7 +3505,7 @@ function buildStory(data) {
   story += `Esto no solo salvó al bosque, sino que transformó a ${charName} en una versión mejor de sí mismo.</p>`;
 
   // Return to original form if transformed
-  if (selectedState !== 'humano') {
+  if (mainCharTransform !== 'humano') {
     story += `<p>Con su misión cumplida, la magia se desvaneció lentamente y ${charName} volvió a su forma original. `;
     story += `Pero algo había cambiado para siempre: ahora sabía que dentro de él existía un poder mágico que podía invocar cuando lo necesitara.</p>`;
   }
@@ -2599,34 +3522,38 @@ function buildStory(data) {
 
 // ===== PDF GENERATOR =====
 function generatePDF() {
-  if (!currentStory) {
-    alert('Primero debes generar un cuento. Haz clic en "Generar Cuento Magico" en el formulario.');
-    scrollToSection('formSection');
-    return;
-  }
-
   document.getElementById('loadingOverlay').classList.add('active');
-  updateProgress(15);
+  updateProgress(10);
 
   fillPDFData();
-  updateProgress(50);
+
+  // Fill story into PDF
+  if (currentStory) {
+    document.getElementById('pdfStoryTitle').textContent = document.getElementById('storyTitle').textContent;
+    document.getElementById('pdfStoryContent').innerHTML = document.getElementById('storyContent').innerHTML;
+  }
+
+  updateProgress(40);
 
   var element = document.getElementById('pdfContent');
+  var sName = document.getElementById('studentName').value || 'Estudiante';
+  var sLastName = document.getElementById('studentLastName').value || '';
+
   var opt = {
-    margin: [10, 10, 10, 10],
-    filename: 'Reporte_CreaTuCuento_' + document.getElementById('studentName').value + '_' + document.getElementById('studentLastName').value + '.pdf',
+    margin: [15, 15, 15, 15],
+    filename: 'Reporte_CreaTuCuento_' + sName + '_' + sLastName + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, logging: false },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: 800 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['css'], before: ['.pdf-page-break'], after: ['.pdf-cover'] }
   };
 
-  updateProgress(70);
+  updateProgress(60);
 
   html2pdf().set(opt).from(element).save().then(function() {
     updateProgress(100);
     setTimeout(function() {
       document.getElementById('loadingOverlay').classList.remove('active');
-      // Disable transition momentarily to prevent visible shrink animation
       var pb = document.getElementById('progressBar');
       pb.style.transition = 'none';
       pb.style.width = '0%';
@@ -2642,16 +3569,28 @@ function generatePDF() {
 }
 
 function fillPDFData() {
-  document.getElementById('pdfStudentName').textContent = document.getElementById('studentName').value || '-';
-  document.getElementById('pdfStudentLastName').textContent = document.getElementById('studentLastName').value || '-';
-  document.getElementById('pdfDate').textContent = document.getElementById('taskDate').value || '-';
-  document.getElementById('pdfStudentInfo').textContent = 'Estudiante: ' + (document.getElementById('studentName').value || '') + ' ' + (document.getElementById('studentLastName').value || '') + ' | Fecha: ' + (document.getElementById('taskDate').value || '');
+  var sName = document.getElementById('studentName').value || '-';
+  var sLastName = document.getElementById('studentLastName').value || '-';
+  var sDate = document.getElementById('taskDate').value || '-';
 
+  // Cover page
+  document.getElementById('pdfCoverStudent').textContent = 'Estudiante: ' + sName + ' ' + sLastName;
+  document.getElementById('pdfCoverDate').textContent = 'Fecha: ' + sDate;
+
+  // Student data
+  document.getElementById('pdfStudentName').textContent = sName;
+  document.getElementById('pdfStudentLastName').textContent = sLastName;
+  document.getElementById('pdfDate').textContent = sDate;
+
+  // Main character
   document.getElementById('pdfCharName').textContent = document.getElementById('mainCharName').value || '-';
   document.getElementById('pdfCharAge').textContent = document.getElementById('mainCharAge').value || '-';
   document.getElementById('pdfCharGender').textContent = document.getElementById('mainCharGender').value || '-';
+  var mctVal = document.getElementById('mainCharTransform').value;
+  document.getElementById('pdfCharTransform').textContent = (STATE_DATA[mctVal] ? STATE_DATA[mctVal].name : mctVal) || '-';
   document.getElementById('pdfCharDesc').textContent = document.getElementById('mainCharDesc').value || '-';
 
+  // Secondary characters
   var secContainer = document.getElementById('pdfSecondaryChars');
   secContainer.innerHTML = '';
   var secCards = document.querySelectorAll('.char-card');
@@ -2662,9 +3601,11 @@ function fillPDFData() {
     var name = card.querySelector('.sec-name').value.trim();
     var relation = card.querySelector('.sec-relation').value;
     var support = card.querySelector('.sec-support').value;
+    var transform = card.querySelector('.sec-transform').value;
     if (name) {
       hasSecondary = true;
-      secContainer.innerHTML += '<p><strong>' + name + '</strong> (' + (relationLabels[relation] || relation) + ') - ' + (supportLabels[support] || support) + '</p>';
+      var tName = STATE_DATA[transform] ? STATE_DATA[transform].name : transform;
+      secContainer.innerHTML += '<p><strong>' + name + '</strong> (' + (relationLabels[relation] || relation) + ') - Transformacion: ' + tName + ' - ' + (supportLabels[support] || support) + '</p>';
     }
   });
   if (!hasSecondary) secContainer.innerHTML = '<p style="color:var(--text-light)">No se registraron personajes secundarios.</p>';
@@ -2707,6 +3648,8 @@ function fillPDFData() {
   var toneLabels = { esperanzador: 'Esperanzador y calido', divertido: 'Divertido y jugueton', tranquilo: 'Tranquilo y reflexivo', valiente: 'Valiente y motivador' };
   var valLabels = { empatia: 'Empatia', responsabilidad: 'Responsabilidad', solidaridad: 'Solidaridad', tolerancia: 'Tolerancia', respeto: 'Respeto', honestidad: 'Honestidad', perseverancia: 'Perseverancia', creatividad: 'Creatividad', coraje: 'Coraje', amistad: 'Amistad', humildad: 'Humildad', generosidad: 'Generosidad' };
 
+  var settingLabels = { 'bosque-encantado': 'Bosque Encantado', 'ciudad-magica': 'Ciudad Magica', 'playa': 'Playa y Mar', 'montanas': 'Montanas Nevadas', 'espacio': 'Espacio Exterior', 'pueblo': 'Pueblo Pequeno', 'castillo': 'Castillo Medieval', 'granja': 'Granja y Campo', 'selva': 'Selva Tropical', 'desierto': 'Desierto Dorado', 'jardin': 'Jardin Secreto', 'isla': 'Isla Misteriosa', 'mundo-subterraneo': 'Mundo Subterraneo', 'nubes': 'Reino de las Nubes', 'polo-norte': 'Polo Norte Helado', 'volcan': 'Volcan Activo' };
+  document.getElementById('pdfSetting').textContent = settingLabels[document.getElementById('storySetting').value] || '-';
   document.getElementById('pdfTargetAge').textContent = ageLabels[document.getElementById('targetAge').value] || '-';
   document.getElementById('pdfGenre').textContent = genreLabels[document.getElementById('storyGenre').value] || '-';
   document.getElementById('pdfDuration').textContent = durLabels[document.getElementById('storyDuration').value] || '-';
@@ -2714,11 +3657,267 @@ function fillPDFData() {
   document.getElementById('pdfValues').textContent = selectedValues.map(function(v) { return valLabels[v]; }).join(', ') || '-';
   document.getElementById('pdfGoal').textContent = document.getElementById('therapeuticGoal').value || '-';
 
-  document.getElementById('pdfTransformState').textContent = STATE_DATA[selectedState].name;
-  document.getElementById('pdfTransformDesc').textContent = STATE_DATA[selectedState].desc;
+  var mctPdfVal = document.getElementById('mainCharTransform').value;
+  document.getElementById('pdfTransformState').textContent = (STATE_DATA[mctPdfVal] ? STATE_DATA[mctPdfVal].name : mctPdfVal);
+  document.getElementById('pdfTransformDesc').textContent = (STATE_DATA[mctPdfVal] ? STATE_DATA[mctPdfVal].desc : '');
 
   document.getElementById('pdfStoryTitle').textContent = document.getElementById('storyTitle').textContent;
   document.getElementById('pdfStoryContent').innerHTML = currentStory;
+}
+
+// ===== PRINT FORM TO PDF =====
+function printFormToPDF() {
+  // Show the print container temporarily
+  var container = document.getElementById('printFormContainer');
+  container.style.display = 'block';
+
+  // Fill student data
+  var sName = document.getElementById('studentName').value || '-';
+  var sLastName = document.getElementById('studentLastName').value || '-';
+  var sDate = document.getElementById('taskDate').value || '-';
+  document.getElementById('printMetaStudent').textContent = 'Estudiante: ' + sName + ' ' + sLastName + ' | Fecha: ' + sDate;
+  document.getElementById('printStudentName').textContent = sName;
+  document.getElementById('printStudentLastName').textContent = sLastName;
+  document.getElementById('printDate').textContent = sDate;
+
+  // Main character
+  document.getElementById('printMainCharName').textContent = document.getElementById('mainCharName').value || '-';
+  document.getElementById('printMainCharAge').textContent = document.getElementById('mainCharAge').value || '-';
+  document.getElementById('printMainCharGender').textContent = document.getElementById('mainCharGender').value || '-';
+  var mctVal = document.getElementById('mainCharTransform').value;
+  document.getElementById('printMainCharTransform').textContent = (STATE_DATA[mctVal] ? STATE_DATA[mctVal].name : mctVal) || '-';
+  document.getElementById('printMainCharDesc').textContent = document.getElementById('mainCharDesc').value || '-';
+
+  // Secondary characters
+  var secContainer = document.getElementById('printSecondaryChars');
+  secContainer.innerHTML = '';
+  var hasSec = false;
+  var relationLabels = { amigo: 'Amigo/a', hermano: 'Hermano/a', mascota: 'Mascota', maestro: 'Maestro/a', abuelo: 'Abuelo/a', vecino: 'Vecino/a', companero: 'Companero/a de aventuras', guia: 'Guia espiritual' };
+  document.querySelectorAll('.char-card').forEach(function(card) {
+    var name = card.querySelector('.sec-name').value.trim();
+    var relation = card.querySelector('.sec-relation').value;
+    var support = card.querySelector('.sec-support').value;
+    var transform = card.querySelector('.sec-transform').value;
+    if (name) {
+      hasSec = true;
+      var tName = STATE_DATA[transform] ? STATE_DATA[transform].name : transform;
+      secContainer.innerHTML += '<table class="print-form-table" style="margin-bottom:0.5rem"><tr><th>Nombre</th><td>' + name + '</td></tr><tr><th>Relacion</th><td>' + (relationLabels[relation] || relation) + '</td></tr><tr><th>Transformacion</th><td>' + tName + '</td></tr><tr><th>Tipo de Apoyo</th><td>' + (support || '-') + '</td></tr></table>';
+    }
+  });
+  if (!hasSec) secContainer.innerHTML = '<p style="color:#666;font-size:10pt">No se registraron personajes secundarios.</p>';
+
+  // Background
+  document.getElementById('printFamilyContext').textContent = document.getElementById('familyContext').value || '-';
+  document.getElementById('printSchoolContext').textContent = document.getElementById('schoolContext').value || '-';
+  document.getElementById('printMedical').textContent = document.getElementById('medicalHistory').value || '-';
+
+  // Attitude
+  document.getElementById('printAttitudeHome').textContent = document.getElementById('attitudeHome').value || '-';
+  document.getElementById('printAttitudeSchool').textContent = document.getElementById('attitudeSchool').value || '-';
+  document.getElementById('printAttitudePeers').textContent = document.getElementById('attitudePeers').value || '-';
+
+  // Talents
+  document.getElementById('printTalents').textContent = document.getElementById('talents').value || '-';
+  document.getElementById('printInterests').textContent = document.getElementById('interests').value || '-';
+
+  var lsVal = document.getElementById('learningStyle').value;
+  var lsLabels = { visual: 'Visual (aprende viendo)', auditivo: 'Auditivo (aprende escuchando)', kinestesico: 'Kinestesico (aprende haciendo)', lectoescritura: 'Lecto-escritura (aprende leyendo)', mixto: 'Mixto' };
+  document.getElementById('printLearningStyle').textContent = lsLabels[lsVal] || (lsVal || '-');
+
+  // Social
+  document.getElementById('printSocialSkills').textContent = document.getElementById('socialSkills').value || '-';
+  var commVal = document.getElementById('communication').value;
+  var commLabels = { verbal: 'Verbal (habla mucho)', 'no-verbal': 'No verbal (gestos, dibujos)', mixto: 'Mixto', repetitivo: 'Repetitivo (ecolalia)', selectivo: 'Selectivo (habla con pocos)' };
+  document.getElementById('printCommunication').textContent = commLabels[commVal] || (commVal || '-');
+  document.getElementById('printEmotionalReg').textContent = document.getElementById('emotionalRegulation').value || '-';
+
+  // Disorders
+  var disContainer = document.getElementById('printDisorders');
+  disContainer.innerHTML = '';
+  var hasDis = false;
+  document.querySelectorAll('#disordersGrid input:checked').forEach(function(cb) {
+    var key = cb.value;
+    var data = METAPHOR_MAP[key];
+    if (data) {
+      hasDis = true;
+      disContainer.innerHTML += '<table class="print-form-table" style="margin-bottom:0.5rem"><tr><th>Condicion</th><td>' + data.name + '</td></tr><tr><th>Metafora Magica</th><td>' + data.metaphor + '</td></tr><tr><th>Como Animal</th><td>' + data.animal + '</td></tr><tr><th>Como Objeto</th><td>' + data.object + '</td></tr><tr><th>Como Espectro</th><td>' + data.spectrum + '</td></tr></table>';
+    }
+  });
+  if (!hasDis) disContainer.innerHTML = '<p style="color:#666;font-size:10pt">No se seleccionaron condiciones.</p>';
+
+  // Story settings
+  var settingLabels = { 'bosque-encantado': 'Bosque Encantado', 'ciudad-magica': 'Ciudad Magica', 'playa': 'Playa y Mar', 'montanas': 'Montanas Nevadas', 'espacio': 'Espacio Exterior', 'pueblo': 'Pueblo Pequeno', 'castillo': 'Castillo Medieval', 'granja': 'Granja y Campo', 'selva': 'Selva Tropical', 'desierto': 'Desierto Dorado', 'jardin': 'Jardin Secreto', 'isla': 'Isla Misteriosa', 'mundo-subterraneo': 'Mundo Subterraneo', 'nubes': 'Reino de las Nubes', 'polo-norte': 'Polo Norte Helado', 'volcan': 'Volcan Activo' };
+  document.getElementById('printSetting').textContent = settingLabels[document.getElementById('storySetting').value] || '-';
+
+  var ageLabels = { '3-5': '3-5 anos (Prescolar)', '6-8': '6-8 anos (Primaria temprana)', '9-12': '9-12 anos (Primaria tardia)', '13-15': '13-15 anos (Adolescente)' };
+  document.getElementById('printTargetAge').textContent = ageLabels[document.getElementById('targetAge').value] || '-';
+
+  var genreLabels = { 'fantasia': 'Fantasia', 'aventura': 'Aventura', 'misterio': 'Misterio', 'fabula': 'Fabula', 'cuento-hadas': 'Cuento de Hadas', 'humor': 'Humor', 'educativo': 'Educativo', 'emocional': 'Emocional' };
+  document.getElementById('printGenre').textContent = genreLabels[document.getElementById('storyGenre').value] || '-';
+
+  var durLabels = { corta: 'Corta (5-10 minutos)', media: 'Media (10-20 minutos)', larga: 'Larga (20-30 minutos)' };
+  document.getElementById('printDuration').textContent = durLabels[document.getElementById('storyDuration').value] || '-';
+
+  var toneLabels = { alegre: 'Alegre y luminoso', tranquilo: 'Tranquilo y relajado', esperanzador: 'Esperanzador', valiente: 'Valiente y fuerte', tierno: 'Tierno y carinoso', divertido: 'Divertido y jugueton' };
+  document.getElementById('printTone').textContent = toneLabels[document.getElementById('storyTone').value] || '-';
+
+  // Values
+  var valTexts = [];
+  document.querySelectorAll('.value-card.selected').forEach(function(vc) {
+    valTexts.push(vc.querySelector('.value-name').textContent.trim());
+  });
+  document.getElementById('printValues').textContent = valTexts.length > 0 ? valTexts.join(', ') : '-';
+
+  var valList = document.getElementById('printValuesList');
+  if (valTexts.length > 0) {
+    valList.innerHTML = '<ul style="margin:0;padding-left:1.5rem;font-size:10pt">' + valTexts.map(function(v) { return '<li>' + v + '</li>'; }).join('') + '</ul>';
+  } else {
+    valList.innerHTML = '<p style="color:#666;font-size:10pt">No se seleccionaron valores.</p>';
+  }
+
+  document.getElementById('printGoal').textContent = document.getElementById('therapeuticGoal').value || '-';
+
+  // Transform
+  var tData = STATE_DATA[document.getElementById('mainCharTransform').value];
+  document.getElementById('printTransformState').textContent = tData ? tData.name : '-';
+  document.getElementById('printTransformDesc').textContent = tData ? tData.desc : '-';
+
+  // Trigger print
+  setTimeout(function() {
+    window.print();
+    // Hide after print dialog closes
+    setTimeout(function() {
+      container.style.display = 'none';
+    }, 1000);
+  }, 300);
+}
+
+// ===== CSV EXPORT =====
+function generateCSV() {
+  var sName = document.getElementById('studentName').value || '';
+  var sLastName = document.getElementById('studentLastName').value || '';
+  var sDate = document.getElementById('taskDate').value || '';
+  var charName = document.getElementById('mainCharName').value || '';
+  var charAge = document.getElementById('mainCharAge').value || '';
+  var charGender = document.getElementById('mainCharGender').value || '';
+  var charTransform = document.getElementById('mainCharTransform').value || '';
+  var charDesc = document.getElementById('mainCharDesc').value || '';
+  var setting = document.getElementById('storySetting').value || '';
+  var genre = document.getElementById('storyGenre').value || '';
+  var duration = document.getElementById('storyDuration').value || '';
+  var tone = document.getElementById('storyTone').value || '';
+  var targetAge = document.getElementById('targetAge').value || '';
+  var goal = document.getElementById('therapeuticGoal').value || '';
+  var familyCtx = document.getElementById('familyContext').value || '';
+  var attitudeHome = document.getElementById('attitudeHome').value || '';
+  var talents = document.getElementById('talents').value || '';
+  var socialSkills = document.getElementById('socialSkills').value || '';
+  var emotionalReg = document.getElementById('emotionalRegulation').value || '';
+
+  // Disorders
+  var disorders = [];
+  document.querySelectorAll('#disordersGrid input:checked').forEach(function(cb) {
+    var key = cb.value;
+    var data = METAPHOR_MAP[key];
+    if (data) disorders.push(data.name);
+  });
+
+  // Values
+  var values = [];
+  document.querySelectorAll('.value-card.selected').forEach(function(vc) {
+    values.push(vc.querySelector('.value-name').textContent.trim());
+  });
+
+  // Secondary chars
+  var secChars = [];
+  document.querySelectorAll('.char-card').forEach(function(card) {
+    var name = card.querySelector('.sec-name').value.trim();
+    if (name) {
+      var relation = card.querySelector('.sec-relation').value || '';
+      var support = card.querySelector('.sec-support').value || '';
+      var transform = card.querySelector('.sec-transform').value || '';
+      secChars.push(name + '|' + relation + '|' + support + '|' + transform);
+    }
+  });
+
+  // Escape CSV field
+  function esc(v) {
+    if (!v) return '""';
+    return '"' + String(v).replace(/"/g, '""').replace(/\n/g, ' ') + '"';
+  }
+
+  var csv = '';
+  csv += 'CAMPOS,INFORMACION\n';
+  csv += 'Instituto,"Instituto de Educacion Superior Publico Diseno y comunicacion"\n';
+  csv += 'Especialidad,"Diseno Publicitario"\n';
+  csv += 'Curso,"Proyecto Illustrador - 2026"\n';
+  csv += 'Docente,"Mg Mario Quiroz Martinez"\n';
+  csv += '\n';
+  csv += 'SECCION,DATO,VALOR\n';
+  csv += 'Datos del Estudiante,Nombre,' + esc(sName) + '\n';
+  csv += 'Datos del Estudiante,Apellidos,' + esc(sLastName) + '\n';
+  csv += 'Datos del Estudiante,Fecha,' + esc(sDate) + '\n';
+  csv += '\n';
+  csv += 'SECCION,DATO,VALOR\n';
+  csv += 'Personaje Principal,Nombre,' + esc(charName) + '\n';
+  csv += 'Personaje Principal,Edad,' + esc(charAge) + '\n';
+  csv += 'Personaje Principal,Genero,' + esc(charGender) + '\n';
+  csv += 'Personaje Principal,Transformacion,' + esc(charTransform) + '\n';
+  csv += 'Personaje Principal,Descripcion,' + esc(charDesc) + '\n';
+  csv += '\n';
+  csv += 'SECCION,DATO,VALOR\n';
+  secChars.forEach(function(sc, i) {
+    var parts = sc.split('|');
+    csv += 'Personaje Secundario ' + (i+1) + ',Nombre,' + esc(parts[0]) + '\n';
+    csv += 'Personaje Secundario ' + (i+1) + ',Relacion,' + esc(parts[1]) + '\n';
+    csv += 'Personaje Secundario ' + (i+1) + ',Apoyo,' + esc(parts[2]) + '\n';
+    csv += 'Personaje Secundario ' + (i+1) + ',Transformacion,' + esc(parts[3]) + '\n';
+  });
+  if (secChars.length === 0) {
+    csv += 'Personajes Secundarios,,Ninguno registrado\n';
+  }
+  csv += '\n';
+  csv += 'SECCION,DATO,VALOR\n';
+  csv += 'Antecedentes,Contexto Familiar,' + esc(familyCtx) + '\n';
+  csv += 'Antecedentes,Actitud en Casa,' + esc(attitudeHome) + '\n';
+  csv += 'Antecedentes,Talentos,' + esc(talents) + '\n';
+  csv += 'Antecedentes,Habilidades Sociales,' + esc(socialSkills) + '\n';
+  csv += 'Antecedentes,Regulacion Emocional,' + esc(emotionalReg) + '\n';
+  csv += '\n';
+  csv += 'SECCION,DATO,VALOR\n';
+  disorders.forEach(function(d, i) {
+    csv += 'Condiciones,Condicion ' + (i+1) + ',' + esc(d) + '\n';
+  });
+  if (disorders.length === 0) {
+    csv += 'Condiciones,,Ninguna seleccionada\n';
+  }
+  csv += '\n';
+  csv += 'SECCION,DATO,VALOR\n';
+  values.forEach(function(v, i) {
+    csv += 'Valores,Valor ' + (i+1) + ',' + esc(v) + '\n';
+  });
+  if (values.length === 0) {
+    csv += 'Valores,,Ninguno seleccionado\n';
+  }
+  csv += '\n';
+  csv += 'SECCION,DATO,VALOR\n';
+  csv += 'Configuracion,Ambiente,' + esc(setting) + '\n';
+  csv += 'Configuracion,Genero Narrativo,' + esc(genre) + '\n';
+  csv += 'Configuracion,Duracion,' + esc(duration) + '\n';
+  csv += 'Configuracion,Tono,' + esc(tone) + '\n';
+  csv += 'Configuracion,Edad Objetivo,' + esc(targetAge) + '\n';
+  csv += 'Configuracion,Objetivo Terapeutico,' + esc(goal) + '\n';
+
+  // Download
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var link = document.createElement('a');
+  var url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'CreaTuCuento_' + sName + '_' + sLastName + '.csv');
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 // ===== INITIALIZATION =====
