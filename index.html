@@ -1496,6 +1496,14 @@ footer {
             <label for="mainCharDesc">Descripción Física y Personalidad</label>
             <textarea id="mainCharDesc" placeholder="Ej: Niño con actitud explosiva, nunca se cansa, se mueve constantemente y se distrae fácilmente. Puede concentrarse en una sola cosa por poco tiempo. Muestra inseguridad, rebeldía, miedo y soledad. (Ref.: Pato Lucas - TDAH, Zúñiga 2018)"></textarea>
           </div>
+          <div class="form-group">
+            <label for="mainCharImage">Imagen del Personaje Principal (JPG, max 2MB)</label>
+            <input type="file" id="mainCharImage" accept=".jpg,.jpeg" onchange="handleImageUpload(this,'mainCharPreview')" style="padding:0.5rem;border:1px dashed var(--primary-light);border-radius:8px;background:rgba(108,92,231,0.03);cursor:pointer">
+            <div id="mainCharPreview" style="margin-top:0.75rem;display:none">
+              <img id="mainCharPreviewImg" style="max-width:120px;max-height:120px;border-radius:8px;border:2px solid var(--primary-light);object-fit:cover" />
+            </div>
+            <p style="font-size:0.75rem;color:var(--text-light);margin-top:0.3rem">Formato: JPG o JPEG. Tamaño máximo: 2MB. Se mostrará en el informe impreso.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1565,6 +1573,14 @@ footer {
                   <option value="leal">Apoyo de Lealtad - Permanece siempre a su lado</option>
                   <option value="practico">Apoyo Práctico - Ayuda con herramientas o recursos</option>
                 </select>
+              </div>
+              <div class="form-group">
+                <label>Imagen del Personaje (JPG, max 2MB)</label>
+                <input type="file" class="sec-image" accept=".jpg,.jpeg" onchange="handleImageUpload(this,'secPreview' + this.closest('.char-card').dataset.index)" style="padding:0.5rem;border:1px dashed var(--primary-light);border-radius:8px;background:rgba(108,92,231,0.03);cursor:pointer">
+                <div class="sec-preview" style="margin-top:0.75rem;display:none">
+                  <img class="sec-preview-img" style="max-width:100px;max-height:100px;border-radius:8px;border:2px solid var(--primary-light);object-fit:cover" />
+                </div>
+                <p style="font-size:0.75rem;color:var(--text-light);margin-top:0.3rem">Formato: JPG o JPEG. Tamaño máximo: 2MB.</p>
               </div>
             </div>
           </div>
@@ -2218,10 +2234,10 @@ footer {
 
   <!-- CSV Button -->
   <div style="text-align:center;margin-bottom:2rem">
-    <button class="btn btn-secondary" style="font-size:1.1rem;padding:1rem 2.5rem" onclick="generateCSV()">
-      📊 Exportar Datos a CSV
+    <button class="btn btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem;white-space:nowrap" onclick="generateCSV()">
+      📊 Crear archivo CSV
     </button>
-    <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.75rem">Exporta todos los datos del formulario en formato CSV para Excel</p>
+    <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.75rem">Descarga todos los datos del formulario en formato CSV para abrir en Excel</p>
   </div>
 
   <!-- PDF Preview Container -->
@@ -2229,8 +2245,8 @@ footer {
     <div id="pdfContent">
       <!-- COVER PAGE -->
       <div class="pdf-cover">
-        <div class="pdf-cover-institute">Instituto de Educacion Superior Publico</div>
-        <div style="font-size:1.2rem;font-weight:700;color:var(--primary);letter-spacing:1px;">"Diseno y comunicacion"</div>
+        <div class="pdf-cover-institute">Instituto de Educacion Superior Público</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--primary);letter-spacing:1px;">"Diseno y Comunicación"</div>
         <div class="pdf-cover-specialty">Especialidad de Diseno Publicitario</div>
         <div class="pdf-cover-logo">📚</div>
         <div class="pdf-cover-title">Reporte Terapeutico</div>
@@ -2467,6 +2483,7 @@ footer {
       <tr><th>Genero</th><td id="printMainCharGender">-</td></tr>
       <tr><th>Transformacion</th><td id="printMainCharTransform">-</td></tr>
       <tr><th>Descripcion Fisica y Personalidad</th><td id="printMainCharDesc" style="white-space:pre-wrap">-</td></tr>
+      <tr><th>Imagen</th><td id="printMainCharImage"><p style="color:#666;font-size:10pt">No se subio imagen.</p></td></tr>
     </table>
   </div>
 
@@ -2555,6 +2572,18 @@ footer {
   <div class="print-form-section">
     <h3>11. Valores Educativos a Potenciar</h3>
     <div id="printValuesList"><p style="color:#666;font-size:10pt">No se seleccionaron valores.</p></div>
+  </div>
+
+  <!-- PAGE BREAK -->
+  <div class="print-form-page-break"></div>
+
+  <!-- SECCION 12: Cuento Magico Generado -->
+  <div class="print-form-section">
+    <h3>12. Cuento Magico Generado</h3>
+    <div id="printStoryTitle" style="font-size:13pt;font-weight:700;color:#333;text-align:center;margin-bottom:1rem;padding:0.5rem;background:#f5f5f5;border-radius:4px">-</div>
+    <div id="printStoryContent" style="font-size:10.5pt;line-height:1.7;text-align:justify;color:#222;padding:1rem;background:#fafafa;border-radius:4px;border:1px solid #ddd">
+      <p style="color:#666;font-style:italic">El cuento no ha sido generado todavia. Haz clic en "Generar Cuento Magico" para crearlo.</p>
+    </div>
   </div>
 
   <!-- Footer -->
@@ -3067,6 +3096,40 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+// ===== IMAGE UPLOAD HANDLER (JPG, max 2MB) =====
+function handleImageUpload(input, previewContainerId) {
+  var file = input.files[0];
+  if (!file) return;
+
+  // Validate file type
+  var validTypes = ['image/jpeg', 'image/jpg'];
+  if (validTypes.indexOf(file.type) === -1) {
+    alert('Solo se permiten archivos JPG o JPEG. Por favor selecciona una imagen valida.');
+    input.value = '';
+    return;
+  }
+
+  // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+  var maxSize = 2 * 1024 * 1024;
+  if (file.size > maxSize) {
+    alert('El archivo es demasiado grande. Tamaño maximo: 2MB. Tu archivo pesa ' + (file.size / 1024 / 1024).toFixed(2) + 'MB');
+    input.value = '';
+    return;
+  }
+
+  // Show preview
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var container = document.getElementById(previewContainerId);
+    if (container) {
+      container.style.display = 'block';
+      var img = container.querySelector('img');
+      if (img) img.src = e.target.result;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
 // ===== SECONDARY CHARACTERS =====
 function addSecondaryChar() {
   if (secondaryCharCount >= 3) return;
@@ -3124,6 +3187,14 @@ function addSecondaryChar() {
         <option value="leal">Apoyo de Lealtad - Permanece siempre a su lado</option>
         <option value="practico">Apoyo Práctico - Ayuda con herramientas o recursos</option>
       </select>
+    </div>
+    <div class="form-group">
+      <label>Imagen del Personaje (JPG, max 2MB)</label>
+      <input type="file" class="sec-image" accept=".jpg,.jpeg" onchange="handleImageUpload(this,'secPreview' + ${secondaryCharCount})" style="padding:0.5rem;border:1px dashed var(--primary-light);border-radius:8px;background:rgba(108,92,231,0.03);cursor:pointer">
+      <div class="sec-preview" id="secPreview${secondaryCharCount}" style="margin-top:0.75rem;display:none">
+        <img class="sec-preview-img" style="max-width:100px;max-height:100px;border-radius:8px;border:2px solid var(--primary-light);object-fit:cover" />
+      </div>
+      <p style="font-size:0.75rem;color:var(--text-light);margin-top:0.3rem">Formato: JPG o JPEG. Tamaño máximo: 2MB.</p>
     </div>
   `;
   container.appendChild(card);
@@ -3681,6 +3752,14 @@ function printFormToPDF() {
   document.getElementById('printMainCharTransform').textContent = (STATE_DATA[mctVal] ? STATE_DATA[mctVal].name : mctVal) || '-';
   document.getElementById('printMainCharDesc').textContent = document.getElementById('mainCharDesc').value || '-';
 
+  // Main character image
+  var mainCharImgSrc = document.getElementById('mainCharPreviewImg') ? document.getElementById('mainCharPreviewImg').src : '';
+  if (mainCharImgSrc && mainCharImgSrc.indexOf('data:image') === 0) {
+    document.getElementById('printMainCharImage').innerHTML = '<img src="' + mainCharImgSrc + '" style="max-width:150px;max-height:150px;border-radius:8px;border:1px solid #ccc" />';
+  } else {
+    document.getElementById('printMainCharImage').innerHTML = '<p style="color:#666;font-size:10pt">No se subio imagen.</p>';
+  }
+
   // Secondary characters
   var secContainer = document.getElementById('printSecondaryChars');
   secContainer.innerHTML = '';
@@ -3694,7 +3773,12 @@ function printFormToPDF() {
     if (name) {
       hasSec = true;
       var tName = STATE_DATA[transform] ? STATE_DATA[transform].name : transform;
-      secContainer.innerHTML += '<table class="print-form-table" style="margin-bottom:0.5rem"><tr><th>Nombre</th><td>' + name + '</td></tr><tr><th>Relacion</th><td>' + (relationLabels[relation] || relation) + '</td></tr><tr><th>Transformacion</th><td>' + tName + '</td></tr><tr><th>Tipo de Apoyo</th><td>' + (support || '-') + '</td></tr></table>';
+      var imgHtml = '';
+      var imgEl = card.querySelector('.sec-preview-img');
+      if (imgEl && imgEl.src && imgEl.src.indexOf('data:image') === 0) {
+        imgHtml = '<tr><th>Imagen</th><td><img src="' + imgEl.src + '" style="max-width:100px;max-height:100px;border-radius:6px;border:1px solid #ccc" /></td></tr>';
+      }
+      secContainer.innerHTML += '<table class="print-form-table" style="margin-bottom:0.5rem"><tr><th>Nombre</th><td>' + name + '</td></tr><tr><th>Relacion</th><td>' + (relationLabels[relation] || relation) + '</td></tr><tr><th>Transformacion</th><td>' + tName + '</td></tr><tr><th>Tipo de Apoyo</th><td>' + (support || '-') + '</td></tr>' + imgHtml + '</table>';
     }
   });
   if (!hasSec) secContainer.innerHTML = '<p style="color:#666;font-size:10pt">No se registraron personajes secundarios.</p>';
@@ -3774,6 +3858,19 @@ function printFormToPDF() {
   var tData = STATE_DATA[document.getElementById('mainCharTransform').value];
   document.getElementById('printTransformState').textContent = tData ? tData.name : '-';
   document.getElementById('printTransformDesc').textContent = tData ? tData.desc : '-';
+
+  // Cuento Magico Generado (Section 12)
+  var storyTitleEl = document.getElementById('printStoryTitle');
+  var storyContentEl = document.getElementById('printStoryContent');
+  if (currentStory && currentStory.trim() !== '') {
+    var generatedTitle = document.getElementById('storyTitle') ? document.getElementById('storyTitle').textContent : 'Cuento Terapeutico';
+    var generatedMeta = document.getElementById('storyMeta') ? document.getElementById('storyMeta').textContent : '';
+    storyTitleEl.innerHTML = generatedTitle + '<br><span style="font-size:8pt;font-weight:400;color:#666">' + generatedMeta + '</span>';
+    storyContentEl.innerHTML = currentStory;
+  } else {
+    storyTitleEl.textContent = 'Cuento no generado aun';
+    storyContentEl.innerHTML = '<p style="color:#666;font-style:italic">El cuento no ha sido generado todavia. Regresa al formulario, completa los datos y haz clic en "Generar Cuento Magico" para crearlo. Luego vuelve aqui para imprimir.</p>';
+  }
 
   // Trigger print
   setTimeout(function() {
